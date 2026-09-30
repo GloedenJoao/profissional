@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-header">
+  <div>
+    <h1>{{ model.name }}</h1>
+    <p>{{ model.description }}</p>
+  </div>
+  <a class="button secondary" href="/models">Voltar</a>
+</section>
+
+<section class="panel">
+  <div class="panel-title">
+    <h2>Versoes</h2>
+  </div>
+  <div class="version-list">
+    {% for version in model.versions|sort(attribute="version") %}
+      <div class="version-row">
+        <div>
+          <span class="eyebrow">v{{ version.version }}</span>
+          <h3>{{ version.name }}</h3>
+          <p>{{ version.hypothesis }}</p>
+          <code>{{ version.parameters }}</code>
+        </div>
+        <form method="post" action="/models/{{ version.id }}/mutate">
+          <button class="button secondary" type="submit">Mutar</button>
+        </form>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

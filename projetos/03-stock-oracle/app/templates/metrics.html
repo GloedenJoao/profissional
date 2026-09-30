@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-header">
+  <div>
+    <h1>Metricas</h1>
+    <p>Avaliacao acumulada e janela recente por versao.</p>
+  </div>
+  <a class="button primary" href="/runs/new">Executar</a>
+</section>
+
+<section class="panel">
+  {% if metrics %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Modelo</th>
+            <th>Versao</th>
+            <th>Previsoes</th>
+            <th>Resolvidas</th>
+            <th>Acuracia</th>
+            <th>Rolling</th>
+            <th>MAE</th>
+            <th>MAPE</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for metric in metrics %}
+            <tr>
+              <td>{{ metric.model_name }}</td>
+              <td>{{ metric.version_name }}</td>
+              <td>{{ metric.prediction_count }}</td>
+              <td>{{ metric.resolved_count }}</td>
+              <td>{{ "%.1f"|format(metric.directional_accuracy * 100) ~ "%" if metric.directional_accuracy is not none else "-" }}</td>
+              <td>{{ "%.1f"|format(metric.rolling_accuracy * 100) ~ "%" if metric.rolling_accuracy is not none else "-" }}</td>
+              <td>{{ "%.4f"|format(metric.mae) if metric.mae is not none else "-" }}</td>
+              <td>{{ "%.2f"|format(metric.mape * 100) ~ "%" if metric.mape is not none else "-" }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="empty-state">Nenhuma metrica calculada.</div>
+  {% endif %}
+</section>
+{% endblock %}

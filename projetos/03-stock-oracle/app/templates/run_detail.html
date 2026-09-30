@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-header">
+  <div>
+    <h1>{{ run.ticker }} #{{ run.id }}</h1>
+    <p>{{ run.mode }} · {{ run.horizon_days }} pregao{% if run.horizon_days > 1 %}s{% endif %}</p>
+  </div>
+  <a class="button primary" href="/runs/new">Nova execucao</a>
+</section>
+
+{% if run.error_message %}
+  <section class="error-box">{{ run.error_message }}</section>
+{% endif %}
+
+<section class="detail-grid">
+  <article class="metric-card">
+    <span class="eyebrow">Previsoes</span>
+    <strong>{{ run.prediction_count }}</strong>
+  </article>
+  <article class="metric-card">
+    <span class="eyebrow">Resolvidas</span>
+    <strong>{{ run.resolved_count }}</strong>
+  </article>
+  <article class="metric-card">
+    <span class="eyebrow">Acuracia</span>
+    <strong>{{ "%.1f"|format(run.directional_accuracy * 100) ~ "%" if run.directional_accuracy is not none else "-" }}</strong>
+  </article>
+  <article class="metric-card">
+    <span class="eyebrow">MAE</span>
+    <strong>{{ "%.4f"|format(run.mae) if run.mae is not none else "-" }}</strong>
+  </article>
+</section>
+
+<section class="panel">
+  <div class="panel-title">
+    <h2>Previsoes da execucao</h2>
+  </div>
+  {% if predictions %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Modelo</th>
+            <th>Base</th>
+            <th>Alvo</th>
+            <th>Direcao</th>
+            <th>Previsto</th>
+            <th>Real</th>
+            <th>Confianca</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for prediction in predictions %}
+            <tr>
+              <td>{{ prediction.strategy_version.model.name }} v{{ prediction.strategy_version.version }}</td>
+              <td>{{ prediction.as_of_date }}</td>
+              <td>{{ prediction.target_date }}</td>
+              <td>{{ prediction.predicted_direction }}{% if prediction.actual_direction %} / {{ prediction.actual_direction }}{% endif %}</td>
+              <td>{{ "%.2f"|format(prediction.predicted_price) }}</td>
+              <td>{{ "%.2f"|format(prediction.actual_price) if prediction.actual_price is not none else "-" }}</td>
+              <td>{{ "%.1f"|format(prediction.confidence * 100) }}%</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="empty-state">Sem previsoes persistidas.</div>
+  {% endif %}
+</section>
+{% endblock %}

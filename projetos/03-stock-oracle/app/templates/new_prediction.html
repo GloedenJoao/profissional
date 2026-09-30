@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-header">
+  <div>
+    <h1>Nova previsao</h1>
+    <p>O agente historico analisa preco e indicadores tecnicos.</p>
+  </div>
+</section>
+
+<section class="form-panel">
+  {% if error %}
+    <div class="error-box">{{ error }}</div>
+  {% endif %}
+  <form method="post" action="/predictions" class="prediction-form">
+    <label for="ticker">Ticker</label>
+    <div class="input-row">
+      <input id="ticker" name="ticker" type="text" placeholder="AAPL" required maxlength="16">
+      <button class="button primary" type="submit">Executar</button>
+    </div>
+  </form>
+
+  <div class="agent-list">
+    {% for agent in available_agents %}
+      <span>{{ agent }}</span>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
+

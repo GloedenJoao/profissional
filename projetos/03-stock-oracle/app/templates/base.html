@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title or "Stock Oracle" }}</title>
+    <link rel="stylesheet" href="{{ request.url_for('static', path='css/app.css') }}">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/">Stock Oracle</a>
+      <nav class="nav">
+        <a href="/">Dashboard</a>
+        <a href="/runs/new">Nova execucao</a>
+        <a href="/models">Modelos</a>
+        <a href="/predictions">Previsoes</a>
+        <a href="/metrics">Metricas</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      <section class="notice">
+        Laboratorio local. Previsoes e backtests nao sao recomendacoes financeiras.
+      </section>
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>
