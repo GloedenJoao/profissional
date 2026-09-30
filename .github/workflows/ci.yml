@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: ${{ matrix.project }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - project: 01-data-quality-kit
+            extras: "[dev,mcp,spark]"
+            python: "3.11"
+          - project: 02-mensuracao-crm
+            extras: "[dev]"
+            python: "3.11"
+          - project: 03-stock-oracle
+            extras: "[dev]"
+            python: "3.11"
+    defaults:
+      run:
+        working-directory: projetos/${{ matrix.project }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: actions/setup-java@v4
+        if: matrix.project == '01-data-quality-kit'
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Instalar
+        run: pip install -e ".${{ matrix.extras }}"
+      - name: Testar
+        run: python -m pytest -q
