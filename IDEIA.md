@@ -17,4 +17,9 @@ outras:
 - Executivos: tomam decisões e direcionam a empresa a partir dos dashboards.
 
 Cada dia útil, um agente Claude agendado (Scheduled task) executa a empresa.
+
+Eu devo poder ver (e, se possível, acionar) a simulação pelo meu celular Android. Já tenho
+um padrão para isso no repo https://github.com/GloedenJoao/android: seguir esse caminho e,
+se for fácil, evoluí-lo; se não, um aplicativo .apk está ok.
+
 Você decide como isso funciona no GitHub: arquitetura, ferramentas e etapas.
