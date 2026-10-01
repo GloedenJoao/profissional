@@ -32,3 +32,4 @@ Próxima decisão: `empresa/decisoes/2026-10-01.json` (aplicada no fechamento de
 - [baixa] EXEC-AUSENTE — Executivos sem decisão registrada
 
 ## Últimos eventos
+- 2026-09-24 · extracao · INC-0005 resolvido: Yahoo Finance voltou após 1 dia(s) (aguardar)

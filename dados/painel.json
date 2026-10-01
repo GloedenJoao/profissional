@@ -4,7 +4,7 @@
   "aviso": "Empresa e fundo fictícios. Dados de mercado reais; nada aqui é recomendação de investimento.",
   "data_referencia": "2026-09-30",
   "proximo_dia_util": "2026-10-01",
-  "gerado_em": "2026-10-01T23:21:36+00:00",
+  "gerado_em": "2026-10-01T23:24:23+00:00",
   "resumo": {
     "cota": 1.035978,
     "pl": 327530757.59,
@@ -1349,7 +1349,19 @@
     }
   },
   "processos": {
-    "issues_abertas": [],
+    "issues_abertas": [
+      {
+        "numero": 2,
+        "titulo": "Executivos sem decisão registrada",
+        "url": "https://github.com/GloedenJoao/profissional/issues/2",
+        "rotulos": [
+          "simulacao",
+          "area:executivos",
+          "sev:baixa"
+        ],
+        "criada_em": "2026-10-01T23:22:32Z"
+      }
+    ],
     "repositorio": "GloedenJoao/profissional"
   }
 }

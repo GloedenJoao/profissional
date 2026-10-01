@@ -7,11 +7,21 @@
       "estado": "open"
     }
   },
-  "abertas": [],
+  "abertas": [
+    {
+      "numero": 2,
+      "titulo": "Executivos sem decisão registrada",
+      "url": "https://github.com/GloedenJoao/profissional/issues/2",
+      "rotulos": [
+        "simulacao",
+        "area:executivos",
+        "sev:baixa"
+      ],
+      "criada_em": "2026-10-01T23:22:32Z"
+    }
+  ],
   "detalhes": {
     "EXEC-AUSENTE": null
   },
-  "log": [
-    "aberta #2 EXEC-AUSENTE"
-  ]
+  "log": []
 }
