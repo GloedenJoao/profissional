@@ -1,0 +1,412 @@
+{
+  "versao": 1,
+  "inicio": "2026-08-18",
+  "ultima_data": "2026-09-30",
+  "seq_incidente": 5,
+  "extracao": {
+    "divida_tecnica": 26.2,
+    "equipe": 3,
+    "orcamento_dia": 1000,
+    "fontes": {
+      "bcb_sgs": {
+        "liberado_ate": {
+          "cdi": "2026-09-30",
+          "selic": "2026-09-30",
+          "dolar": "2026-09-30",
+          "ipca": "2026-08-01"
+        },
+        "alternativa_ligada": false
+      },
+      "bcb_ptax": {
+        "liberado_ate": {
+          "dolar_ptax": "2026-09-30"
+        },
+        "alternativa_ligada": false
+      },
+      "bcb_focus": {
+        "liberado_ate": {
+          "focus_ipca": "2026-09-25",
+          "focus_selic": "2026-09-25"
+        },
+        "alternativa_ligada": false
+      },
+      "tesouro": {
+        "liberado_ate": {
+          "tesouro": "2026-09-30"
+        },
+        "alternativa_ligada": false
+      },
+      "yahoo": {
+        "liberado_ate": {
+          "ibov": "2026-09-30",
+          "bova11": "2026-09-30"
+        },
+        "alternativa_ligada": false
+      },
+      "b3": {
+        "liberado_ate": {
+          "bova11_b3": "2026-09-30"
+        },
+        "alternativa_ligada": false
+      }
+    }
+  },
+  "incidentes": [
+    {
+      "id": "INC-0001",
+      "fonte": "bcb_sgs",
+      "tipo": "atraso",
+      "aberto_em": "2026-08-24",
+      "estado": "resolvido",
+      "dias": 5,
+      "esforco": 0,
+      "acao": "aguardar",
+      "detalhe": "a fonte publicou atrasado",
+      "resolvido_em": "2026-08-31",
+      "historico": [
+        "2026-08-31: resolvido (aguardar)"
+      ]
+    },
+    {
+      "id": "INC-0002",
+      "fonte": "yahoo",
+      "tipo": "mudanca_formato",
+      "aberto_em": "2026-08-27",
+      "estado": "resolvido",
+      "dias": 2,
+      "esforco": 2,
+      "acao": "corrigir_conector",
+      "detalhe": "a fonte mudou o formato e o conector quebrou",
+      "resolvido_em": "2026-08-31",
+      "historico": [
+        "2026-08-31: resolvido (corrigir_conector)"
+      ]
+    },
+    {
+      "id": "INC-0003",
+      "fonte": "b3",
+      "tipo": "mudanca_formato",
+      "aberto_em": "2026-09-03",
+      "estado": "resolvido",
+      "dias": 2,
+      "esforco": 2,
+      "acao": "corrigir_conector",
+      "detalhe": "a fonte mudou o formato e o conector quebrou",
+      "resolvido_em": "2026-09-08",
+      "historico": [
+        "2026-09-08: resolvido (corrigir_conector)"
+      ]
+    },
+    {
+      "id": "INC-0004",
+      "fonte": "b3",
+      "tipo": "atraso",
+      "aberto_em": "2026-09-22",
+      "estado": "resolvido",
+      "dias": 1,
+      "esforco": 0,
+      "acao": "aguardar",
+      "detalhe": "a fonte publicou atrasado",
+      "resolvido_em": "2026-09-23",
+      "historico": [
+        "2026-09-23: resolvido (aguardar)"
+      ]
+    },
+    {
+      "id": "INC-0005",
+      "fonte": "yahoo",
+      "tipo": "atraso",
+      "aberto_em": "2026-09-23",
+      "estado": "resolvido",
+      "dias": 1,
+      "esforco": 0,
+      "acao": "aguardar",
+      "detalhe": "a fonte publicou atrasado",
+      "resolvido_em": "2026-09-24",
+      "historico": [
+        "2026-09-24: resolvido (aguardar)"
+      ]
+    }
+  ],
+  "alertas": {
+    "EXEC-AUSENTE": {
+      "titulo": "Executivos sem decisão registrada",
+      "area": "executivos",
+      "sev": "baixa",
+      "aberto_em": "2026-08-21",
+      "corpo": "Não há arquivo em `empresa/decisoes/` há 3 dias úteis ou mais. O fundo segue no piloto automático (mantém o alvo e só rebalanceia por desvio)."
+    }
+  },
+  "dashboards": {
+    "credibilidade": 0.911,
+    "indicadores": {
+      "cdi": {
+        "nome": "CDI (% a.a.)",
+        "data_ref": "2026-09-30",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 13.65,
+        "confianca": 1.0,
+        "valor_anterior": 13.65
+      },
+      "selic": {
+        "nome": "Selic meta (% a.a.)",
+        "data_ref": "2026-09-30",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 13.75,
+        "confianca": 1.0,
+        "valor_anterior": 13.75
+      },
+      "dolar": {
+        "nome": "Dólar PTAX (R$)",
+        "data_ref": "2026-09-30",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 5.1809,
+        "confianca": 1.0,
+        "valor_anterior": 5.2204
+      },
+      "ipca_12m": {
+        "nome": "IPCA 12 meses (%)",
+        "data_ref": "2026-08-01",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 4.22,
+        "confianca": 1.0,
+        "valor_anterior": 4.22
+      },
+      "focus_ipca": {
+        "nome": "Focus IPCA do ano (%)",
+        "data_ref": "2026-09-25",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 4.9915,
+        "confianca": 1.0,
+        "valor_anterior": 4.9915
+      },
+      "focus_selic": {
+        "nome": "Focus Selic fim do ano (%)",
+        "data_ref": "2026-09-25",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 13.5,
+        "confianca": 1.0,
+        "valor_anterior": 13.5
+      },
+      "ibov": {
+        "nome": "Ibovespa (pts)",
+        "data_ref": "2026-09-30",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 186340.0,
+        "confianca": 1.0,
+        "valor_anterior": 183828.0
+      },
+      "bova11": {
+        "nome": "BOVA11 (R$)",
+        "data_ref": "2026-09-30",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 184.08,
+        "confianca": 1.0,
+        "valor_anterior": 181.05
+      },
+      "taxa_pre": {
+        "nome": "Tesouro Prefixado (% a.a.)",
+        "data_ref": "2026-09-30",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 13.76,
+        "confianca": 1.0,
+        "valor_anterior": 13.87
+      },
+      "taxa_ipca": {
+        "nome": "Tesouro IPCA+ (% a.a. real)",
+        "data_ref": "2026-09-30",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 7.43,
+        "confianca": 1.0,
+        "valor_anterior": 7.54
+      }
+    },
+    "estimativas": [],
+    "confianca_media": 1.0
+  },
+  "executivos": {
+    "alvo": {
+      "caixa": 0.45,
+      "prefixado": 0.15,
+      "inflacao": 0.15,
+      "dolar": 0.1,
+      "bolsa": 0.15
+    },
+    "ultima_decisao": null,
+    "dias_sem_decisao": 30,
+    "decisoes_recentes": [],
+    "congelados": []
+  },
+  "fundo": {
+    "cota": 1.0359782784092875,
+    "cotas": 316156008.6886313,
+    "pl": 327530757.59,
+    "bench": 1.015526140170526,
+    "posicoes": {
+      "caixa": {
+        "valor": 153378773.49931926,
+        "preco": 1.0,
+        "titulo": null
+      },
+      "prefixado": {
+        "valor": 46240731.58675235,
+        "preco": 748.36,
+        "titulo": "2029-01-01"
+      },
+      "inflacao": {
+        "valor": 47397409.68243981,
+        "preco": 2544.63,
+        "titulo": "2035-05-15"
+      },
+      "dolar": {
+        "valor": 29865111.542378422,
+        "preco": 5.1809,
+        "titulo": null
+      },
+      "bolsa": {
+        "valor": 50648731.27483952,
+        "preco": 184.08,
+        "titulo": null
+      }
+    },
+    "fluxo_dia": 525120.48,
+    "hist_cota": [
+      [
+        "2026-08-31",
+        1.0150572034238439,
+        1.0046590191100442
+      ],
+      [
+        "2026-09-01",
+        1.0152021639842295,
+        1.0051780259593166
+      ],
+      [
+        "2026-09-02",
+        1.0219027858800662,
+        1.0056973009275272
+      ],
+      [
+        "2026-09-03",
+        1.02292889608256,
+        1.0062168441531865
+      ],
+      [
+        "2026-09-04",
+        1.0239592951597989,
+        1.006736655774876
+      ],
+      [
+        "2026-09-08",
+        1.0270685705621614,
+        1.0072567359312494
+      ],
+      [
+        "2026-09-09",
+        1.0259757972951562,
+        1.0077770847610317
+      ],
+      [
+        "2026-09-10",
+        1.0278600861917455,
+        1.0082977024030193
+      ],
+      [
+        "2026-09-11",
+        1.0288816992372982,
+        1.0088185889960808
+      ],
+      [
+        "2026-09-14",
+        1.0276511000482018,
+        1.0093397446791563
+      ],
+      [
+        "2026-09-15",
+        1.0293599267292006,
+        1.0098611695912576
+      ],
+      [
+        "2026-09-16",
+        1.0280950711968573,
+        1.0103828638714685
+      ],
+      [
+        "2026-09-17",
+        1.029812087402663,
+        1.0108960171203716
+      ],
+      [
+        "2026-09-18",
+        1.0291925377437035,
+        1.0114094309895467
+      ],
+      [
+        "2026-09-21",
+        1.0301106340644386,
+        1.0119231056113578
+      ],
+      [
+        "2026-09-22",
+        1.030403597734795,
+        1.0124370411182357
+      ],
+      [
+        "2026-09-23",
+        1.030105164406747,
+        1.0129512376426788
+      ],
+      [
+        "2026-09-24",
+        1.029243311137911,
+        1.0134656953172527
+      ],
+      [
+        "2026-09-25",
+        1.0302683402914428,
+        1.0139804142745905
+      ],
+      [
+        "2026-09-28",
+        1.0297111319445202,
+        1.0144953946473922
+      ],
+      [
+        "2026-09-29",
+        1.0320748878997055,
+        1.0150106365684257
+      ],
+      [
+        "2026-09-30",
+        1.0359782783957796,
+        1.015526140170526
+      ]
+    ],
+    "retorno_dia": 0.003782080703101931
+  },
+  "gestora": {
+    "caixa": 2029491.49,
+    "receita_dia": 12976.93,
+    "custo_dia": 11500
+  }
+}

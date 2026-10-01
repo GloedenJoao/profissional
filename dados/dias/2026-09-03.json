@@ -1,0 +1,45 @@
+{
+  "data": "2026-09-03",
+  "decisao": {
+    "existe": false,
+    "autor": null
+  },
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0003: B3 · COTAHIST — a fonte mudou o formato e o conector quebrou",
+      "chave": "INC-0003"
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0003",
+      "fonte": "b3",
+      "tipo": "mudanca_formato"
+    }
+  ],
+  "alertas_abertos": [
+    "INC-0003"
+  ],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 1.0229289,
+    "pl": 313018537.08,
+    "bench": 1.00621684,
+    "retorno_dia": 0.001004,
+    "fluxo": 881271.63,
+    "pesos": {
+      "caixa": 0.453,
+      "prefixado": 0.1459,
+      "inflacao": 0.1471,
+      "dolar": 0.0939,
+      "bolsa": 0.1602
+    },
+    "divida_tecnica": 34.0,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.894,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2007589.2
+  }
+}

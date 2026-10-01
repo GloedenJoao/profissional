@@ -1,0 +1,50 @@
+{
+  "data": "2026-08-27",
+  "decisao": {
+    "existe": false,
+    "autor": null
+  },
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0002: Yahoo Finance — a fonte mudou o formato e o conector quebrou",
+      "chave": "INC-0002"
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0001",
+      "fonte": "bcb_sgs",
+      "tipo": "atraso"
+    },
+    {
+      "id": "INC-0002",
+      "fonte": "yahoo",
+      "tipo": "mudanca_formato"
+    }
+  ],
+  "alertas_abertos": [
+    "INC-0002"
+  ],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 1.01185856,
+    "pl": 306381544.83,
+    "bench": 1.00362181,
+    "retorno_dia": 4.5e-05,
+    "fluxo": 63262.2,
+    "pesos": {
+      "caixa": 0.4511,
+      "prefixado": 0.148,
+      "inflacao": 0.1488,
+      "dolar": 0.0972,
+      "bolsa": 0.1548
+    },
+    "divida_tecnica": 34.65,
+    "incidentes_abertos": 2,
+    "credibilidade": 0.845,
+    "confianca_media": 0.76,
+    "caixa_gestora": 2003706.41
+  }
+}

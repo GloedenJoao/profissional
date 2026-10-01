@@ -1,0 +1,49 @@
+{
+  "data": "2026-08-31",
+  "decisao": {
+    "existe": false,
+    "autor": null
+  },
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0001 resolvido: BCB · SGS voltou após 5 dia(s) (aguardar)",
+      "chave": "INC-0001"
+    },
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0002 resolvido: Yahoo Finance voltou após 2 dia(s) (corrigir_conector)",
+      "chave": "INC-0002"
+    }
+  ],
+  "incidentes_do_dia": [],
+  "alertas_abertos": [],
+  "alertas_fechados": [
+    "DEFAS-cdi",
+    "DEFAS-dolar",
+    "DEFAS-selic",
+    "INC-0001",
+    "INC-0002"
+  ],
+  "resumo": {
+    "cota": 1.0150572,
+    "pl": 308924612.12,
+    "bench": 1.00465902,
+    "retorno_dia": 0.001138,
+    "fluxo": 1043265.01,
+    "pesos": {
+      "caixa": 0.4529,
+      "prefixado": 0.147,
+      "inflacao": 0.1478,
+      "dolar": 0.0967,
+      "bolsa": 0.1557
+    },
+    "divida_tecnica": 34.95,
+    "incidentes_abertos": 0,
+    "credibilidade": 0.891,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2005107.46
+  }
+}

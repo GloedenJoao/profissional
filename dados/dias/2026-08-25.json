@@ -1,0 +1,36 @@
+{
+  "data": "2026-08-25",
+  "decisao": {
+    "existe": false,
+    "autor": null
+  },
+  "eventos": [],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0001",
+      "fonte": "bcb_sgs",
+      "tipo": "atraso"
+    }
+  ],
+  "alertas_abertos": [],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 1.01036719,
+    "pl": 304994676.55,
+    "bench": 1.00258567,
+    "retorno_dia": 0.003228,
+    "fluxo": 411056.69,
+    "pesos": {
+      "caixa": 0.4497,
+      "prefixado": 0.1485,
+      "inflacao": 0.1494,
+      "dolar": 0.0973,
+      "bolsa": 0.1551
+    },
+    "divida_tecnica": 33.65,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.851,
+    "confianca_media": 0.88,
+    "caixa_gestora": 2002429.68
+  }
+}

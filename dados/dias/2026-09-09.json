@@ -1,0 +1,30 @@
+{
+  "data": "2026-09-09",
+  "decisao": {
+    "existe": false,
+    "autor": null
+  },
+  "eventos": [],
+  "incidentes_do_dia": [],
+  "alertas_abertos": [],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 1.0259758,
+    "pl": 314562197.18,
+    "bench": 1.00777708,
+    "retorno_dia": -0.001064,
+    "fluxo": 140130.28,
+    "pesos": {
+      "caixa": 0.4533,
+      "prefixado": 0.1457,
+      "inflacao": 0.1476,
+      "dolar": 0.0934,
+      "bolsa": 0.16
+    },
+    "divida_tecnica": 33.05,
+    "incidentes_abertos": 0,
+    "credibilidade": 0.897,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2010467.76
+  }
+}

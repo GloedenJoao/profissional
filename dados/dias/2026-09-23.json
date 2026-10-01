@@ -1,0 +1,53 @@
+{
+  "data": "2026-09-23",
+  "decisao": {
+    "existe": false,
+    "autor": null
+  },
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0004 resolvido: B3 · COTAHIST voltou após 1 dia(s) (aguardar)",
+      "chave": "INC-0004"
+    },
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0005: Yahoo Finance — a fonte publicou atrasado",
+      "chave": "INC-0005"
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0005",
+      "fonte": "yahoo",
+      "tipo": "atraso"
+    }
+  ],
+  "alertas_abertos": [
+    "INC-0005"
+  ],
+  "alertas_fechados": [
+    "INC-0004"
+  ],
+  "resumo": {
+    "cota": 1.03010516,
+    "pl": 324410765.09,
+    "bench": 1.01295124,
+    "retorno_dia": -0.00029,
+    "fluxo": -40614.89,
+    "pesos": {
+      "caixa": 0.4679,
+      "prefixado": 0.1421,
+      "inflacao": 0.1435,
+      "dolar": 0.0914,
+      "bolsa": 0.1551
+    },
+    "divida_tecnica": 28.95,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.906,
+    "confianca_media": 0.96,
+    "caixa_gestora": 2022473.15
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "data": "2026-09-22",
+  "decisao": {
+    "existe": false,
+    "autor": null
+  },
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0004: B3 · COTAHIST — a fonte publicou atrasado",
+      "chave": "INC-0004"
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0004",
+      "fonte": "b3",
+      "tipo": "atraso"
+    }
+  ],
+  "alertas_abertos": [
+    "INC-0004"
+  ],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 1.0304036,
+    "pl": 324545377.28,
+    "bench": 1.01243704,
+    "retorno_dia": 0.000284,
+    "fluxo": 1116877.57,
+    "pesos": {
+      "caixa": 0.4676,
+      "prefixado": 0.142,
+      "inflacao": 0.1433,
+      "dolar": 0.0909,
+      "bolsa": 0.1562
+    },
+    "divida_tecnica": 28.8,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.906,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2021097.58
+  }
+}

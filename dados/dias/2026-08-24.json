@@ -1,0 +1,45 @@
+{
+  "data": "2026-08-24",
+  "decisao": {
+    "existe": false,
+    "autor": null
+  },
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0001: BCB · SGS — a fonte publicou atrasado",
+      "chave": "INC-0001"
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0001",
+      "fonte": "bcb_sgs",
+      "tipo": "atraso"
+    }
+  ],
+  "alertas_abertos": [
+    "INC-0001"
+  ],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 1.00711669,
+    "pl": 303603730.68,
+    "bench": 1.002068,
+    "retorno_dia": 0.000573,
+    "fluxo": 1271985.57,
+    "pesos": {
+      "caixa": 0.4503,
+      "prefixado": 0.149,
+      "inflacao": 0.1498,
+      "dolar": 0.0978,
+      "bolsa": 0.1532
+    },
+    "divida_tecnica": 33.5,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.852,
+    "confianca_media": 0.92,
+    "caixa_gestora": 2001842.55
+  }
+}

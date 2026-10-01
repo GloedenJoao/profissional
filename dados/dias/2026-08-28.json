@@ -1,0 +1,41 @@
+{
+  "data": "2026-08-28",
+  "decisao": {
+    "existe": false,
+    "autor": null
+  },
+  "eventos": [],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0001",
+      "fonte": "bcb_sgs",
+      "tipo": "atraso"
+    },
+    {
+      "id": "INC-0002",
+      "fonte": "yahoo",
+      "tipo": "mudanca_formato"
+    }
+  ],
+  "alertas_abertos": [],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 1.01390329,
+    "pl": 307531347.67,
+    "bench": 1.00414028,
+    "retorno_dia": 0.002021,
+    "fluxo": 530677.52,
+    "pesos": {
+      "caixa": 0.4514,
+      "prefixado": 0.1477,
+      "inflacao": 0.1489,
+      "dolar": 0.0975,
+      "bolsa": 0.1545
+    },
+    "divida_tecnica": 35.5,
+    "incidentes_abertos": 2,
+    "credibilidade": 0.84,
+    "confianca_media": 0.72,
+    "caixa_gestora": 2004389.46
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "data": "2026-09-24",
+  "decisao": {
+    "existe": false,
+    "autor": null
+  },
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0005 resolvido: Yahoo Finance voltou após 1 dia(s) (aguardar)",
+      "chave": "INC-0005"
+    }
+  ],
+  "incidentes_do_dia": [],
+  "alertas_abertos": [],
+  "alertas_fechados": [
+    "INC-0005"
+  ],
+  "resumo": {
+    "cota": 1.02924331,
+    "pl": 324314338.94,
+    "bench": 1.0134657,
+    "retorno_dia": -0.000837,
+    "fluxo": 174997.09,
+    "pesos": {
+      "caixa": 0.4688,
+      "prefixado": 0.1421,
+      "inflacao": 0.1436,
+      "dolar": 0.0921,
+      "bolsa": 0.1534
+    },
+    "divida_tecnica": 28.4,
+    "incidentes_abertos": 0,
+    "credibilidade": 0.907,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2023836.33
+  }
+}
