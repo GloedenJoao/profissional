@@ -90,7 +90,10 @@ def sincronizar(gh, alertas: dict, data_ref: str, anterior: dict | None = None) 
             gh.req("PATCH", f"/issues/{issue['number']}", {"state": "closed", "state_reason": "completed"})
             issue["state"] = "closed"
             log.append(f"fechada #{issue['number']} {chave}")
-    abertas = []
+    # a listagem da API demora a enxergar issues recém-criadas: as que acabamos de tocar entram direto
+    abertas = [{"numero": i["number"], "titulo": i["title"], "url": i["html_url"],
+                "rotulos": [lb["name"] if isinstance(lb, dict) else lb for lb in i.get("labels", [])],
+                "criada_em": i.get("created_at")} for k, i in por_chave.items() if k in alertas and i["state"] == "open"]
     for rotulo in ("simulacao", "conselho"):
         for i in gh.req("GET", f"/issues?labels={rotulo}&state=open&per_page=50") or []:
             if "pull_request" not in i and all(x["numero"] != i["number"] for x in abertas):

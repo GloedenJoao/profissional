@@ -44,6 +44,14 @@ def test_ciclo_completo():
     assert gh.issues[0]["state"] == "open" and len(gh.issues) == 1
 
 
+def test_abertas_inclui_recem_criada_mesmo_se_listagem_atrasar():
+    gh = FakeGH()
+    original = gh.req
+    gh.req = lambda m, c, b=None: [] if (m == "GET" and "state=open" in c) else original(m, c, b)
+    r = processos.sincronizar(gh, {"INC-0001": alerta()}, "2026-09-30")
+    assert [i["numero"] for i in r["abertas"]] == [1]
+
+
 def test_limite_de_issues_novas():
     gh = FakeGH()
     r = processos.sincronizar(gh, {f"K{i}": alerta() for i in range(12)}, "2026-09-30")

@@ -153,9 +153,12 @@ def briefing(painel: dict) -> str:
     linhas += ["", "## Alertas ativos"]
     linhas += [f"- [{a['sev']}] {a['chave']} — {a['titulo']}" for a in painel["alertas"]] or ["- nenhum"]
     linhas += ["", "## Últimos eventos"]
-    for dia in painel["dias"][:3]:
-        for e in dia["eventos"]:
-            linhas.append(f"- {dia['data']} · {e['area']} · {e['texto']}")
+    eventos = [f"- {dia['data']} · {e['area']} · {e['texto']}" for dia in painel["dias"][:5] for e in dia["eventos"]]
+    linhas += eventos[:12] or ["- nenhum nos últimos 5 dias úteis"]
+    conselho = [i for i in painel["processos"]["issues_abertas"] if "conselho" in i["rotulos"]]
+    if conselho:
+        linhas += ["", "## Diretrizes do conselho (issues `conselho`)"]
+        linhas += [f"- #{i['numero']} {i['titulo']} — {i['url']}" for i in conselho]
     return "\n".join(linhas) + "\n"
 
 
