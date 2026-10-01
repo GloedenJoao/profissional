@@ -1,2 +1,0 @@
-"""Stock Oracle application package."""
-
