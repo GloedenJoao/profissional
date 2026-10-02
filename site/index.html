@@ -2,32 +2,36 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Capivara Asset</title>
-  <meta name="description" content="Gestora fictícia que roda no GitHub sobre dados públicos reais: central de acompanhamento dos cenários.">
+  <meta name="description" content="Gestora fictícia que roda no GitHub sobre dados públicos reais: o experimento ao vivo e a simulação que o testa, etapa por etapa.">
   <meta name="theme-color" content="#0f3d2e">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f3d2e'/%3E%3Cpath d='M7 22l6-7 5 4 7-9' stroke='%23b8f0c8' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
   <meta http-equiv="Cache-Control" content="no-cache">
   <link rel="stylesheet" href="style.css?v=__CODIGO__">
 </head>
 <body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
   <header class="topo">
-    <div class="marca">
-      <a class="logo" href="#/" aria-label="Central"></a>
-      <div class="titulo">
-        <h1>Capivara Asset</h1>
-        <p id="sub" class="sub">carregando…</p>
-      </div>
+    <div class="barra">
+      <a class="marca" href="#/" aria-label="Capivara Asset: início">
+        <span class="logo" aria-hidden="true"></span>
+        <span class="nome">Capivara Asset</span>
+      </a>
+      <nav class="produtos" aria-label="Produtos">
+        <a href="#/" data-produto="inicio">Início</a>
+        <a href="#/experimento" data-produto="experimento"><i class="ponto exp" aria-hidden="true"></i>Experimento</a>
+        <a href="#/simulacao" data-produto="simulacao"><i class="ponto sim" aria-hidden="true"></i>Simulação</a>
+      </nav>
       <span id="frescor" class="frescor" title="A página confere sozinha se há dados novos a cada minuto"></span>
     </div>
-    <nav id="nav-cenarios" class="abas cenarios" aria-label="Cenários"></nav>
-    <nav id="nav-abas" class="abas areas" aria-label="Áreas" hidden></nav>
+    <nav id="secoes" class="secoes" aria-label="Seções" hidden></nav>
   </header>
-  <main id="conteudo"></main>
-  <div id="aviso-copia" class="toast" role="status" hidden></div>
+  <main id="conteudo" tabindex="-1"></main>
+  <div id="toast" class="toast" role="status" hidden></div>
   <footer class="rodape">
-    <p id="aviso"></p>
-    <p><a href="https://github.com/GloedenJoao/profissional">código e histórico no GitHub</a></p>
+    <p>Empresa e fundo fictícios. Dados de mercado reais (BCB, Tesouro Direto, B3, Yahoo Finance); nada aqui é recomendação de investimento.</p>
+    <p><a href="https://github.com/GloedenJoao/profissional">Código, dados e histórico no GitHub</a> · <a href="https://github.com/GloedenJoao/profissional/blob/main/IDEIA.md">A ideia</a></p>
   </footer>
   <script>window.VERSAO = "__VERSAO__"; window.CODIGO = "__CODIGO__";</script>
   <script src="app.js?v=__CODIGO__"></script>
