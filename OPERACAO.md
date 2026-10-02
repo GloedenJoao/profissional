@@ -13,7 +13,7 @@ Actions alcança.
 
 - Site → aba **Ao vivo** do cenário: as reuniões fala por fala. `dados/briefing.md` tem o resumo do
   último dia, com as decisões dos times.
-- O fechamento do dia a dia roda seg–sex às 08h; a Simulação 2026 anda a cada 30 min. Se um deles falhar,
+- O fechamento do dia a dia roda seg–sex às 08h; a Simulação 2026 só anda quando o dono manda. Se um deles falhar,
   aparece como tarefa urgente na Central e (no dia a dia) como issue "Fechamento falhou".
 
 ## Intervir (diretriz do conselho)

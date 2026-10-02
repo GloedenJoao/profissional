@@ -11,10 +11,10 @@ cenarios/<id>/
   dados/                escrito só pelo workflow `simulacao.yml` (não edite à mão)
 ```
 
-Com `"automatico": {"dias_por_execucao": 1, "intervalo": "30 min"}`, o workflow **Simulação · avançar**
-roda pela agenda (a cada 30 min) e simula o próximo dia útil com os dados reais daquele dia, sem nunca
-passar de ontem; quando alcança o presente, passa a andar um dia por dia útil. Sem o campo, o cenário só
-anda quando alguém manda: botão no Actions ou o comentário `/avancar N` na issue de controle.
+Um cenário só anda quando o dono manda: o botão "Simular próximo dia" do app Android ou do site (que
+dispara o workflow **Simulação · avançar** pela API), o botão no Actions ou o comentário `/avancar N` na
+issue de controle. Cada avanço simula os dias úteis com os dados reais daqueles dias, sem nunca passar de
+ontem.
 
 Os times decidem tudo. Um arquivo em `empresa/decisoes/AAAA-MM-DD.json` é diretriz do conselho: vale
 por cima dos times naquele dia. Com `"issues": false`, os alertas do cenário não viram issues (um cenário

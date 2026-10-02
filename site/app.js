@@ -142,7 +142,7 @@ function situacao(c) {
   const faltam = diasUteisEntre(P.data_referencia, ontem, fer);
   if (!faltam) return { nivel: "ok", rotulo: "Alcançou o presente", texto: "agora anda um dia útil por dia, como o ao vivo", progresso: 1 };
   const auto = c.automatico;
-  return { nivel: "info", rotulo: auto ? "Andando sozinha" : `Pausada em ${dataBR(P.data_referencia)}`, texto: `${total - faltam} de ${total} dias úteis · faltam ${faltam} até ontem${auto ? ` · ${auto.dias_por_execucao || 1} dia(s) a cada ${auto.intervalo || "30 min"}` : ""}`, progresso: (total - faltam) / total };
+  return { nivel: "info", rotulo: auto ? "Andando sozinha" : `Em ${dataBR(P.data_referencia)}`, texto: `${total - faltam} de ${total} dias úteis · faltam ${faltam} até ontem${auto ? ` · ${auto.dias_por_execucao || 1} dia(s) a cada ${auto.intervalo || "30 min"}` : ""}`, progresso: (total - faltam) / total };
 }
 
 function pior(niveis) {
@@ -300,8 +300,7 @@ function botoesAvancar(c) {
   if (SIM && SIM.cenario === c.id) return `<button class="botao" type="button" disabled><span class="pulso" aria-hidden="true"></span>Times reunidos…</button>`;
   const fim = situacao(c).progresso === 1;
   if (fim) return "";
-  return `<button class="botao" type="button" data-simular="1" data-cenario="${esc(c.id)}">⏭ ${c.P ? "Simular próximo dia" : "Começar agora"}</button>`
-    + (c.P ? `<button class="botao leve" type="button" data-simular="5" data-cenario="${esc(c.id)}">Simular 5 dias</button>` : "");
+  return `<button class="botao" type="button" data-simular="1" data-cenario="${esc(c.id)}">⏭ ${c.P ? "Simular próximo dia" : "Começar agora"}</button>`;
 }
 
 function botaoIntervir(c) {
@@ -512,7 +511,7 @@ function central() {
     <ol class="passos">
       <li><strong>Quem decide são os times.</strong> Todo dia útil a Extração (Bia e Téo) faz a triagem dos incidentes, os Dashboards (Caio e Lia) decidem o que publicar quando falta dado e o Comitê (Helena, Rafael e Marta) mexe na carteira, na equipe e no orçamento olhando só os números do painel.</li>
       <li><strong>Ao vivo</strong> (aba de cada cenário): as reuniões tocam fala por fala, na ordem em que aconteceram. Quando chega um dia novo, a página percebe sozinha em até um minuto e continua.</li>
-      <li><strong>Dia a dia</strong> fecha de segunda a sexta às 08h com os dados reais de ontem. <strong>Simulação 2026</strong> refaz o ano desde 1º de janeiro, um dia útil a cada 30 minutos, até alcançar o presente.</li>
+      <li><strong>Dia a dia</strong> fecha de segunda a sexta às 08h com os dados reais de ontem. <strong>Simulação 2026</strong> refaz o ano desde 1º de janeiro e só anda quando você manda: "Simular próximo dia", aqui ou no app.</li>
       <li><strong>Você não precisa fazer nada.</strong> Se quiser intervir, "Intervir" abre uma diretriz do conselho já preenchida: o que estiver nela vale por cima dos times naquele dia, e a ata registra.</li>
     </ol>
   </section>`;
@@ -800,7 +799,7 @@ function proximoDiaTexto(c) {
   if (s.rotulo === "Rodando agora") return "Os times estão reunidos agora: o próximo dia aparece aqui em instantes.";
   if (s.progresso === 1) return "A simulação alcançou o presente. Um dia novo por dia útil; a página confere sozinha.";
   if (c.automatico) return `Você está em dia. Simule o próximo dia agora ou espere: ela anda sozinha a cada ${c.automatico.intervalo || "30 min"}.`;
-  return "Você está em dia. O próximo dia aparece quando a simulação avançar.";
+  return "Você está em dia. A simulação só anda quando você manda.";
 }
 
 function resultadoDia(dia, c) {
