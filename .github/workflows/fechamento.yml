@@ -92,7 +92,6 @@ jobs:
   site:
     needs: fechamento
     runs-on: ubuntu-latest
-    continue-on-error: true # depende do GitHub Pages ligado (Settings → Pages → Source: GitHub Actions)
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
@@ -102,3 +101,13 @@ jobs:
           enablement: true
       - id: deploy
         uses: actions/deploy-pages@v4
+      - name: Conferir o site no ar
+        env:
+          URL: ${{ steps.deploy.outputs.page_url }}
+        run: |
+          for i in 1 2 3 4 5 6; do
+            if curl -fsS "$URL" | grep -q "<title>Capivara Asset</title>"; then break; fi
+            sleep 10
+          done
+          curl -fsS "$URL" | grep -q "<title>Capivara Asset</title>"
+          curl -fsS "${URL}painel.json" | python3 -c "import json,sys; p=json.load(sys.stdin); print('no ar:', p['data_referencia'], 'cota', p['resumo']['cota'])"
