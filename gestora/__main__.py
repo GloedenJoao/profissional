@@ -35,7 +35,10 @@ def gerar_painel(controle: dict | None = None) -> dict:
     return p
 
 
-def fechamento(data_ref: date | None, inicio: date | None, extrair: bool = True, conectores=None) -> list[str]:
+def fechamento(data_ref: date | None, inicio: date | None, extrair: bool = True, conectores=None,
+               extrair_ate: date | None = None) -> list[str]:
+    """Extrai e simula até `data_ref`. `extrair_ate` (cenários do passado) baixa dados além de `data_ref`: o motor
+    corta tudo pela data simulada, então isso só adianta trabalho para os próximos avanços."""
     ref = data_ref or calendario.dia_util_anterior(_hoje())
     if not calendario.dia_util(ref):
         ref = calendario.dia_util_anterior(ref)
@@ -51,7 +54,7 @@ def fechamento(data_ref: date | None, inicio: date | None, extrair: bool = True,
         janela_ini = date.fromisoformat(estado["ultima_data"]) - timedelta(days=12)
     controle = None
     if extrair:
-        controle = extracao.extrair(janela_ini, ref, conectores)
+        controle = extracao.extrair(janela_ini, max(ref, extrair_ate or ref), conectores)
         extracao.registrar_historico(controle)
         armazem.gravar_json(config.DADOS / "controle.json", controle)
         for f, r in controle["fontes"].items():
@@ -81,8 +84,21 @@ def fechamento(data_ref: date | None, inicio: date | None, extrair: bool = True,
     return feitos
 
 
-# Avanço em blocos: a janela de extração de cada bloco cabe nos 30 pregões que o conector da B3 baixa.
-PASSO_AVANCO = 15
+# Avanço em blocos: a janela de extração de cada bloco (com os dias baixados adiantado) cabe nos 30 pregões
+# que o conector da B3 baixa.
+PASSO_AVANCO = 12
+ADIANTE = 10
+
+
+def _series_cobrem(d: date) -> bool:
+    """As séries já gravadas têm o que cada fonte publicaria até `d`? Então não precisa baixar nada."""
+    mercado = Mercado()
+    for fonte, meta in config.FONTES.items():
+        for serie in meta["series"]:
+            ultima = mercado.ultima_data(serie)
+            if ultima is None or ultima < simulacao._data_esperada(serie, fonte, d).isoformat():
+                return False
+    return True
 
 
 def avancar(dias: int | None = None, ate: date | None = None, extrair: bool = True, conectores=None,
@@ -100,10 +116,19 @@ def avancar(dias: int | None = None, ate: date | None = None, extrair: bool = Tr
     if not pendentes:
         print(f"{cen['id']}: nada a avançar (último dia simulado {base}, limite {limite})")
         return []
-    feitos = []
+    feitos, fundada = [], estado is not None
     for i in range(0, len(pendentes), PASSO_AVANCO):
         bloco = pendentes[i:i + PASSO_AVANCO]
-        feitos += fechamento(bloco[-1], inicio, extrair=extrair, conectores=conectores)
+        # o passado não muda: se as séries já cobrem o bloco, simula sem baixar; senão baixa também os próximos
+        # dias úteis, para o próximo clique em "simular" não esperar a extração
+        baixar = extrair and not (fundada and _series_cobrem(bloco[-1]))
+        adiante = bloco[-1]
+        for _ in range(ADIANTE):
+            adiante = min(limite, calendario.proximo_dia_util(adiante))
+        if extrair and not baixar:
+            print(f"{cen['id']}: séries já cobrem até {bloco[-1]}, simulando sem extrair")
+        feitos += fechamento(bloco[-1], inicio, extrair=baixar, conectores=conectores, extrair_ate=adiante)
+        fundada = True
     return feitos
 
 

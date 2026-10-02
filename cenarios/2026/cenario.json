@@ -1,6 +1,6 @@
 {
   "nome": "Simulação 2026",
-  "descricao": "A mesma Capivara Asset fundada do zero em 1º de janeiro de 2026, sobre os dados reais do ano. Os times decidem sozinhos e a simulação anda sozinha, um dia útil a cada 30 minutos, até alcançar o presente: abra o Ao vivo para assistir às reuniões.",
+  "descricao": "A mesma Capivara Asset fundada do zero em 1º de janeiro de 2026, sobre os dados reais do ano. Os times decidem sozinhos; você manda simular o próximo dia pelo site (ou ela anda sozinha a cada 30 minutos) e assiste às reuniões no Ao vivo.",
   "inicio": "2026-01-01",
   "modo": "simulacao",
   "issues": false,

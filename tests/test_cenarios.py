@@ -155,3 +155,20 @@ def test_cenario_automatico_anda_sozinho_ate_o_presente(raiz, monkeypatch):
     estado = armazem.ler_json(config.DADOS / "estado.json")
     assert estado["ultima_data"] == "2026-10-01"  # dois dias por execução, sem passar de ontem
     assert cli.pendentes(HOJE) == []
+
+
+def test_avanco_baixa_adiantado_e_depois_simula_sem_extrair(raiz):
+    config.usar_cenario("teste")
+    chamadas = []
+    conectores = {f: (lambda c: lambda i, f_: (chamadas.append(f_), c(i, f_))[1])(c)
+                  for f, c in fake_conectores().items()}
+    cli.avancar(dias=1, conectores=conectores, hoje=HOJE)
+    assert max(chamadas).isoformat() == "2026-08-18"  # 04/08 + 10 dias úteis baixados adiantado
+    chamadas.clear()
+    assert cli.avancar(dias=5, conectores=conectores, hoje=HOJE) == ["2026-08-05", "2026-08-06", "2026-08-07",
+                                                                     "2026-08-10", "2026-08-11"]
+    assert chamadas == []  # o passado já estava baixado: só simulou
+    reg = armazem.ler_json(config.DIAS / "2026-08-11.json")
+    assert reg["incidentes_do_dia"] == [] or all(i["tipo"] != "falha_real" for i in reg["incidentes_do_dia"])
+    cli.avancar(dias=10, conectores=conectores, hoje=HOJE)
+    assert chamadas  # passou do que estava baixado: extrai de novo
