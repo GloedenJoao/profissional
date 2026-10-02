@@ -1,0 +1,192 @@
+{
+  "data": "2026-01-19",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {},
+    "dashboards": {
+      "cdi": "estimar",
+      "selic": "usar_ontem",
+      "dolar": "usar_ontem"
+    },
+    "executivos": {
+      "alocacao": {
+        "caixa": 0.2,
+        "prefixado": 0.25,
+        "inflacao": 0.25,
+        "dolar": 0.1,
+        "bolsa": 0.2
+      },
+      "justificativa": "Decidido: Ações (BOVA11) +5 p.p. (tendência de +2,9% em 20 pregões). Caixa fica em 20%."
+    }
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia! Nenhum incidente aberto. Dívida técnica 31/100, equipe de 3. Seguimos monitorando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0004: BCB · SGS — a fonte publicou atrasado",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Faltam dados novos para: CDI (% a.a.), Selic meta (% a.a.), Dólar PTAX (R$). Credibilidade em 83%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:02",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "CDI (% a.a.) (1 dia(s) atrasado): `estimar` — o CDI acompanha a Selic, dá para estimar com folga.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:04",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Selic meta (% a.a.) (1 dia(s) atrasado): `usar_ontem` — número que muda devagar; repetir o último é seguro.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:06",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Dólar PTAX (R$) (1 dia(s) atrasado): `usar_ontem` — errei a estimativa disso há pouco, vou de último valor.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo -0,96% contra o CDI em 21 dias, caixa da gestora R$ 2.003.932, credibilidade dos painéis 83%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,38 (+0,00%) [confiança 80%]; BOVA11 161,94 (+0,23%); Tesouro Prefixado 13,27 (+0,91%); Tesouro IPCA+ 7,64 (+0,66%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Comitê de investimentos (reunião semanal).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:06",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Tesouro IPCA+ pagando 7,64% acima da inflação.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:08",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Selic em 15,00% e Focus para o fim do ano em 12,00%: mercado espera cortes de 3,00 p.p. na Selic.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:10",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Bolsa (BOVA11) +2,9% em 20 pregões.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:12",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Decidido: Ações (BOVA11) +5 p.p. (tendência de +2,9% em 20 pregões). Caixa fica em 20%.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "17:30",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Rebalanceamento: giro R$ 13,2 mi, custo R$ 6.611",
+      "tipo": "evento"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 0,996043 (-0,14% no dia), PL R$ 293,9 mi, fluxo de cotistas R$ -839 mil. Caixa da gestora R$ 2,00 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0004: BCB · SGS — a fonte publicou atrasado",
+      "chave": "INC-0004"
+    },
+    {
+      "area": "fundo",
+      "tipo": "info",
+      "texto": "Rebalanceamento: giro R$ 13,2 mi, custo R$ 6.611",
+      "chave": null
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0004",
+      "fonte": "bcb_sgs",
+      "tipo": "atraso"
+    }
+  ],
+  "alertas_abertos": [
+    "INC-0004"
+  ],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 0.99604269,
+    "pl": 293887889.5,
+    "bench": 1.00663582,
+    "retorno_dia": -0.001411,
+    "fluxo": -839221.65,
+    "pesos": {
+      "caixa": 0.2,
+      "prefixado": 0.25,
+      "inflacao": 0.25,
+      "dolar": 0.1,
+      "bolsa": 0.2
+    },
+    "divida_tecnica": 31.2,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.826,
+    "confianca_media": 0.92,
+    "caixa_gestora": 2004128.19
+  }
+}

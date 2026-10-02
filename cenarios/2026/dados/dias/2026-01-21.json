@@ -1,0 +1,168 @@
+{
+  "data": "2026-01-21",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {
+      "INC-0004": "fonte_alternativa"
+    },
+    "dashboards": {},
+    "executivos": {
+      "alocacao": {
+        "caixa": 0.15,
+        "prefixado": 0.25,
+        "inflacao": 0.25,
+        "dolar": 0.1,
+        "bolsa": 0.25
+      },
+      "justificativa": "Decidido: Ações (BOVA11) +5 p.p. (tendência de +7,4% em 20 pregões). Caixa fica em 15%."
+    }
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia. Temos 1 incidente(s) aberto(s) e 3 pessoa(s) na equipe. Vamos priorizar.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:02",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "INC-0004 · BCB · SGS (a fonte publicou atrasado, aberto ontem): `fonte_alternativa` — o atraso passou de um dia: liga a alternativa.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0004 resolvido: BCB · SGS voltou após 2 dia(s) (fonte_alternativa)",
+      "tipo": "evento"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Todos os números chegaram em dia. Credibilidade dos painéis em 82%. Publicando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo -0,31% contra o CDI em 21 dias, caixa da gestora R$ 2.004.297, credibilidade dos painéis 85%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,34 (-0,80%); BOVA11 168,95 (+3,70%); Tesouro Prefixado 13,26 (+0,00%); Tesouro IPCA+ 7,69 (-0,13%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Comitê de investimentos (pauta: BOVA11 (R$) +3,7% no dia).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:06",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Tesouro IPCA+ pagando 7,69% acima da inflação.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:08",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Selic em 15,00% e Focus para o fim do ano em 12,00%: mercado espera cortes de 3,00 p.p. na Selic.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:10",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Bolsa (BOVA11) +7,4% em 20 pregões.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:12",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Decidido: Ações (BOVA11) +5 p.p. (tendência de +7,4% em 20 pregões). Caixa fica em 15%.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "17:30",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Rebalanceamento: giro R$ 14,7 mi, custo R$ 7.347",
+      "tipo": "evento"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,003696 (+0,71% no dia), PL R$ 296,5 mi, fluxo de cotistas R$ 18 mil. Caixa da gestora R$ 2,00 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0004 resolvido: BCB · SGS voltou após 2 dia(s) (fonte_alternativa)",
+      "chave": "INC-0004"
+    },
+    {
+      "area": "fundo",
+      "tipo": "info",
+      "texto": "Rebalanceamento: giro R$ 14,7 mi, custo R$ 7.347",
+      "chave": null
+    }
+  ],
+  "incidentes_do_dia": [],
+  "alertas_abertos": [],
+  "alertas_fechados": [
+    "INC-0004"
+  ],
+  "resumo": {
+    "cota": 1.00369588,
+    "pl": 296499890.94,
+    "bench": 1.00774606,
+    "retorno_dia": 0.007137,
+    "fluxo": 18397.61,
+    "pesos": {
+      "caixa": 0.15,
+      "prefixado": 0.25,
+      "inflacao": 0.25,
+      "dolar": 0.1,
+      "bolsa": 0.25
+    },
+    "divida_tecnica": 30.8,
+    "incidentes_abertos": 0,
+    "credibilidade": 0.846,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2004563.11
+  }
+}
