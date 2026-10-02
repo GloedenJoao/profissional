@@ -1,4 +1,5 @@
-"""Linha de comando: python -m gestora [--cenario ID] {fechamento,avancar,sincronizar,validar,painel,cenarios,site}."""
+"""Linha de comando: python -m gestora [--cenario ID] {fechamento,avancar,reprocessar,recomecar,auditar,sincronizar,
+validar,painel,cenarios,site}."""
 from __future__ import annotations
 
 import argparse
@@ -47,6 +48,9 @@ def fechamento(data_ref: date | None, inicio: date | None, extrair: bool = True,
     if erros:
         raise SystemExit("políticas inválidas:\n" + "\n".join(erros))
     estado = armazem.ler_json(config.DADOS / "estado.json")
+    if estado is not None and estado.get("versao", 1) < simulacao.VERSAO_MOTOR:
+        reprocessar()
+        estado = armazem.ler_json(config.DADOS / "estado.json")
     if estado is None:
         inicio = inicio or calendario.dias_uteis_entre(ref - timedelta(days=60), ref)[-31]
         janela_ini = inicio - timedelta(days=15)
@@ -72,16 +76,66 @@ def fechamento(data_ref: date | None, inicio: date | None, extrair: bool = True,
                 print("decisão inválida ignorada:\n  " + "\n  ".join(problemas))
                 dec = None
         estado, reg = simulacao.simular_dia(estado, d, mercado, politicas, dec, controle if d == ref else None,
-                                            times=config.cenario().get("times", True))
-        armazem.gravar_json(config.DIAS / f"{d}.json", reg)
+                                            modo=config.cenario()["modo"])
+        armazem.gravar_json(config.DIAS / f"{d}.json", reg, compacto=True)
         painel.registrar_historico(reg)
         feitos.append(d.isoformat())
         r = reg["resumo"]
-        print(f"{d}: cota {r['cota']:.6f} PL {r['pl']:,.0f} incidentes {r['incidentes_abertos']} "
-              f"credibilidade {r['credibilidade']:.0%} decisão={reg['decisao']['autor'] or 'piloto automático'}")
+        print(f"{d}: cota {r['cota']:.6f} (referência {r['cota_ref']:.6f}) PL {r['pl']:,.0f} incidentes "
+              f"{r['incidentes_abertos']} credibilidade {r['credibilidade']:.0%} verificações "
+              f"{r['verificacoes_ok']}/{r['verificacoes_total']} decisão={reg['decisao']['autor']}")
     armazem.gravar_json(config.DADOS / "estado.json", estado)
     gerar_painel(controle)
     return feitos
+
+
+def reprocessar(ate: date | None = None) -> list[str]:
+    """Refaz o cenário desde a fundação com o motor atual e as séries já gravadas (sem rede), até o mesmo último dia
+    (ou `ate`). Usado quando o motor muda de versão: o histórico passa a ser o que o motor de hoje faria."""
+    estado = armazem.ler_json(config.DADOS / "estado.json")
+    if estado is None:
+        print(f"{config.CENARIO}: sem estado, nada a reprocessar")
+        return []
+    inicio = date.fromisoformat(estado["inicio"])
+    fim = ate or date.fromisoformat(estado["ultima_data"])
+    print(f"{config.CENARIO}: reprocessando de {inicio} a {fim} com o motor v{simulacao.VERSAO_MOTOR} "
+          f"(estado era v{estado.get('versao', 1)})")
+    for arq in config.DIAS.glob("*.json"):
+        arq.unlink()
+    for nome in ("estado.json", "historico.csv"):
+        (config.DADOS / nome).unlink(missing_ok=True)
+    return fechamento(fim, inicio, extrair=False)
+
+
+def recomecar() -> None:
+    """Cenário de simulação volta ao zero: apaga estado, dias e histórico (as séries baixadas ficam). O próximo
+    avanço funda a empresa de novo, com as regras de agora."""
+    cen = config.cenario()
+    if cen["modo"] == "diario":
+        raise SystemExit("o experimento não recomeça: só cenários de simulação")
+    if config.DIAS.exists():
+        shutil.rmtree(config.DIAS)
+    for nome in ("estado.json", "historico.csv", "painel.json", "briefing.md"):
+        (config.DADOS / nome).unlink(missing_ok=True)
+    print(f"{cen['id']}: recomeçou; o próximo avanço funda a empresa em {cen.get('inicio')}")
+
+
+def auditar() -> list[str]:
+    """Todas as verificações de todos os dias do cenário: devolve as que falharam."""
+    falhas, total = [], 0
+    for arq in sorted(config.DIAS.glob("*.json")):
+        reg = armazem.ler_json(arq)
+        for c in reg.get("verificacoes", []):
+            total += 1
+            if not c["ok"]:
+                falhas.append(f"{reg['data']} {c['id']}: {c['detalhe']}")
+    print(f"{config.CENARIO}: {total} verificações em {len(list(config.DIAS.glob('*.json')))} dias, {len(falhas)} falha(s)")
+    return falhas
+
+
+def precisa_reprocessar() -> bool:
+    estado = armazem.ler_json(config.DADOS / "estado.json")
+    return estado is not None and estado.get("versao", 1) < simulacao.VERSAO_MOTOR
 
 
 # Avanço em blocos: a janela de extração de cada bloco (com os dias baixados adiantado) cabe nos 30 pregões
@@ -91,12 +145,15 @@ ADIANTE = 10
 
 
 def _series_cobrem(d: date) -> bool:
-    """As séries já gravadas têm o que cada fonte publicaria até `d`? Então não precisa baixar nada."""
+    """As séries já gravadas têm o que o dia `d` precisa (reuniões da manhã e fechamento às 18h)? Então não precisa
+    baixar nada."""
     mercado = Mercado()
-    for fonte, meta in config.FONTES.items():
+    for meta in config.FONTES.values():
         for serie in meta["series"]:
             ultima = mercado.ultima_data(serie)
-            if ultima is None or ultima < simulacao._data_esperada(serie, fonte, d).isoformat():
+            regra = config.PUBLICACAO[serie]
+            precisa = d if regra in ("d", "d-1") else simulacao.corte(serie, d)[1]
+            if ultima is None or ultima < precisa.isoformat():
                 return False
     return True
 
@@ -116,6 +173,8 @@ def avancar(dias: int | None = None, ate: date | None = None, extrair: bool = Tr
     if not pendentes:
         print(f"{cen['id']}: nada a avançar (último dia simulado {base}, limite {limite})")
         return []
+    if estado is not None and estado.get("versao", 1) < simulacao.VERSAO_MOTOR:
+        reprocessar()
     feitos, fundada = [], estado is not None
     for i in range(0, len(pendentes), PASSO_AVANCO):
         bloco = pendentes[i:i + PASSO_AVANCO]
@@ -158,7 +217,10 @@ def resumo_avanco(feitos: list[str]) -> str:
               f"- Cota **{r['cota']:.6f}** · PL R$ {r['pl']:,.0f} · desde o início {pct(r['retorno_total'])} "
               f"vs CDI {pct(r['cdi_total'])}",
               f"- Incidentes abertos: {r['incidentes_abertos']} · credibilidade {r['credibilidade']:.0%} · "
-              f"caixa da gestora R$ {r['caixa_gestora']:,.0f}", ""]
+              f"caixa da gestora R$ {r['caixa_gestora']:,.0f}",
+              f"- Carteira de referência (sem o comitê): {p['referencia']['cota']:.6f} · valor das decisões "
+              f"{pct(p['referencia']['valor_decisoes'])} · verificações {p['metricas']['verificacoes_ok']}/"
+              f"{p['metricas']['verificacoes_ok'] + p['metricas']['verificacoes_falha']} ok", ""]
     st = p["status_areas"]
     icone = {"ok": "🟢", "aviso": "🟡", "ruim": "🔴"}
     linhas += [f"{icone[v['nivel']]} **{simulacao.AREAS[a]}**: {v['texto']}  " for a, v in st.items()] + [""]
@@ -174,7 +236,9 @@ def resumo_avanco(feitos: list[str]) -> str:
     if eventos:
         linhas += ["<details><summary>O que aconteceu</summary>", "", *eventos[-20:], "", "</details>", ""]
     site = f"https://{config.REPO.split('/')[0].lower()}.github.io/{config.REPO.split('/')[1]}"
-    linhas.append(f"**Assistir:** [reuniões ao vivo]({site}/#/{cen['id']}/aovivo) · [painel]({site}/#/{cen['id']})")
+    produto = "experimento" if cen.get("modo") == "diario" else "simulacao"
+    linhas.append(f"**Acompanhar:** [o dia, etapa por etapa]({site}/#/{produto}/dia/{feitos[-1]}) · "
+                  f"[validação]({site}/#/{produto}/validacao)")
     return "\n".join(linhas) + "\n"
 
 
@@ -249,6 +313,12 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("sincronizar", help="espelha os alertas em issues do GitHub")
     sub.add_parser("validar", help="valida políticas e decisões pendentes (de todos os cenários, sem --cenario)")
     sub.add_parser("painel", help="regera painel.json e briefing.md")
+    rp = sub.add_parser("reprocessar", help="refaz o cenário desde a fundação com o motor atual (sem rede)")
+    rp.add_argument("--se-preciso", action="store_true", help="só se o estado foi gravado por um motor mais antigo")
+    rp.add_argument("--todos", action="store_true", help="todos os cenários")
+    sub.add_parser("recomecar", help="simulação: volta ao zero (o próximo avanço funda a empresa de novo)")
+    au = sub.add_parser("auditar", help="confere as verificações de todos os dias (sai com erro se alguma falhou)")
+    au.add_argument("--todos", action="store_true", help="todos os cenários")
     ce = sub.add_parser("cenarios", help="lista os cenários")
     ce.add_argument("--ids", action="store_true", help="só os ids, um por linha")
     ce.add_argument("--pendentes", action="store_true", help="só os automáticos com dia a simular (ids)")
@@ -294,6 +364,25 @@ def main(argv: list[str] | None = None) -> int:
         return 1 if erros else 0
     elif a.cmd == "painel":
         gerar_painel()
+    elif a.cmd == "recomecar":
+        recomecar()
+    elif a.cmd == "auditar":
+        ids = [c["id"] for c in config.listar_cenarios()] if a.todos else [config.CENARIO]
+        falhas = []
+        for cid in ids:
+            config.usar_cenario(cid)
+            falhas += auditar()
+        if falhas:
+            print("\n".join(falhas))
+        return 1 if falhas else 0
+    elif a.cmd == "reprocessar":
+        ids = [c["id"] for c in config.listar_cenarios()] if a.todos else [config.CENARIO]
+        for cid in ids:
+            config.usar_cenario(cid)
+            if a.se_preciso and not precisa_reprocessar():
+                print(f"{cid}: já está no motor v{simulacao.VERSAO_MOTOR}")
+                continue
+            reprocessar()
     elif a.cmd == "cenarios" and a.pendentes:
         print("\n".join(pendentes()))
     elif a.cmd == "cenarios":
