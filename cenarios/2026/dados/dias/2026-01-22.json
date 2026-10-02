@@ -1,0 +1,109 @@
+{
+  "data": "2026-01-22",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {},
+    "dashboards": {},
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia! Nenhum incidente aberto. Dívida técnica 31/100, equipe de 3. Seguimos monitorando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0005: BCB · Focus (Olinda) — a fonte publicou atrasado",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Todos os números chegaram em dia. Credibilidade dos painéis em 85%. Publicando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo +0,33% contra o CDI em 21 dias, caixa da gestora R$ 2.004.563, credibilidade dos painéis 85%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,31 (-0,47%); BOVA11 172,74 (+2,24%); Tesouro Prefixado 13,13 (-0,98%); Tesouro IPCA+ 7,66 (-0,39%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,010611 (+0,69% no dia), PL R$ 298,8 mi, fluxo de cotistas R$ 297 mil. Caixa da gestora R$ 2,00 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0005: BCB · Focus (Olinda) — a fonte publicou atrasado",
+      "chave": "INC-0005"
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0005",
+      "fonte": "bcb_focus",
+      "tipo": "atraso"
+    }
+  ],
+  "alertas_abertos": [
+    "INC-0005"
+  ],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 1.01061103,
+    "pl": 298839569.56,
+    "bench": 1.00830164,
+    "retorno_dia": 0.00689,
+    "fluxo": 296887.46,
+    "pesos": {
+      "caixa": 0.1499,
+      "prefixado": 0.249,
+      "inflacao": 0.2488,
+      "dolar": 0.0988,
+      "bolsa": 0.2536
+    },
+    "divida_tecnica": 30.95,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.847,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2004910.51
+  }
+}

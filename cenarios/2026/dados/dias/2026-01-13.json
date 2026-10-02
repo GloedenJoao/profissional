@@ -1,0 +1,86 @@
+{
+  "data": "2026-01-13",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {},
+    "dashboards": {},
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia! Nenhum incidente aberto. Dívida técnica 33/100, equipe de 3. Seguimos monitorando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Todos os números chegaram em dia. Credibilidade dos painéis em 82%. Publicando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo -0,59% contra o CDI em 21 dias, caixa da gestora R$ 2.002.729, credibilidade dos painéis 82%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,38 (+0,01%); BOVA11 159,07 (-0,67%); Tesouro Prefixado 13,04 (-0,31%); Tesouro IPCA+ 7,46 (+0,40%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 0,997540 (-0,11% no dia), PL R$ 297,5 mi, fluxo de cotistas R$ 197 mil. Caixa da gestora R$ 2,00 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [],
+  "incidentes_do_dia": [],
+  "alertas_abertos": [],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 0.99753983,
+    "pl": 297520090.88,
+    "bench": 1.004419,
+    "retorno_dia": -0.001084,
+    "fluxo": 197237.88,
+    "pesos": {
+      "caixa": 0.2452,
+      "prefixado": 0.254,
+      "inflacao": 0.2484,
+      "dolar": 0.1001,
+      "bolsa": 0.1523
+    },
+    "divida_tecnica": 32.7,
+    "incidentes_abertos": 0,
+    "credibilidade": 0.824,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2003027.66
+  }
+}
