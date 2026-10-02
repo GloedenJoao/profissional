@@ -13,7 +13,7 @@ import urllib.request
 
 CORES = {"simulacao": "5319e7", "area:extracao": "0e8a16", "area:dashboards": "1d76db", "area:executivos": "b60205",
          "area:fundo": "fbca04", "sev:alta": "d93f0b", "sev:media": "fbca04", "sev:baixa": "c2e0c6",
-         "conselho": "000000", "dia": "bfdadc"}
+         "conselho": "000000", "dia": "bfdadc", "controle": "0052cc"}
 MARCA = re.compile(r"<!-- chave:(\S+) -->")
 MAX_NOVAS = 8
 
@@ -38,38 +38,52 @@ class GitHub:
             raise
 
 
-def _issues_da_simulacao(gh) -> list[dict]:
+def _rotulos(issue: dict) -> list[str]:
+    return [lb["name"] if isinstance(lb, dict) else lb for lb in issue.get("labels", [])]
+
+
+def _resumo_issue(i: dict) -> dict:
+    return {"numero": i["number"], "titulo": i["title"], "url": i["html_url"], "rotulos": _rotulos(i),
+            "criada_em": i.get("created_at")}
+
+
+def _issues_da_simulacao(gh, rotulo: str = "simulacao") -> list[dict]:
     todas = []
     for pagina in range(1, 11):
-        lote = gh.req("GET", f"/issues?labels=simulacao&state=all&per_page=100&page={pagina}")
+        lote = gh.req("GET", f"/issues?labels={rotulo}&state=all&per_page=100&page={pagina}")
         todas += [i for i in lote if "pull_request" not in i]
         if len(lote) < 100:
             break
     return todas
 
 
-def sincronizar(gh, alertas: dict, data_ref: str, anterior: dict | None = None) -> dict:
+def sincronizar(gh, alertas: dict, data_ref: str, anterior: dict | None = None, cenario: str | None = None) -> dict:
+    """`cenario` None é o ao vivo (rótulo `simulacao`); um cenário paralelo usa o rótulo `cenario:<id>`,
+    título com prefixo e chave com prefixo, para nunca mexer nas issues do outro."""
     anterior = anterior or {}
     detalhes_ant = anterior.get("detalhes", {})
-    for nome, cor in CORES.items():
+    base = f"cenario:{cenario}" if cenario else "simulacao"
+    prefixo = f"{cenario}/" if cenario else ""
+    for nome, cor in {**CORES, base: CORES.get(base, "5319e7")}.items():
         gh.req("POST", "/labels", {"name": nome, "color": cor})
     por_chave: dict[str, dict] = {}
-    for issue in sorted(_issues_da_simulacao(gh), key=lambda i: i["number"]):
+    for issue in sorted(_issues_da_simulacao(gh, base), key=lambda i: i["number"]):
         m = MARCA.search(issue.get("body") or "")
-        if m:
-            por_chave[m.group(1)] = issue  # a mais recente vence
+        if m and m.group(1).startswith(prefixo) and (cenario or "/" not in m.group(1)):
+            por_chave[m.group(1)[len(prefixo):]] = issue  # a mais recente vence
     criadas = 0
     log = []
     for chave, a in sorted(alertas.items(), key=lambda kv: (kv[1].get("sev") != "alta", kv[0])):
         issue = por_chave.get(chave)
         corpo = (f"{a.get('corpo', '')}\n\n---\nAberto pela simulação no fechamento de {a['aberto_em']}. "
-                 f"A issue fecha sozinha quando o alerta deixar de valer.\n<!-- chave:{chave} -->")
-        rotulos = ["simulacao", f"area:{a['area']}", f"sev:{a['sev']}"]
+                 f"A issue fecha sozinha quando o alerta deixar de valer.\n<!-- chave:{prefixo}{chave} -->")
+        rotulos = [base, f"area:{a['area']}", f"sev:{a['sev']}"]
         if issue is None:
             if criadas >= MAX_NOVAS:
                 log.append(f"limite de {MAX_NOVAS} issues novas: {chave} fica para amanhã")
                 continue
-            issue = gh.req("POST", "/issues", {"title": a["titulo"], "body": corpo, "labels": rotulos})
+            titulo = f"[{cenario}] {a['titulo']}" if cenario else a["titulo"]
+            issue = gh.req("POST", "/issues", {"title": titulo, "body": corpo, "labels": rotulos})
             por_chave[chave] = issue
             criadas += 1
             log.append(f"aberta #{issue['number']} {chave}")
@@ -91,15 +105,15 @@ def sincronizar(gh, alertas: dict, data_ref: str, anterior: dict | None = None) 
             issue["state"] = "closed"
             log.append(f"fechada #{issue['number']} {chave}")
     # a listagem da API demora a enxergar issues recém-criadas: as que acabamos de tocar entram direto
-    abertas = [{"numero": i["number"], "titulo": i["title"], "url": i["html_url"],
-                "rotulos": [lb["name"] if isinstance(lb, dict) else lb for lb in i.get("labels", [])],
-                "criada_em": i.get("created_at")} for k, i in por_chave.items() if k in alertas and i["state"] == "open"]
-    for rotulo in ("simulacao", "conselho"):
+    abertas = [_resumo_issue(i) for k, i in por_chave.items() if k in alertas and i["state"] == "open"]
+    # o conselho do ao vivo são as issues `conselho` sem rótulo de cenário; o de um cenário leva o rótulo dele
+    for rotulo in ((base,) if cenario else ("simulacao", "conselho")):
         for i in gh.req("GET", f"/issues?labels={rotulo}&state=open&per_page=50") or []:
-            if "pull_request" not in i and all(x["numero"] != i["number"] for x in abertas):
-                abertas.append({"numero": i["number"], "titulo": i["title"], "url": i["html_url"],
-                                "rotulos": [lb["name"] for lb in i.get("labels", [])],
-                                "criada_em": i.get("created_at")})
+            r = _rotulos(i)
+            if "pull_request" in i or "controle" in r or (not cenario and any(x.startswith("cenario:") for x in r)):
+                continue
+            if all(x["numero"] != i["number"] for x in abertas):
+                abertas.append(_resumo_issue(i))
     return {
         "data_ref": data_ref,
         "issues": {k: {"numero": i["number"], "url": i["html_url"], "estado": i["state"]} for k, i in por_chave.items()
@@ -108,6 +122,28 @@ def sincronizar(gh, alertas: dict, data_ref: str, anterior: dict | None = None) 
         "detalhes": {k: a.get("detalhe") for k, a in alertas.items()},
         "log": log,
     }
+
+
+def garantir_controle(gh, cenario: dict) -> dict:
+    """A issue de controle de um cenário manual: comentar `/avancar N` nela avança a simulação."""
+    base = f"cenario:{cenario['id']}"
+    for nome in ("controle", base):
+        gh.req("POST", "/labels", {"name": nome, "color": CORES.get(nome, "5319e7")})
+    for i in gh.req("GET", f"/issues?labels=controle,{base}&state=open&per_page=10") or []:
+        if "pull_request" not in i:
+            return {"numero": i["number"], "url": i["html_url"]}
+    corpo = (f"Painel de controle do cenário **{cenario['nome']}** (`{cenario['id']}`).\n\n"
+             f"{cenario.get('descricao', '')}\n\n"
+             "Comente aqui para mover a simulação (só o dono do repositório):\n\n"
+             "- `/avancar` — avança 1 dia útil\n"
+             "- `/avancar 5` — avança 5 dias úteis\n"
+             "- `/avancar ate 2026-03-31` — avança até a data (nunca passa de ontem)\n\n"
+             f"Antes de avançar, deixe a decisão do próximo dia em `{cenario['empresa']}/decisoes/AAAA-MM-DD.json` "
+             "(o painel tem o link pronto). Sem decisão, o fundo segue no piloto automático.\n\n"
+             "Cada avanço responde aqui com o resumo do que aconteceu.")
+    i = gh.req("POST", "/issues", {"title": f"Controle · {cenario['nome']}", "body": corpo,
+                                   "labels": ["controle", base]})
+    return {"numero": i["number"], "url": i["html_url"]}
 
 
 def cliente_do_ambiente():

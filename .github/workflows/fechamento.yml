@@ -66,11 +66,10 @@ jobs:
           done
           exit 1
 
-      - name: Montar o site
+      - name: Montar o site (todos os cenários)
         run: |
-          mkdir -p _site
-          cp site/* _site/
-          cp dados/painel.json _site/painel.json
+          git pull -q --rebase origin "${GITHUB_REF_NAME}" || true
+          python -m gestora site _site
 
       - uses: actions/upload-pages-artifact@v3
         with:
@@ -92,6 +91,9 @@ jobs:
   site:
     needs: fechamento
     runs-on: ubuntu-latest
+    concurrency:
+      group: pages
+      cancel-in-progress: false
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
