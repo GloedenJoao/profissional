@@ -17,7 +17,8 @@ AREAS = {"extracao": "Extração", "dashboards": "Dashboards", "executivos": "Ex
 
 
 def rng(d: date, *nomes: str) -> random.Random:
-    return random.Random(":".join([d.isoformat(), *nomes]))
+    prefixo = [config.SEMENTE] if config.SEMENTE else []  # o ao vivo mantém as sementes de sempre
+    return random.Random(":".join([*prefixo, d.isoformat(), *nomes]))
 
 
 # ====================================================================== estado inicial

@@ -101,6 +101,13 @@ python -m gestora validar
    a justificativa. Não faça merge no mesmo dia: se no dia útil seguinte não houver rótulo
    `veto`, faça o merge.
 
+## Cenários paralelos
+
+O manual acima é do cenário **ao vivo** (`dados/` e `empresa/`). Os cenários em `cenarios/<id>/` (como a
+Simulação 2026) são do João: só decida neles quando ele pedir, escrevendo em
+`cenarios/<id>/empresa/decisoes/` (o briefing fica em `cenarios/<id>/dados/briefing.md`) e validando com
+`python -m gestora --cenario <id> validar`. Nunca avance um cenário por conta própria.
+
 ## Limites
 
 - No máximo 1 PR de código por dia, além do PR do dia.

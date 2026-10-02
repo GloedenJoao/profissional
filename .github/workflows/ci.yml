@@ -5,7 +5,7 @@ on:
   pull_request:
   push:
     branches: [main]
-    paths-ignore: ["dados/**"]
+    paths-ignore: ["dados/**", "cenarios/*/dados/**"]
 
 jobs:
   testes:
@@ -20,10 +20,11 @@ jobs:
         run: python -m pytest -q
       - name: Políticas e decisões pendentes
         run: python -m gestora validar
-      - name: Ensaio do próximo fechamento com as decisões deste PR (sem rede)
+      - name: Ensaio do próximo dia de cada cenário com as decisões deste PR (sem rede)
         run: |
-          if [ -f dados/estado.json ]; then
-            proximo=$(python -c "import json;from datetime import date;from gestora import calendario as c;print(c.proximo_dia_util(date.fromisoformat(json.load(open('dados/estado.json'))['ultima_data'])))")
-            python -m gestora fechamento --sem-extracao --data "$proximo"
-            git checkout -- dados && git clean -fdq dados
-          fi
+          for c in $(python -m gestora cenarios --ids); do
+            python -m gestora --cenario "$c" fechamento --sem-extracao --proximo
+          done
+          git checkout -- dados cenarios && git clean -fdq dados cenarios
+      - name: Site monta com todos os painéis
+        run: python -m gestora site _site

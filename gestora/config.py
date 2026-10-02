@@ -1,9 +1,18 @@
 """Constantes da empresa: caminhos, fontes, indicadores e ativos."""
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
+CENARIOS = RAIZ / "cenarios"
+REPO = "GloedenJoao/profissional"
+
+# Cenário ativo. "ao-vivo" é a empresa do dia a dia (dados/ e empresa/ na raiz); os outros moram em
+# cenarios/<id>/ com a mesma estrutura e compartilham todo o código. `usar_cenario` troca os caminhos.
+CENARIO_PADRAO = "ao-vivo"
+CENARIO = CENARIO_PADRAO
+SEMENTE = ""  # entra na semente do acaso: cenários diferentes não sorteiam os mesmos incidentes
 DADOS = RAIZ / "dados"
 SERIES = DADOS / "series"
 DIAS = DADOS / "dias"
@@ -11,7 +20,6 @@ EMPRESA = RAIZ / "empresa"
 DECISOES = EMPRESA / "decisoes"
 DIARIO = EMPRESA / "diario"
 POLITICAS = EMPRESA / "politicas.json"
-PAINEIS = RAIZ / "paineis"
 
 NOME = "Capivara Asset"
 FUNDO = "Capivara Multimercado FIC FIM"
@@ -107,3 +115,56 @@ TIPOS_INCIDENTE = {
     "mudanca_formato": "a fonte mudou o formato e o conector quebrou",
     "falha_real": "o conector falhou de verdade nesta extração",
 }
+
+
+# ====================================================================== cenários
+AO_VIVO = {
+    "id": CENARIO_PADRAO,
+    "nome": "Ao vivo",
+    "descricao": "A empresa do dia a dia: fecha sozinha de segunda a sexta e o agente decide pelo PR do dia.",
+    "modo": "diario",
+    "dados": "dados",
+    "empresa": "empresa",
+    "issues": True,
+}
+
+
+def listar_cenarios() -> list[dict]:
+    """O cenário ao vivo e os cenários paralelos declarados em cenarios/<id>/cenario.json."""
+    itens = [dict(AO_VIVO)]
+    for arq in sorted(CENARIOS.glob("*/cenario.json")):
+        cid = arq.parent.name
+        meta = json.loads(arq.read_text(encoding="utf-8"))
+        rel = arq.parent.relative_to(RAIZ).as_posix()
+        itens.append({"modo": "manual", "issues": False, **meta, "id": cid,
+                      "dados": f"{rel}/dados", "empresa": f"{rel}/empresa"})
+    return itens
+
+
+def cenario(cid: str | None = None) -> dict:
+    cid = cid or CENARIO
+    for c in listar_cenarios():
+        if c["id"] == cid:
+            return c
+    raise SystemExit(f"cenário desconhecido: {cid} (existem: {', '.join(c['id'] for c in listar_cenarios())})")
+
+
+def usar_cenario(cid: str) -> dict:
+    """Aponta os caminhos de dados/ e empresa/ para o cenário `cid`."""
+    global CENARIO, SEMENTE, DADOS, SERIES, DIAS, EMPRESA, DECISOES, DIARIO, POLITICAS
+    meta = cenario(cid)
+    CENARIO = meta["id"]
+    SEMENTE = "" if CENARIO == CENARIO_PADRAO else CENARIO
+    DADOS = RAIZ / meta["dados"]
+    SERIES, DIAS = DADOS / "series", DADOS / "dias"
+    EMPRESA = RAIZ / meta["empresa"]
+    DECISOES, DIARIO, POLITICAS = EMPRESA / "decisoes", EMPRESA / "diario", EMPRESA / "politicas.json"
+    return meta
+
+
+def caminho_repo(caminho: Path) -> str:
+    """Caminho relativo à raiz do repositório, para montar links do GitHub."""
+    try:
+        return caminho.resolve().relative_to(RAIZ.resolve()).as_posix()
+    except ValueError:
+        return caminho.as_posix()

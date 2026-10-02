@@ -1,0 +1,164 @@
+name: Simulação · avançar
+
+# Avança um cenário manual (cenarios/<id>/): simula os próximos dias úteis com os dados reais daqueles
+# dias, espelha os alertas em issues do cenário, grava cenarios/<id>/dados e republica o site.
+# Dispara pelo botão "Run workflow" ou comentando `/avancar N` na issue de controle do cenário
+# (rótulos `controle` + `cenario:<id>`; só vale comentário do dono do repositório).
+on:
+  workflow_dispatch:
+    inputs:
+      cenario:
+        description: "Cenário (pasta em cenarios/)"
+        default: "2026"
+      dias:
+        description: "Quantos dias úteis avançar"
+        default: "1"
+      ate:
+        description: "Ou: avançar até esta data AAAA-MM-DD (vazio = usa os dias)"
+        required: false
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: simulacao
+  cancel-in-progress: false
+
+jobs:
+  avancar:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (!github.event.issue.pull_request &&
+       contains(github.event.issue.labels.*.name, 'controle') &&
+       startsWith(github.event.comment.body, '/avan') &&
+       github.event.comment.author_association == 'OWNER')
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Entender o pedido
+        id: pedido
+        env:
+          EVENTO: ${{ github.event_name }}
+          CENARIO_IN: ${{ inputs.cenario }}
+          ROTULOS: ${{ toJson(github.event.issue.labels.*.name) }}
+          COMENTARIO_ID: ${{ github.event.comment.id }}
+        run: |
+          if [ "$EVENTO" = "issue_comment" ]; then
+            gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${COMENTARIO_ID}/reactions" -f content=eyes >/dev/null || true
+            cenario=$(python -c "import json,os;r=[x.split(':',1)[1] for x in json.loads(os.environ['ROTULOS']) if x.startswith('cenario:')];print(r[0] if r else '')")
+          else
+            cenario="$CENARIO_IN"
+          fi
+          if [ -z "$cenario" ] || [ ! -f "cenarios/$cenario/cenario.json" ]; then
+            echo "Cenário '$cenario' não existe em cenarios/." > resumo.md
+            exit 1
+          fi
+          echo "cenario=$cenario" >> "$GITHUB_OUTPUT"
+
+      - name: Testes do motor
+        run: |
+          pip install -q pytest
+          python -m pytest -q
+
+      - name: Validar as decisões do cenário
+        env:
+          C: ${{ steps.pedido.outputs.cenario }}
+        run: |
+          if ! python -m gestora --cenario "$C" validar > validar.txt; then
+            { echo "**Nada foi simulado:** há decisão inválida em \`cenarios/$C/empresa/\`."; echo; echo '```'; cat validar.txt; echo '```'; } > resumo.md
+            exit 1
+          fi
+
+      - name: Extrair e simular
+        env:
+          C: ${{ steps.pedido.outputs.cenario }}
+          EVENTO: ${{ github.event_name }}
+          COMENTARIO: ${{ github.event.comment.body }}
+          DIAS: ${{ inputs.dias }}
+          ATE: ${{ inputs.ate }}
+        run: |
+          if [ "$EVENTO" = "issue_comment" ]; then
+            python -m gestora --cenario "$C" avancar --comando "$COMENTARIO" --resumo resumo.md
+          elif [ -n "$ATE" ]; then
+            python -m gestora --cenario "$C" avancar --ate "$ATE" --resumo resumo.md
+          else
+            python -m gestora --cenario "$C" avancar --dias "${DIAS:-1}" --resumo resumo.md
+          fi
+
+      - name: Abrir, comentar e fechar issues do cenário
+        env:
+          C: ${{ steps.pedido.outputs.cenario }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python -m gestora --cenario "$C" sincronizar
+
+      - name: Gravar os dados do cenário
+        env:
+          C: ${{ steps.pedido.outputs.cenario }}
+        run: |
+          git config user.name "capivara-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "cenarios/$C/dados"
+          if git diff --cached --quiet; then echo "nada novo"; exit 0; fi
+          ref=$(python -c "import json;print(json.load(open('cenarios/$C/dados/estado.json'))['ultima_data'])")
+          git commit -q -m "simulação $C: avança até $ref"
+          for i in 1 2 3 4; do
+            git push && exit 0
+            git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" || true
+            sleep $((i * 3))
+          done
+          exit 1
+
+      - name: Montar o site (todos os cenários)
+        run: |
+          git pull -q --rebase origin "${GITHUB_REF_NAME}" || true
+          python -m gestora site _site
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Responder na issue de controle
+        if: always()
+        env:
+          C: ${{ steps.pedido.outputs.cenario }}
+          ISSUE: ${{ github.event.issue.number }}
+          RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          STATUS: ${{ job.status }}
+        run: |
+          if [ -z "$ISSUE" ] && [ -n "$C" ] && [ -f "cenarios/$C/dados/processos.json" ]; then
+            ISSUE=$(python -c "import json;print((json.load(open('cenarios/$C/dados/processos.json')).get('controle') or {}).get('numero',''))")
+          fi
+          [ -f resumo.md ] || echo "O avanço falhou antes de simular." > resumo.md
+          [ "$STATUS" = "success" ] || printf '\n⚠️ A execução terminou com falha: %s\n' "$RUN" >> resumo.md
+          printf '\n<sub>[execução](%s)</sub>\n' "$RUN" >> resumo.md
+          cat resumo.md >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$ISSUE" ]; then gh issue comment "$ISSUE" --body-file resumo.md; fi
+
+  site:
+    needs: avancar
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - id: deploy
+        uses: actions/deploy-pages@v4

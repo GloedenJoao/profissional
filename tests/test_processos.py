@@ -11,11 +11,12 @@ class FakeGH:
             return None
         if metodo == "GET":
             estado = "open" if "state=open" in caminho else None
-            rot = caminho.split("labels=")[1].split("&")[0]
+            rots = caminho.split("labels=")[1].split("&")[0].split(",")
             return [i for i in self.issues if (estado is None or i["state"] == estado)
-                    and rot in [lb["name"] for lb in i["labels"]]] if "page=1" in caminho or estado else []
+                    and all(r in [lb["name"] for lb in i["labels"]] for r in rots)] if "page=1" in caminho or estado else []
         if metodo == "POST" and caminho == "/issues":
             i = {"number": len(self.issues) + 1, "title": corpo["title"], "body": corpo["body"], "state": "open",
+                 "created_at": "2026-10-02T00:00:00Z",
                  "labels": [{"name": n} for n in corpo["labels"]], "html_url": f"u/{len(self.issues) + 1}"}
             self.issues.append(i)
             return i
@@ -57,3 +58,26 @@ def test_limite_de_issues_novas():
     r = processos.sincronizar(gh, {f"K{i}": alerta() for i in range(12)}, "2026-09-30")
     assert len(gh.issues) == processos.MAX_NOVAS
     assert any("limite" in ln for ln in r["log"])
+
+
+def test_cenario_paralelo_nao_mexe_nas_issues_do_ao_vivo():
+    gh = FakeGH()
+    vivo = processos.sincronizar(gh, {"INC-0001": alerta("vivo")}, "2026-09-30")
+    par = processos.sincronizar(gh, {"INC-0001": alerta("par")}, "2026-01-05", None, "2026")
+    assert len(gh.issues) == 2
+    assert gh.issues[1]["title"] == "[2026] par" and "cenario:2026" in [lb["name"] for lb in gh.issues[1]["labels"]]
+    assert par["issues"]["INC-0001"]["numero"] == 2 and [i["numero"] for i in par["abertas"]] == [2]
+    # o alerta some no paralelo: fecha só a issue dele
+    processos.sincronizar(gh, {}, "2026-01-06", par, "2026")
+    assert [i["state"] for i in gh.issues] == ["open", "closed"]
+    # e o ao vivo segue enxergando só a sua
+    vivo = processos.sincronizar(gh, {"INC-0001": alerta("vivo")}, "2026-10-01", vivo)
+    assert vivo["log"] == [] and [i["numero"] for i in vivo["abertas"]] == [1]
+
+
+def test_issue_de_controle_e_criada_uma_vez():
+    gh = FakeGH()
+    cen = {"id": "2026", "nome": "Simulação 2026", "descricao": "d", "empresa": "cenarios/2026/empresa"}
+    a = processos.garantir_controle(gh, cen)
+    b = processos.garantir_controle(gh, cen)
+    assert a == b and len(gh.issues) == 1 and "/avancar" in gh.issues[0]["body"]

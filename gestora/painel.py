@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import csv
+import json
+import urllib.parse
 from datetime import date
 from pathlib import Path
 
@@ -62,10 +64,17 @@ def montar_painel(estado: dict, dias: list[dict], historico: list[dict], control
             por_fonte[inc["fonte"]] = inc["tipo"]
         disponibilidade.append({"data": reg["data"], "fontes": por_fonte})
     issues = (processos or {}).get("issues", {})
+    cen = config.cenario()
+    proximo = calendario.proximo_dia_util(d)
     return {
         "empresa": config.NOME, "fundo": config.FUNDO, "aviso": config.AVISO,
+        "cenario": {k: cen.get(k) for k in ("id", "nome", "descricao", "modo")} | {"inicio": estado["inicio"]},
         "data_referencia": d.isoformat(),
-        "proximo_dia_util": calendario.proximo_dia_util(d).isoformat(),
+        "proximo_dia_util": proximo.isoformat(),
+        # o fechamento do próximo dia útil roda na manhã do dia útil seguinte (só vale para o ao vivo)
+        "proximo_fechamento_em": calendario.proximo_dia_util(proximo).isoformat() if cen["modo"] == "diario" else None,
+        "feriados": sorted(f.isoformat() for ano in range(date.fromisoformat(estado["inicio"]).year, d.year + 2)
+                           for f in calendario.feriados(ano)),
         "gerado_em": (controle or {}).get("executado_em"),
         "resumo": {
             "cota": round(fundo["cota"], 6), "pl": fundo["pl"], "retorno_dia": fundo.get("retorno_dia", 0),
@@ -112,18 +121,159 @@ def montar_painel(estado: dict, dias: list[dict], historico: list[dict], control
         "nomes": {"ativos": config.ATIVOS, "acoes_extracao": config.ACOES_EXTRACAO,
                   "estrategias": config.ESTRATEGIAS_DASHBOARD, "tipos_incidente": config.TIPOS_INCIDENTE},
         "processos": {"issues_abertas": (processos or {}).get("abertas", []),
-                      "repositorio": "GloedenJoao/profissional"},
+                      "controle": (processos or {}).get("controle"),
+                      "repositorio": config.REPO},
     }
+
+
+# ====================================================================== status e tarefas
+def _br(iso: str | None) -> str:
+    return "—" if not iso else "/".join(reversed(iso[:10].split("-")))
+
+
+def _pct_br(v: float) -> str:
+    return f"{v:+.2%}".replace(".", ",")
+
+
+def _alertas_com_prefixo(painel: dict, *prefixos: str) -> list[dict]:
+    return [a for a in painel["alertas"] if a["chave"].startswith(prefixos)]
+
+
+def status_areas(painel: dict, politicas: dict) -> dict:
+    """Semáforo de cada área (ok / aviso / ruim) com uma frase curta: o que a Central mostra primeiro."""
+    r, ex, db, exe = painel["resumo"], painel["extracao"], painel["dashboards"], painel["executivos"]
+    abertos = [i for i in ex["incidentes"] if i["estado"] == "aberto"]
+    graves = [i for i in abertos if i["tipo"] in ("falha_real", "mudanca_formato") or i["dias"] >= 3]
+    if graves:
+        st_ex = ("ruim", f"{len(abertos)} incidente(s) aberto(s), {len(graves)} grave(s)")
+    elif abertos:
+        st_ex = ("aviso", f"{len(abertos)} incidente(s) aberto(s): " + ", ".join(i["fonte"] for i in abertos))
+    elif ex["divida_tecnica"] > 60:
+        st_ex = ("aviso", f"todas as fontes no ar, mas dívida técnica em {ex['divida_tecnica']:.0f}/100")
+    else:
+        st_ex = ("ok", f"todas as fontes no ar · dívida técnica {ex['divida_tecnica']:.0f}/100")
+
+    suspensos = [i["id"] for i in db["indicadores"] if i["valor"] is None]
+    defasados = [i["id"] for i in db["indicadores"] if i["defasagem"] > 0]
+    if suspensos or db["credibilidade"] < 0.6:
+        st_db = ("ruim", f"credibilidade {db['credibilidade']:.0%}" + (f" · sem número: {', '.join(suspensos)}" if suspensos else ""))
+    elif defasados or db["credibilidade"] < 0.8:
+        st_db = ("aviso", f"credibilidade {db['credibilidade']:.0%}" + (f" · defasados: {', '.join(defasados)}" if defasados else ""))
+    else:
+        st_db = ("ok", f"todos os números em dia · credibilidade {db['credibilidade']:.0%}")
+
+    if _alertas_com_prefixo(painel, "DESENQ-", "CRISE-CAIXA"):
+        st_exe = ("ruim", "; ".join(a["titulo"] for a in _alertas_com_prefixo(painel, "DESENQ-", "CRISE-CAIXA")))
+    elif exe["dias_sem_decisao"] >= 3 or exe["congelados"]:
+        partes = []
+        if exe["dias_sem_decisao"] >= 3:
+            partes.append(f"{exe['dias_sem_decisao']} dias sem decisão")
+        if exe["congelados"]:
+            partes.append("congelados: " + ", ".join(exe["congelados"]))
+        st_exe = ("aviso", " · ".join(partes))
+    else:
+        st_exe = ("ok", f"última decisão em {_br(exe['ultima_decisao'])}")
+
+    vs = "—" if r["retorno_mes"] is None else f"21d {_pct_br(r['retorno_mes'])} vs CDI {_pct_br(r['cdi_mes'])}"
+    if _alertas_com_prefixo(painel, "RESGATE-"):
+        st_fu = ("ruim", f"resgate relevante · {vs}")
+    elif r["retorno_mes"] is not None and r["retorno_mes"] < r["cdi_mes"]:
+        st_fu = ("aviso", f"abaixo do CDI · {vs}")
+    else:
+        st_fu = ("ok", vs)
+    return {area: {"nivel": n, "texto": t} for area, (n, t) in
+            {"extracao": st_ex, "dashboards": st_db, "executivos": st_exe, "fundo": st_fu}.items()}
+
+
+def modelo_decisao(painel: dict, politicas: dict) -> dict:
+    """Decisão do próximo dia já preenchida com o que vale hoje: é só editar e salvar."""
+    ex, db, exe = painel["extracao"], painel["dashboards"], painel["executivos"]
+    dec: dict = {"data": painel["proximo_dia_util"],
+                 "autor": "agente" if painel["cenario"]["modo"] == "diario" else "joao"}
+    acoes = {i["id"]: i["acao"] for i in ex["incidentes"] if i["estado"] == "aberto"}
+    if acoes:
+        dec["extracao"] = {"acoes": acoes}
+    estrategias = {i["id"]: i["estrategia"] for i in db["indicadores"] if i["defasagem"] > 0 and i["estrategia"]}
+    if estrategias:
+        dec["dashboards"] = {"estrategias": estrategias}
+    dec["executivos"] = {"alocacao": {a: round(w, 4) for a, w in exe["alvo"].items()},
+                         "equipe_extracao": ex["equipe"], "orcamento_extracao_dia": ex["orcamento_dia"],
+                         "justificativa": ""}
+    dec["observacoes"] = ""
+    return dec
+
+
+def _link_novo_arquivo(pasta: str, nome: str, conteudo: str) -> str:
+    q = urllib.parse.urlencode({"filename": nome, "value": conteudo}, quote_via=urllib.parse.quote)
+    return f"https://github.com/{config.REPO}/new/main/{pasta}?{q}"
+
+
+def decisao_proxima(painel: dict, politicas: dict) -> dict:
+    pasta = config.caminho_repo(config.DECISOES)
+    nome = f"{painel['proximo_dia_util']}.json"
+    modelo = modelo_decisao(painel, politicas)
+    return {
+        "data": painel["proximo_dia_util"], "caminho": f"{pasta}/{nome}",
+        "existe": (config.DECISOES / nome).exists(), "modelo": modelo,
+        "link_criar": _link_novo_arquivo(pasta, nome, json.dumps(modelo, ensure_ascii=False, indent=2) + "\n"),
+        "link_ver": f"https://github.com/{config.REPO}/blob/main/{pasta}/{nome}",
+        "link_pasta": f"https://github.com/{config.REPO}/tree/main/{pasta}",
+    }
+
+
+ORDEM_NIVEL = {"ruim": 0, "aviso": 1, "info": 2}
+
+
+def tarefas(painel: dict) -> list[dict]:
+    """O que alguém precisa fazer agora, com o link que leva direto ao lugar de fazer."""
+    repo = f"https://github.com/{config.REPO}"
+    dec = painel["decisao_proxima"]
+    manual = painel["cenario"]["modo"] != "diario"
+    out = []
+    if not dec["existe"]:
+        quem = "você decide" if manual else "o agente decide no PR do dia; você pode deixar uma diretriz"
+        out.append({"id": "DECISAO", "area": "executivos",
+                    "nivel": "aviso" if painel["executivos"]["dias_sem_decisao"] >= 3 else "info",
+                    "titulo": f"Decisão de {_br(dec['data'])}",
+                    "detalhe": f"Sem arquivo em {dec['caminho']}: {quem}. Sem decisão, o fundo segue no piloto automático.",
+                    "link": dec["link_criar"], "acao": "Escrever decisão"})
+    for f in painel["extracao"]["fontes"]:
+        if f["real"] == "erro":
+            out.append({"id": f"CONECTOR-{f['id']}", "area": "extracao", "nivel": "ruim",
+                        "titulo": f"Conector {f['nome']} falhou de verdade", "detalhe": f["erro_real"] or "",
+                        "link": f"{repo}/blob/main/gestora/fontes.py", "acao": "Corrigir conector"})
+    for a in painel["alertas"]:
+        sev = {"alta": "ruim", "media": "aviso", "baixa": "info"}.get(a["sev"], "info")
+        if a["chave"].startswith("INC-"):
+            acao = "Escolher ação"
+        elif a["chave"].startswith("DEFAS-"):
+            acao = "Escolher estratégia"
+        else:
+            acao = "Ver alerta"
+        link = (a.get("issue") or {}).get("url") or (dec["link_criar"] if acao != "Ver alerta" else None)
+        out.append({"id": a["chave"], "area": a["area"], "nivel": sev, "titulo": a["titulo"],
+                    "detalhe": a.get("detalhe") or "", "link": link or f"{repo}/issues", "acao": acao,
+                    "issue": a.get("issue")})
+    for i in painel["processos"]["issues_abertas"]:
+        if "conselho" in i["rotulos"]:
+            out.append({"id": f"CONSELHO-{i['numero']}", "area": "executivos", "nivel": "aviso",
+                        "titulo": f"Diretriz do conselho #{i['numero']}: {i['titulo']}", "detalhe": "",
+                        "link": i["url"], "acao": "Responder"})
+    out.sort(key=lambda t: (ORDEM_NIVEL[t["nivel"]], t["id"] != "DECISAO"))
+    return out
 
 
 def briefing(painel: dict) -> str:
     """Resumo curto para o agente decidir o próximo dia útil sem precisar calcular nada."""
     r, ex, db, exe = painel["resumo"], painel["extracao"], painel["dashboards"], painel["executivos"]
     pct = lambda v: "—" if v is None else f"{v:+.2%}"  # noqa: E731
+    cen = painel.get("cenario") or {}
+    titulo = "" if cen.get("id", config.CENARIO_PADRAO) == config.CENARIO_PADRAO else f" · cenário {cen['nome']}"
+    caminho = (painel.get("decisao_proxima") or {}).get("caminho") or f"empresa/decisoes/{painel['proximo_dia_util']}.json"
     linhas = [
-        f"# Briefing · fechamento de {painel['data_referencia']}",
+        f"# Briefing · fechamento de {painel['data_referencia']}{titulo}",
         "",
-        f"Próxima decisão: `empresa/decisoes/{painel['proximo_dia_util']}.json` (aplicada no fechamento desse dia).",
+        f"Próxima decisão: `{caminho}` (aplicada no fechamento desse dia).",
         "",
         "## Fundo",
         f"- Cota {r['cota']:.6f} · PL R$ {r['pl']:,.0f} · dia {pct(r['retorno_dia'])} · 21d {pct(r['retorno_mes'])} "
@@ -160,6 +310,13 @@ def briefing(painel: dict) -> str:
         linhas += ["", "## Diretrizes do conselho (issues `conselho`)"]
         linhas += [f"- #{i['numero']} {i['titulo']} — {i['url']}" for i in conselho]
     return "\n".join(linhas) + "\n"
+
+
+def completar(painel: dict, politicas: dict) -> dict:
+    painel["status_areas"] = status_areas(painel, politicas)
+    painel["decisao_proxima"] = decisao_proxima(painel, politicas)
+    painel["tarefas"] = tarefas(painel)
+    return painel
 
 
 def gravar_saidas(painel: dict) -> None:

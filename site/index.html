@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Capivara Asset</title>
-  <meta name="description" content="Gestora fictícia que roda no GitHub sobre dados públicos reais.">
+  <meta name="description" content="Gestora fictícia que roda no GitHub sobre dados públicos reais: central de acompanhamento dos cenários.">
   <meta name="theme-color" content="#0f3d2e">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f3d2e'/%3E%3Cpath d='M7 22l6-7 5 4 7-9' stroke='%23b8f0c8' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="style.css">
@@ -12,21 +12,18 @@
 <body>
   <header class="topo">
     <div class="marca">
-      <span class="logo" aria-hidden="true"></span>
-      <div>
+      <a class="logo" href="#/" aria-label="Central"></a>
+      <div class="titulo">
         <h1>Capivara Asset</h1>
         <p id="sub" class="sub">carregando…</p>
       </div>
+      <button id="atualizar" class="botao leve" type="button" title="Consultar o GitHub de novo">Atualizar</button>
     </div>
-    <nav class="abas" role="tablist">
-      <button role="tab" data-aba="hoje" aria-selected="true">Hoje</button>
-      <button role="tab" data-aba="extracao">Extração</button>
-      <button role="tab" data-aba="dashboards">Dashboards</button>
-      <button role="tab" data-aba="executivos">Executivos</button>
-      <button role="tab" data-aba="processos">Processos</button>
-    </nav>
+    <nav id="nav-cenarios" class="abas cenarios" aria-label="Cenários"></nav>
+    <nav id="nav-abas" class="abas areas" aria-label="Áreas" hidden></nav>
   </header>
   <main id="conteudo" aria-live="polite"></main>
+  <div id="aviso-copia" class="toast" role="status" hidden></div>
   <footer class="rodape">
     <p id="aviso"></p>
     <p><a href="https://github.com/GloedenJoao/profissional">código e histórico no GitHub</a></p>
