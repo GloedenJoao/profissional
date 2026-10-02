@@ -1,0 +1,91 @@
+name: Publicar
+
+# Quando o código do motor ou do site muda na main: se o motor mudou de versão, refaz o histórico do experimento e da
+# simulação com o motor novo (sem rede: usa as séries já gravadas), grava os dados, confere todas as verificações e
+# republica o site. Assim o site nunca mostra dados de um motor e telas de outro.
+on:
+  push:
+    branches: [main]
+    paths: ["gestora/**", "site/**", ".github/workflows/publicar.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: publicar
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Testes do motor
+        run: |
+          pip install -q pytest
+          python -m pytest -q
+
+      - name: Reprocessar se o motor mudou de versão
+        run: python -m gestora reprocessar --todos --se-preciso
+
+      - name: Conferir as verificações de todos os dias
+        run: python -m gestora auditar --todos
+
+      - name: Gravar os dados reprocessados
+        run: |
+          git config user.name "capivara-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A dados cenarios
+          if git diff --cached --quiet; then echo "nada a reprocessar"; exit 0; fi
+          v=$(python -c "from gestora import simulacao;print(simulacao.VERSAO_MOTOR)")
+          git commit -q -m "dados: reprocessa experimento e simulação com o motor v$v"
+          for i in 1 2 3 4; do
+            git push && exit 0
+            git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" || true
+            sleep $((i * 3))
+          done
+          exit 1
+
+      - name: Montar o site
+        run: |
+          git pull -q --rebase origin "${GITHUB_REF_NAME}" || true
+          python -m gestora site _site
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  site:
+    needs: publicar
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - id: deploy
+        uses: actions/deploy-pages@v4
+      - name: Conferir o site no ar
+        env:
+          URL: ${{ steps.deploy.outputs.page_url }}
+        run: |
+          for i in 1 2 3 4 5 6; do
+            if curl -fsS "${URL}versao.json" >/dev/null; then break; fi
+            sleep 10
+          done
+          curl -fsS "${URL}versao.json"
+          curl -fsS "${URL}painel.json" | python3 -c "import json,sys; p=json.load(sys.stdin); print('experimento no ar:', p['data_referencia'], 'motor v', p.get('versao_motor'))"

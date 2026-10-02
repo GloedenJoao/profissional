@@ -1,7 +1,8 @@
 name: Fechamento
 
-# O dia útil da Capivara Asset: extrai as fontes públicas reais, simula as áreas da empresa,
-# espelha os alertas em issues, grava os dados no repositório e publica o site dos painéis.
+# O Experimento: o dia útil da Capivara Asset no presente. Extrai as fontes públicas reais, roda as etapas do dia
+# (rastro completo em dados/dias), confere as verificações, espelha os alertas em issues, grava os dados e publica
+# o site. Se o motor mudou de versão, o fechamento refaz o histórico antes (sem rede).
 on:
   schedule:
     - cron: "7 11 * * 1-5" # 08:07 em Brasília, seg–sex (o motor pula feriados da B3)
@@ -46,6 +47,9 @@ jobs:
           INICIO: ${{ inputs.inicio }}
         run: python -m gestora fechamento ${DATA:+--data "$DATA"} ${INICIO:+--inicio "$INICIO"}
 
+      - name: Conferir as verificações do motor (conta que não fecha não é publicada)
+        run: python -m gestora auditar
+
       - name: Abrir, comentar e fechar issues
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -55,7 +59,7 @@ jobs:
         run: |
           git config user.name "capivara-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dados
+          git add -A dados
           if git diff --cached --quiet; then echo "nada novo"; exit 0; fi
           ref=$(python -c "import json;print(json.load(open('dados/estado.json'))['ultima_data'])")
           git commit -q -m "dados: fechamento de $ref"

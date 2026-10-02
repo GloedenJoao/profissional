@@ -1,6 +1,6 @@
 name: CI
 
-# Barra decisões e políticas inválidas antes do merge (o PR diário do agente passa por aqui).
+# Barra código, políticas e diretrizes que quebram o motor antes do merge.
 on:
   pull_request:
   push:
@@ -20,11 +20,12 @@ jobs:
         run: python -m pytest -q
       - name: Políticas e decisões pendentes
         run: python -m gestora validar
-      - name: Ensaio do próximo dia de cada cenário com as decisões deste PR (sem rede)
+      - name: Ensaio do próximo dia de cada cenário com as diretrizes deste PR (sem rede)
         run: |
+          # se o motor mudou de versão, o fechamento refaz o histórico antes; o auditar confere todas as verificações
           for c in $(python -m gestora cenarios --ids); do
             python -m gestora --cenario "$c" fechamento --sem-extracao --proximo
           done
+          python -m gestora auditar --todos
+          python -m gestora site _site
           git checkout -- dados cenarios && git clean -fdq dados cenarios
-      - name: Site monta com todos os painéis
-        run: python -m gestora site _site
