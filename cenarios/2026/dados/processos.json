@@ -1,23 +1,9 @@
 {
-  "data_ref": "2026-01-06",
+  "data_ref": "2026-01-07",
   "issues": {},
-  "abertas": [
-    {
-      "numero": 8,
-      "titulo": "[2026] Executivos sem decisão registrada",
-      "url": "https://github.com/GloedenJoao/profissional/issues/8",
-      "rotulos": [
-        "area:executivos",
-        "sev:baixa",
-        "cenario:2026"
-      ],
-      "criada_em": "2026-10-02T01:42:02Z"
-    }
-  ],
+  "abertas": [],
   "detalhes": {},
-  "log": [
-    "fechada #8 EXEC-AUSENTE"
-  ],
+  "log": [],
   "controle": {
     "numero": 9,
     "url": "https://github.com/GloedenJoao/profissional/issues/9"

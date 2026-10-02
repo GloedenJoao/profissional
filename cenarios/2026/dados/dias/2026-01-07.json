@@ -1,0 +1,129 @@
+{
+  "data": "2026-01-07",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {
+      "INC-0002": "aguardar"
+    },
+    "dashboards": {},
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia. Temos 1 incidente(s) aberto(s) e 3 pessoa(s) na equipe. Vamos priorizar.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:02",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "INC-0002 · BCB · SGS (a fonte publicou atrasado, aberto ontem): `aguardar` — atraso costuma se resolver sozinho.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0002 resolvido: BCB · SGS voltou após 1 dia(s) (aguardar)",
+      "tipo": "evento"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Todos os números chegaram em dia. Credibilidade dos painéis em 85%. Publicando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:40",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "Estimativa errada de dolar em 2026-01-06: 5.4141 vs real 5.3797",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo -0,44% contra o CDI em 21 dias, caixa da gestora R$ 2.001.258, credibilidade dos painéis 81%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,39 (-0,48%); BOVA11 158,80 (-0,87%); Tesouro Prefixado 13,06 (-0,08%); Tesouro IPCA+ 7,42 (+1,09%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 0,996918 (-0,25% no dia), PL R$ 298,8 mi, fluxo de cotistas R$ -1.203 mil. Caixa da gestora R$ 2,00 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0002 resolvido: BCB · SGS voltou após 1 dia(s) (aguardar)",
+      "chave": "INC-0002"
+    },
+    {
+      "area": "dashboards",
+      "tipo": "alerta",
+      "texto": "Estimativa errada de dolar em 2026-01-06: 5.4141 vs real 5.3797",
+      "chave": null
+    }
+  ],
+  "incidentes_do_dia": [],
+  "alertas_abertos": [
+    "ERRO-dolar-2026-01-06"
+  ],
+  "alertas_fechados": [
+    "INC-0002"
+  ],
+  "resumo": {
+    "cota": 0.99691752,
+    "pl": 298777289.46,
+    "bench": 1.00220706,
+    "retorno_dia": -0.002495,
+    "fluxo": -1203468.55,
+    "pesos": {
+      "caixa": 0.2486,
+      "prefixado": 0.2523,
+      "inflacao": 0.2478,
+      "dolar": 0.0999,
+      "bolsa": 0.1514
+    },
+    "divida_tecnica": 34.2,
+    "incidentes_abertos": 0,
+    "credibilidade": 0.812,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2001662.96
+  }
+}
