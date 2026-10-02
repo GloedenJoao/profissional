@@ -83,7 +83,11 @@ async function consultarGitHub(forcar = false) {
     const salvo = forcar ? null : JSON.parse(sessionStorage.getItem(CACHE) || "null");
     if (salvo && Date.now() - salvo.em < 120000) return salvo.dados;
   } catch (_) { /* sem sessionStorage: consulta de novo */ }
-  const api = (c) => json(`${API}${c}`);
+  const api = async (c) => {
+    const r = await fetch(`${API}${c}`, { cache: "no-store", headers: token() ? { Authorization: `Bearer ${token()}` } : {} });
+    if (!r.ok) throw new Error(`${c}: ${r.status}`);
+    return r.json();
+  };
   const dados = { runs: {}, prs: [], issues: [], decisoes: {}, erro: null, em: new Date().toISOString() };
   try {
     const [runs, prs, issues] = await Promise.all([
@@ -293,9 +297,11 @@ function areas(c) {
 }
 
 function botoesAvancar(c) {
-  const ctl = controleDe(c);
-  if (!ctl) return externo(`${GH}/actions/workflows/simulacao.yml`, c.P ? "Adiantar pelo Actions ↗" : "Começar a simulação ↗", c.P ? "botao leve" : "botao prim");
-  return [5, 20].map((n) => `<button class="botao leve" type="button" data-copiar="/avancar${n > 1 ? ` ${n}` : ""}" data-abrir="${esc(ctl.url)}" title="Adianta a simulação sem esperar o ritmo automático">Adiantar ${n} dias</button>`).join("");
+  if (SIM && SIM.cenario === c.id) return `<button class="botao" type="button" disabled><span class="pulso" aria-hidden="true"></span>Times reunidos…</button>`;
+  const fim = situacao(c).progresso === 1;
+  if (fim) return "";
+  return `<button class="botao" type="button" data-simular="1" data-cenario="${esc(c.id)}">⏭ ${c.P ? "Simular próximo dia" : "Começar agora"}</button>`
+    + (c.P ? `<button class="botao leve" type="button" data-simular="5" data-cenario="${esc(c.id)}">Simular 5 dias</button>` : "");
 }
 
 function botaoIntervir(c) {
@@ -309,8 +315,123 @@ function botaoIntervir(c) {
 function acoesCenario(c) {
   const assistir = c.P ? `<a class="botao prim" href="#/${esc(c.id)}/aovivo">▶ Assistir às reuniões</a>` : "";
   if (c.modo === "diario") return `${assistir}${externo(`${GH}/actions/workflows/fechamento.yml`, "Rodar fechamento ↗", "botao leve")}${botaoIntervir(c)}`;
-  return `${assistir}${botoesAvancar(c)}${botaoIntervir(c)}`;
+  return `${assistir}<span class="slot" data-sim-slot="${esc(c.id)}">${botoesAvancar(c)}</span>${botaoIntervir(c)}`;
 }
+
+// ------------------------------------------------------------------ simular pelo site
+// O site é estático: para mandar a simulação andar, ele chama a API do GitHub (dispara o workflow
+// simulacao.yml) com um token seu, que fica só neste navegador. Depois acompanha a execução e, quando o dia
+// novo é publicado, o Ao vivo toca a reunião.
+const CHAVE_TOKEN = "capivara-token";
+let SIM = null; // {cenario, dias, desde, base, run}
+try { SIM = JSON.parse(sessionStorage.getItem("capivara-sim") || "null"); } catch (_) { SIM = null; }
+if (SIM && Date.now() - SIM.desde > 20 * 60000) SIM = null;
+const guardarSim = () => { try { sessionStorage.setItem("capivara-sim", JSON.stringify(SIM)); } catch (_) { /* tudo bem */ } };
+const token = () => ler(CHAVE_TOKEN, "");
+
+function pedirToken(erro = "") {
+  let d = $("#dlg-token");
+  if (!d) {
+    d = document.createElement("dialog");
+    d.id = "dlg-token";
+    d.className = "dialogo";
+    document.body.append(d);
+  }
+  const novo = `https://github.com/settings/personal-access-tokens/new?name=${encodeURIComponent("Capivara Asset · simular")}&description=${encodeURIComponent("Site da Capivara Asset dispara a simulação")}&target_name=GloedenJoao&expires_in=365&actions=write`;
+  d.innerHTML = `<form method="dialog" class="dlg-corpo">
+    <h2>Simular pelo site</h2>
+    <p>O site é uma página estática no GitHub Pages: para mandar a simulação andar, ele precisa de um token do GitHub que possa disparar o workflow. É uma vez só; o token fica <strong>só neste navegador</strong>.</p>
+    <ol>
+      <li>${externo(novo, "Criar o token no GitHub ↗", "")} (já abre preenchido).</li>
+      <li>Em <em>Repository access</em> escolha <strong>Only select repositories → profissional</strong>.</li>
+      <li>Em <em>Permissions → Repository</em> deixe só <strong>Actions: Read and write</strong>. Gere e copie.</li>
+    </ol>
+    ${erro ? `<p class="neg">${esc(erro)}</p>` : ""}
+    <label class="campo">Token <input id="dlg-token-valor" type="password" autocomplete="off" placeholder="github_pat_…" required></label>
+    <div class="acoes"><button class="botao prim" value="ok" type="submit">Salvar e simular</button><button class="botao leve" value="cancelar" type="button" data-fechar>Cancelar</button>${token() ? `<button class="botao leve" type="button" data-esquecer>Esquecer token salvo</button>` : ""}</div>
+  </form>`;
+  d.showModal();
+  return new Promise((ok) => {
+    d.onclose = () => ok(d.returnValue === "ok" ? $("#dlg-token-valor").value.trim() : "");
+  });
+}
+document.addEventListener("click", (e) => {
+  if (e.target.closest("[data-fechar]")) $("#dlg-token")?.close("cancelar");
+  if (e.target.closest("[data-esquecer]")) { try { localStorage.removeItem(CHAVE_TOKEN); } catch (_) { /* tudo bem */ } $("#dlg-token")?.close("cancelar"); avisar("Token esquecido."); }
+});
+
+async function simular(cid, dias) {
+  let t = token();
+  if (!t) {
+    t = await pedirToken();
+    if (!t) return;
+    gravar(CHAVE_TOKEN, t);
+  }
+  const c = CENARIOS.find((x) => x.id === cid);
+  const r = await fetch(`${API}/actions/workflows/simulacao.yml/dispatches`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${t}`, Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" },
+    body: JSON.stringify({ ref: "main", inputs: { cenario: cid, dias: String(dias) } }),
+  }).catch((e) => ({ ok: false, status: 0, erro: e.message }));
+  if (!r.ok) {
+    const msg = r.status === 401 ? "O GitHub não aceitou o token (vencido ou digitado errado)."
+      : r.status === 403 || r.status === 404 ? "O token não tem permissão de Actions (Read and write) no repositório profissional."
+        : `O GitHub respondeu ${r.status || r.erro}.`;
+    if (r.status === 401 || r.status === 403 || r.status === 404) {
+      const novo = await pedirToken(msg);
+      if (novo) { gravar(CHAVE_TOKEN, novo); return simular(cid, dias); }
+      return;
+    }
+    avisar(msg);
+    return;
+  }
+  SIM = { cenario: cid, dias, desde: Date.now(), base: c?.P?.data_referencia || null, run: null };
+  guardarSim();
+  avisar(`Os times foram chamados: ${dias === 1 ? "1 dia" : `${dias} dias`} em ~2 min.`);
+  atualizarSim();
+  acompanharSim();
+}
+
+function atualizarSim() {
+  document.querySelectorAll("[data-sim-slot]").forEach((el) => {
+    const c = CENARIOS.find((x) => x.id === el.dataset.simSlot);
+    if (c) el.innerHTML = botoesAvancar(c);
+  });
+  const c = CENARIOS.find((x) => x.id === PLAY.cen);
+  if (c && PLAY.fim && PLAY.i >= PLAY.datas.length - 1) mostrarEspera(proximoDiaTexto(c), c);
+}
+
+async function acompanharSim() {
+  clearTimeout(acompanharSim.t);
+  if (!SIM) return;
+  const c = CENARIOS.find((x) => x.id === SIM.cenario);
+  await conferirVersao();
+  const agora = CENARIOS.find((x) => x.id === SIM.cenario)?.P?.data_referencia || null;
+  if (agora && agora !== SIM.base) {
+    avisar(`Chegou: ${c?.nome || SIM.cenario} até ${dataBR(agora)}.`);
+    SIM = null; guardarSim(); atualizarSim();
+    return;
+  }
+  try {
+    const r = await fetch(`${API}/actions/workflows/simulacao.yml/runs?event=workflow_dispatch&per_page=3`, { headers: token() ? { Authorization: `Bearer ${token()}` } : {}, cache: "no-store" });
+    const run = r.ok ? (await r.json()).workflow_runs.find((x) => new Date(x.created_at).getTime() >= SIM.desde - 60000) : null;
+    if (run) SIM.run = { url: run.html_url, status: run.status, conclusao: run.conclusion };
+    if (run && run.status === "completed" && run.conclusion !== "success") {
+      avisar("A simulação falhou no GitHub: veja a execução.");
+      window.open(run.html_url, "_blank", "noopener");
+      SIM = null; guardarSim(); atualizarSim();
+      return;
+    }
+  } catch (_) { /* sem API agora: segue esperando pelo versao.json */ }
+  if (Date.now() - SIM.desde > 15 * 60000) { SIM = null; guardarSim(); atualizarSim(); return; }
+  guardarSim();
+  acompanharSim.t = setTimeout(acompanharSim, 8000);
+}
+
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-simular]");
+  if (b) { b.disabled = true; simular(b.dataset.cenario, Number(b.dataset.simular)).finally(() => { b.disabled = false; }); }
+});
 
 // ------------------------------------------------------------------ central
 function ultimaReuniao(c) {
@@ -547,6 +668,7 @@ function aovivo() {
       <button class="botao leve" type="button" data-pl="prox" title="Próximo dia">⏭</button>
       <label class="det">Ritmo <select id="pl-vel">${VELOCIDADES.map(([v, n]) => `<option value="${v}">${n}</option>`).join("")}</select></label>
       <label class="det"><input type="checkbox" id="pl-seguir" checked> seguir para o próximo dia</label>
+      <span class="slot" id="pl-simular"></span>
       <input type="range" id="pl-linha" min="0" max="0" value="0" aria-label="Escolher o dia">
     </div>
   </section>
@@ -560,6 +682,7 @@ function iniciarPlayer(c, data) {
   if (PLAY.timer) clearTimeout(PLAY.timer);
   PLAY.cen = c.id;
   PLAY.datas = c.P?.datas || [];
+  if ($("#pl-simular") && c.modo !== "diario") { $("#pl-simular").dataset.simSlot = c.id; $("#pl-simular").innerHTML = botoesAvancar(c); }
   PLAY.vel = Number(ler("capivara-vel", "1"));
   PLAY.seguir = ler("capivara-seguir", "1") === "1";
   $("#pl-vel").value = String(PLAY.vel);
@@ -655,26 +778,28 @@ function terminarDia() {
     mostrarEspera(`Próximo dia em instantes: ${dataBR(PLAY.datas[PLAY.i + 1])}.`);
     PLAY.timer = setTimeout(() => irPara(PLAY.i + 1), 2500 / (PLAY.vel || 4));
   } else if (ultimo) {
-    mostrarEspera(proximoDiaTexto(c));
+    mostrarEspera(proximoDiaTexto(c), c);
   } else {
     mostrarEspera(`Fim de ${dataBR(data)}. ⏭ para o próximo dia.`);
   }
   atualizarBotaoPlay();
 }
 
-function mostrarEspera(texto) {
+function mostrarEspera(texto, c = null) {
   const e = $("#pl-espera");
   if (!e) return;
   e.hidden = false;
-  e.innerHTML = `<span class="pulso" aria-hidden="true"></span>${esc(texto)}`;
+  const botoes = c && c.modo !== "diario" ? `<span class="slot" data-sim-slot="${esc(c.id)}">${botoesAvancar(c)}</span>` : "";
+  e.innerHTML = `<div><span class="pulso" aria-hidden="true"></span>${esc(texto)}</div>${botoes ? `<div class="acoes">${botoes}</div>` : ""}`;
 }
 
 function proximoDiaTexto(c) {
   const s = situacao(c);
   if (c.modo === "diario") return `Você está em dia. Próximo fechamento: ${c.P?.proximo_fechamento_em ? `${dataBR(c.P.proximo_fechamento_em)} às 08h` : "no próximo dia útil"}. A página confere sozinha e toca a reunião nova quando ela chegar.`;
+  if (SIM && SIM.cenario === c.id) return `Os times estão reunidos agora (${SIM.dias === 1 ? "1 dia" : `${SIM.dias} dias`}): a reunião aparece aqui sozinha em ~2 min.`;
   if (s.rotulo === "Rodando agora") return "Os times estão reunidos agora: o próximo dia aparece aqui em instantes.";
   if (s.progresso === 1) return "A simulação alcançou o presente. Um dia novo por dia útil; a página confere sozinha.";
-  if (c.automatico) return `Você está em dia. A simulação anda sozinha (${c.automatico.dias_por_execucao || 1} dia útil a cada ${c.automatico.intervalo || "30 min"}): o próximo dia aparece aqui sem recarregar.`;
+  if (c.automatico) return `Você está em dia. Simule o próximo dia agora ou espere: ela anda sozinha a cada ${c.automatico.intervalo || "30 min"}.`;
   return "Você está em dia. O próximo dia aparece quando a simulação avançar.";
 }
 
@@ -727,7 +852,7 @@ function novosDias(c) {
     mostrarEspera(`Chegou ${dataBR(PLAY.datas[PLAY.i + 1])}: os times estão entrando na sala…`);
     PLAY.timer = setTimeout(() => irPara(PLAY.i + 1), 2500);
   } else if (PLAY.fim && PLAY.i >= PLAY.datas.length - 1) {
-    mostrarEspera(proximoDiaTexto(c));
+    mostrarEspera(proximoDiaTexto(c), c);
   }
 }
 
@@ -840,7 +965,7 @@ async function conferirVersao() {
     CENARIOS = await carregarCenarios();
     VIVO = await consultarGitHub(true);
     render();
-    avisar("Dados novos chegaram.");
+    if (!SIM) avisar("Dados novos chegaram.");
   }
   ESTADO.paineis = v.paineis;
   frescor();
@@ -862,6 +987,7 @@ carregarCenarios().then(async (lista) => {
     if (rota().aba !== "aovivo") render(); else nav(rota());
   }, 180000);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) conferirVersao(); });
+  if (SIM) acompanharSim();
 }).catch((e) => {
   $("#sub").textContent = "sem dados";
   $("#conteudo").innerHTML = `<div class="cartao"><p class="vazio">Não foi possível carregar os painéis: ${esc(e.message)}</p></div>`;

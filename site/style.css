@@ -272,3 +272,19 @@ code { font: 12.5px ui-monospace, SFMono-Regular, Menlo, monospace; background: 
   .fala .hora { padding-top: 0; }
   .digitando { margin-left: 0; }
 }
+
+/* ------------------------------------------------------------ simular pelo site */
+.slot { display: contents; }
+.botao[disabled] { opacity: .7; cursor: default; }
+.espera { flex-direction: column; align-items: flex-start; }
+.espera > div:first-child { display: flex; gap: 8px; align-items: center; }
+.dialogo { border: 1px solid var(--linha); border-radius: 14px; padding: 0; max-width: min(520px, calc(100% - 32px));
+  background: var(--cartao); color: var(--texto); box-shadow: 0 10px 40px rgba(0, 0, 0, .25); }
+.dialogo::backdrop { background: rgba(0, 0, 0, .45); }
+.dlg-corpo { padding: 18px 20px; display: grid; gap: 10px; font-size: 14px; }
+.dlg-corpo h2 { margin: 0; font-size: 18px; }
+.dlg-corpo p, .dlg-corpo ol { margin: 0; }
+.dlg-corpo ol { padding-left: 20px; display: grid; gap: 4px; }
+.campo { display: grid; gap: 4px; font-weight: 600; font-size: 13px; }
+.campo input { font: inherit; font-weight: 400; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--linha);
+  background: var(--fundo); color: var(--texto); }

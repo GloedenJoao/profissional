@@ -78,9 +78,15 @@ O mesmo motor roda mais de uma Capivara Asset em paralelo:
 | **Dia a dia** | `dados/` e `empresa/` | todo dia útil às 08h, pelo `fechamento.yml`, com os dados reais de ontem |
 | **Simulação 2026** | `cenarios/2026/` | fundada em 01/01/2026; anda sozinha pelo `simulacao.yml`, um dia útil a cada 30 min, até alcançar o presente |
 
-O ritmo da Simulação 2026 está em `cenarios/2026/cenario.json → automatico` (tire o campo para
-pausar). Para adiantar, comente `/avancar 5` (ou `/avancar ate 2026-03-31`) na issue
-**Controle · Simulação 2026** ou rode **Actions → Simulação · avançar → Run workflow**.
+**Simular pelo site:** os botões "Simular próximo dia" e "Simular 5 dias" (Central e aba Ao vivo)
+disparam o `simulacao.yml` pela API do GitHub e tocam a reunião nova quando ela chega (~1–2 min). Na
+primeira vez o site pede um token *fine-grained* só do repositório `profissional` com **Actions: Read and
+write**; ele fica guardado só naquele navegador. A extração baixa os próximos 10 dias úteis de uma vez,
+então os cliques seguintes nem precisam ir às fontes.
+
+Sem clicar, ela anda sozinha no ritmo de `cenarios/2026/cenario.json → automatico` (tire o campo para
+pausar). Também dá para comentar `/avancar 5` (ou `/avancar ate 2026-03-31`) na issue
+**Controle · Simulação 2026** ou rodar **Actions → Simulação · avançar → Run workflow**.
 Detalhes em [`cenarios/README.md`](cenarios/README.md).
 
 ## Estrutura
