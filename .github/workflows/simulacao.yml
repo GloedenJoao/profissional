@@ -3,11 +3,10 @@ name: Simulação · avançar
 # Avança um cenário paralelo (cenarios/<id>/): os times decidem os próximos dias úteis com os dados reais
 # daqueles dias, a ata de cada reunião vai para cenarios/<id>/dados/dias e o site é republicado (o modo
 # Ao vivo do site toca as reuniões novas sozinho).
-# Anda sozinho pela agenda (cenários com `automatico` em cenario.json, até alcançar o presente), pelo botão
+# Só anda quando o dono manda: botão "Simular próximo dia" do app/site (dispara este workflow pela API), botão
 # "Run workflow" ou comentando `/avancar N` na issue de controle do cenário (só o dono do repositório).
+# (Cenários com `automatico` em cenario.json só andariam sozinhos se este workflow voltasse a ter `schedule`.)
 on:
-  schedule:
-    - cron: "*/30 * * * *"
   workflow_dispatch:
     inputs:
       cenario:
