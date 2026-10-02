@@ -1,10 +1,13 @@
 name: Simulação · avançar
 
-# Avança um cenário manual (cenarios/<id>/): simula os próximos dias úteis com os dados reais daqueles
-# dias, espelha os alertas em issues do cenário, grava cenarios/<id>/dados e republica o site.
-# Dispara pelo botão "Run workflow" ou comentando `/avancar N` na issue de controle do cenário
-# (rótulos `controle` + `cenario:<id>`; só vale comentário do dono do repositório).
+# Avança um cenário paralelo (cenarios/<id>/): os times decidem os próximos dias úteis com os dados reais
+# daqueles dias, a ata de cada reunião vai para cenarios/<id>/dados/dias e o site é republicado (o modo
+# Ao vivo do site toca as reuniões novas sozinho).
+# Anda sozinho pela agenda (cenários com `automatico` em cenario.json, até alcançar o presente), pelo botão
+# "Run workflow" ou comentando `/avancar N` na issue de controle do cenário (só o dono do repositório).
 on:
+  schedule:
+    - cron: "*/30 * * * *"
   workflow_dispatch:
     inputs:
       cenario:
@@ -32,13 +35,15 @@ concurrency:
 jobs:
   avancar:
     if: >-
-      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' ||
       (!github.event.issue.pull_request &&
        contains(github.event.issue.labels.*.name, 'controle') &&
        startsWith(github.event.comment.body, '/avan') &&
        github.event.comment.author_association == 'OWNER')
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    outputs:
+      seguir: ${{ steps.pedido.outputs.seguir }}
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -56,7 +61,14 @@ jobs:
           ROTULOS: ${{ toJson(github.event.issue.labels.*.name) }}
           COMENTARIO_ID: ${{ github.event.comment.id }}
         run: |
-          if [ "$EVENTO" = "issue_comment" ]; then
+          if [ "$EVENTO" = "schedule" ]; then
+            cenario=$(python -m gestora cenarios --pendentes | head -n1)
+            if [ -z "$cenario" ]; then
+              echo "Nenhum cenário automático com dia útil a simular: nada a fazer."
+              echo "seguir=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          elif [ "$EVENTO" = "issue_comment" ]; then
             gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${COMENTARIO_ID}/reactions" -f content=eyes >/dev/null || true
             cenario=$(python -c "import json,os;r=[x.split(':',1)[1] for x in json.loads(os.environ['ROTULOS']) if x.startswith('cenario:')];print(r[0] if r else '')")
           else
@@ -67,13 +79,16 @@ jobs:
             exit 1
           fi
           echo "cenario=$cenario" >> "$GITHUB_OUTPUT"
+          echo "seguir=true" >> "$GITHUB_OUTPUT"
 
       - name: Testes do motor
+        if: steps.pedido.outputs.seguir == 'true'
         run: |
           pip install -q pytest
           python -m pytest -q
 
       - name: Validar as decisões do cenário
+        if: steps.pedido.outputs.seguir == 'true'
         env:
           C: ${{ steps.pedido.outputs.cenario }}
         run: |
@@ -83,6 +98,7 @@ jobs:
           fi
 
       - name: Extrair e simular
+        if: steps.pedido.outputs.seguir == 'true'
         env:
           C: ${{ steps.pedido.outputs.cenario }}
           EVENTO: ${{ github.event_name }}
@@ -90,7 +106,9 @@ jobs:
           DIAS: ${{ inputs.dias }}
           ATE: ${{ inputs.ate }}
         run: |
-          if [ "$EVENTO" = "issue_comment" ]; then
+          if [ "$EVENTO" = "schedule" ]; then
+            python -m gestora --cenario "$C" avancar --automatico --resumo resumo.md
+          elif [ "$EVENTO" = "issue_comment" ]; then
             python -m gestora --cenario "$C" avancar --comando "$COMENTARIO" --resumo resumo.md
           elif [ -n "$ATE" ]; then
             python -m gestora --cenario "$C" avancar --ate "$ATE" --resumo resumo.md
@@ -99,12 +117,14 @@ jobs:
           fi
 
       - name: Abrir, comentar e fechar issues do cenário
+        if: steps.pedido.outputs.seguir == 'true'
         env:
           C: ${{ steps.pedido.outputs.cenario }}
           GITHUB_TOKEN: ${{ github.token }}
         run: python -m gestora --cenario "$C" sincronizar
 
       - name: Gravar os dados do cenário
+        if: steps.pedido.outputs.seguir == 'true'
         env:
           C: ${{ steps.pedido.outputs.cenario }}
         run: |
@@ -113,7 +133,7 @@ jobs:
           git add "cenarios/$C/dados"
           if git diff --cached --quiet; then echo "nada novo"; exit 0; fi
           ref=$(python -c "import json;print(json.load(open('cenarios/$C/dados/estado.json'))['ultima_data'])")
-          git commit -q -m "simulação $C: avança até $ref"
+          git commit -q -m "simulação $C: times decidem até $ref"
           for i in 1 2 3 4; do
             git push && exit 0
             git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" || true
@@ -122,16 +142,18 @@ jobs:
           exit 1
 
       - name: Montar o site (todos os cenários)
+        if: steps.pedido.outputs.seguir == 'true'
         run: |
           git pull -q --rebase origin "${GITHUB_REF_NAME}" || true
           python -m gestora site _site
 
       - uses: actions/upload-pages-artifact@v3
+        if: steps.pedido.outputs.seguir == 'true'
         with:
           path: _site
 
       - name: Responder na issue de controle
-        if: always()
+        if: always() && github.event_name != 'schedule'
         env:
           C: ${{ steps.pedido.outputs.cenario }}
           ISSUE: ${{ github.event.issue.number }}
@@ -149,6 +171,7 @@ jobs:
 
   site:
     needs: avancar
+    if: needs.avancar.outputs.seguir == 'true'
     runs-on: ubuntu-latest
     concurrency:
       group: pages

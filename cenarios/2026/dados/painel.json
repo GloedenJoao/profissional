@@ -5,12 +5,12 @@
   "cenario": {
     "id": "2026",
     "nome": "Simulação 2026",
-    "descricao": "A mesma Capivara Asset fundada do zero em 1º de janeiro de 2026, sobre os dados reais do ano. Só anda quando você manda: cada avanço simula os próximos dias úteis com o que o mercado fez de verdade, e o que você decidiu muda o que vem depois.",
-    "modo": "manual",
+    "descricao": "A mesma Capivara Asset fundada do zero em 1º de janeiro de 2026, sobre os dados reais do ano. Os times decidem sozinhos e a simulação anda sozinha, um dia útil a cada 30 minutos, até alcançar o presente: abra o Ao vivo para assistir às reuniões.",
+    "modo": "simulacao",
     "inicio": "2026-01-01"
   },
-  "data_referencia": "2026-01-09",
-  "proximo_dia_util": "2026-01-12",
+  "data_referencia": "2026-01-06",
+  "proximo_dia_util": "2026-01-07",
   "proximo_fechamento_em": null,
   "feriados": [
     "2026-01-01",
@@ -44,25 +44,25 @@
     "2027-12-25",
     "2027-12-31"
   ],
-  "gerado_em": "2026-10-02T01:41:18+00:00",
+  "gerado_em": "2026-10-02T01:53:53+00:00",
   "resumo": {
-    "cota": 1.000183,
-    "pl": 299095131.59,
-    "retorno_dia": 0.0005766509335387582,
-    "retorno_mes": 0.0005672580085978041,
-    "cdi_mes": 0.0027595886112028456,
-    "retorno_total": 0.0001827246040639885,
-    "cdi_total": 0.003312422493461087,
-    "fluxo_dia": -739716.33,
-    "incidentes_abertos": 0,
-    "credibilidade": 0.864,
-    "confianca_media": 1.0,
-    "divida_tecnica": 33.1,
-    "caixa_gestora": 2002494.1,
+    "cota": 0.999411,
+    "pl": 300730999.82,
+    "retorno_dia": -0.0015632570149355374,
+    "retorno_mes": -0.0001545071766302364,
+    "cdi_mes": 0.001102921948100688,
+    "retorno_total": -0.0005892241066277615,
+    "cdi_total": 0.001654841995715195,
+    "fluxo_dia": 161280.36,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.851,
+    "confianca_media": 0.9,
+    "divida_tecnica": 34.75,
+    "caixa_gestora": 2001258.49,
     "alertas": 1
   },
   "extracao": {
-    "divida_tecnica": 33.1,
+    "divida_tecnica": 34.75,
     "equipe": 3,
     "orcamento_dia": 1000,
     "fontes": [
@@ -78,13 +78,13 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "cdi": "2026-01-09",
-          "selic": "2026-01-09",
-          "dolar": "2026-01-09",
+          "cdi": "2026-01-05",
+          "selic": "2026-01-05",
+          "dolar": "2026-01-05",
           "ipca": "2026-01-01"
         },
         "alternativa_ligada": false,
-        "incidente": null
+        "incidente": "INC-0002"
       },
       {
         "id": "bcb_ptax",
@@ -95,7 +95,7 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "dolar_ptax": "2026-01-09"
+          "dolar_ptax": "2026-01-06"
         },
         "alternativa_ligada": false,
         "incidente": null
@@ -110,8 +110,8 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "focus_ipca": "2026-01-09",
-          "focus_selic": "2026-01-09"
+          "focus_ipca": "2026-01-06",
+          "focus_selic": "2026-01-06"
         },
         "alternativa_ligada": false,
         "incidente": null
@@ -125,7 +125,7 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "tesouro": "2026-01-09"
+          "tesouro": "2026-01-06"
         },
         "alternativa_ligada": false,
         "incidente": null
@@ -140,8 +140,8 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "ibov": "2026-01-09",
-          "bova11": "2026-01-09"
+          "ibov": "2026-01-06",
+          "bova11": "2026-01-06"
         },
         "alternativa_ligada": false,
         "incidente": null
@@ -155,7 +155,7 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "bova11_b3": "2026-01-09"
+          "bova11_b3": "2026-01-06"
         },
         "alternativa_ligada": false,
         "incidente": null
@@ -167,14 +167,12 @@
         "fonte": "bcb_sgs",
         "tipo": "atraso",
         "aberto_em": "2026-01-06",
-        "estado": "resolvido",
-        "dias": 1,
+        "estado": "aberto",
+        "dias": 0,
         "acao": "aguardar",
         "detalhe": "a fonte publicou atrasado",
-        "resolvido_em": "2026-01-07",
-        "historico": [
-          "2026-01-07: resolvido (aguardar)"
-        ],
+        "resolvido_em": null,
+        "historico": [],
         "issue": null
       },
       {
@@ -226,78 +224,45 @@
           "yahoo": "ok",
           "b3": "ok"
         }
-      },
-      {
-        "data": "2026-01-07",
-        "fontes": {
-          "bcb_sgs": "ok",
-          "bcb_ptax": "ok",
-          "bcb_focus": "ok",
-          "tesouro": "ok",
-          "yahoo": "ok",
-          "b3": "ok"
-        }
-      },
-      {
-        "data": "2026-01-08",
-        "fontes": {
-          "bcb_sgs": "ok",
-          "bcb_ptax": "ok",
-          "bcb_focus": "ok",
-          "tesouro": "ok",
-          "yahoo": "ok",
-          "b3": "ok"
-        }
-      },
-      {
-        "data": "2026-01-09",
-        "fontes": {
-          "bcb_sgs": "ok",
-          "bcb_ptax": "ok",
-          "bcb_focus": "ok",
-          "tesouro": "ok",
-          "yahoo": "ok",
-          "b3": "ok"
-        }
       }
     ]
   },
   "dashboards": {
-    "credibilidade": 0.864,
-    "confianca_media": 1.0,
+    "credibilidade": 0.851,
+    "confianca_media": 0.9,
     "indicadores": [
       {
         "id": "cdi",
         "nome": "CDI (% a.a.)",
-        "data_ref": "2026-01-09",
-        "defasagem": 0,
+        "data_ref": "2026-01-05",
+        "defasagem": 1,
         "via": "principal",
-        "estrategia": null,
+        "estrategia": "estimar",
         "valor": 14.9,
-        "confianca": 1.0,
+        "confianca": 0.6,
         "valor_anterior": 14.9
       },
       {
         "id": "selic",
         "nome": "Selic meta (% a.a.)",
-        "data_ref": "2026-01-09",
-        "defasagem": 0,
+        "data_ref": "2026-01-05",
+        "defasagem": 1,
         "via": "principal",
-        "estrategia": null,
+        "estrategia": "usar_ontem",
         "valor": 15.0,
-        "confianca": 1.0,
+        "confianca": 0.8,
         "valor_anterior": 15.0
       },
       {
         "id": "dolar",
         "nome": "Dólar PTAX (R$)",
-        "data_ref": "2026-01-09",
-        "defasagem": 0,
+        "data_ref": "2026-01-05",
+        "defasagem": 1,
         "via": "principal",
-        "estrategia": null,
-        "valor": 5.3707,
-        "confianca": 1.0,
-        "valor_anterior": 5.386
+        "estrategia": "estimar",
+        "valor": 5.4141,
+        "confianca": 0.6,
+        "valor_anterior": 5.4351
       },
       {
         "id": "ipca_12m",
@@ -313,18 +278,18 @@
       {
         "id": "focus_ipca",
         "nome": "Focus IPCA do ano (%)",
-        "data_ref": "2026-01-09",
+        "data_ref": "2026-01-06",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 4.0475,
+        "valor": 4.0681,
         "confianca": 1.0,
-        "valor_anterior": 4.0574
+        "valor_anterior": 4.0732
       },
       {
         "id": "focus_selic",
         "nome": "Focus Selic fim do ano (%)",
-        "data_ref": "2026-01-09",
+        "data_ref": "2026-01-06",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
@@ -335,65 +300,76 @@
       {
         "id": "ibov",
         "nome": "Ibovespa (pts)",
-        "data_ref": "2026-01-09",
+        "data_ref": "2026-01-06",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 163370.0,
+        "valor": 163664.0,
         "confianca": 1.0,
-        "valor_anterior": 162937.0
+        "valor_anterior": 161870.0
       },
       {
         "id": "bova11",
         "nome": "BOVA11 (R$)",
-        "data_ref": "2026-01-09",
+        "data_ref": "2026-01-06",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 160.1,
+        "valor": 160.2,
         "confianca": 1.0,
-        "valor_anterior": 159.6
+        "valor_anterior": 158.52
       },
       {
         "id": "taxa_pre",
         "nome": "Tesouro Prefixado (% a.a.)",
-        "data_ref": "2026-01-09",
+        "data_ref": "2026-01-06",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 13.09,
+        "valor": 13.07,
         "confianca": 1.0,
-        "valor_anterior": 13.07
+        "valor_anterior": 13.09
       },
       {
         "id": "taxa_ipca",
         "nome": "Tesouro IPCA+ (% a.a. real)",
-        "data_ref": "2026-01-09",
+        "data_ref": "2026-01-06",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 7.42,
+        "valor": 7.34,
         "confianca": 1.0,
-        "valor_anterior": 7.43
+        "valor_anterior": 7.22
       }
     ],
-    "estimativas_pendentes": [],
+    "estimativas_pendentes": [
+      {
+        "indicador": "cdi",
+        "data": "2026-01-06",
+        "valor": 14.9
+      },
+      {
+        "indicador": "dolar",
+        "data": "2026-01-06",
+        "valor": 5.4141
+      }
+    ],
     "estrategia_padrao": "usar_ontem"
   },
   "executivos": {
     "alvo": {
-      "caixa": 0.45,
-      "prefixado": 0.15,
-      "inflacao": 0.15,
+      "caixa": 0.25,
+      "prefixado": 0.25,
+      "inflacao": 0.25,
       "dolar": 0.1,
       "bolsa": 0.15
     },
     "pesos": {
-      "caixa": 0.4494180943466312,
-      "prefixado": 0.15164973744431579,
-      "inflacao": 0.1485768696697185,
-      "dolar": 0.09790179311565958,
-      "bolsa": 0.152453505423675
+      "caixa": 0.25089174348144155,
+      "prefixado": 0.25051019784057055,
+      "inflacao": 0.2477699250503518,
+      "dolar": 0.0990825081568608,
+      "bolsa": 0.1517456254707753
     },
     "limites": {
       "caixa": [
@@ -418,62 +394,38 @@
       ]
     },
     "congelados": [],
-    "dias_sem_decisao": 6,
-    "ultima_decisao": null,
-    "decisoes_recentes": [],
+    "dias_sem_decisao": 0,
+    "ultima_decisao": "2026-01-05",
+    "decisoes_recentes": [
+      {
+        "data": "2026-01-05",
+        "autor": "times",
+        "resumo": "Decidido: Tesouro IPCA+ +5 p.p. (juro real de 7,22%); Tesouro Prefixado +5 p.p. (mercado espera cortes de 2,75 p.p. na Selic). Caixa fica em 25%."
+      },
+      {
+        "data": "2026-01-02",
+        "autor": "times",
+        "resumo": "Decidido: Tesouro IPCA+ +5 p.p. (juro real de 7,20%); Tesouro Prefixado +5 p.p. (mercado espera cortes de 2,75 p.p. na Selic). Caixa fica em 35%."
+      }
+    ],
     "gestora": {
-      "caixa": 2002494.1,
-      "receita_dia": 11898.68,
+      "caixa": 2001258.49,
+      "receita_dia": 11927.84,
       "custo_dia": 11500
     }
   },
   "alertas": [
     {
-      "chave": "EXEC-AUSENTE",
-      "titulo": "Executivos sem decisão registrada",
-      "area": "executivos",
-      "sev": "baixa",
+      "chave": "INC-0002",
+      "titulo": "INC-0002 · BCB · SGS: a fonte publicou atrasado",
+      "area": "extracao",
+      "sev": "media",
       "aberto_em": "2026-01-06",
-      "detalhe": null,
-      "issue": {
-        "numero": 8,
-        "url": "https://github.com/GloedenJoao/profissional/issues/8",
-        "estado": "open"
-      }
+      "detalhe": "dia 0, ação `aguardar`",
+      "issue": null
     }
   ],
   "dias": [
-    {
-      "data": "2026-01-09",
-      "eventos": [],
-      "decisao": {
-        "existe": false,
-        "autor": null
-      }
-    },
-    {
-      "data": "2026-01-08",
-      "eventos": [],
-      "decisao": {
-        "existe": false,
-        "autor": null
-      }
-    },
-    {
-      "data": "2026-01-07",
-      "eventos": [
-        {
-          "area": "extracao",
-          "tipo": "resolvido",
-          "texto": "INC-0002 resolvido: BCB · SGS voltou após 1 dia(s) (aguardar)",
-          "chave": "INC-0002"
-        }
-      ],
-      "decisao": {
-        "existe": false,
-        "autor": null
-      }
-    },
     {
       "data": "2026-01-06",
       "eventos": [
@@ -485,8 +437,9 @@
         }
       ],
       "decisao": {
-        "existe": false,
-        "autor": null
+        "existe": true,
+        "autor": "times",
+        "intervencao": false
       }
     },
     {
@@ -497,11 +450,18 @@
           "tipo": "resolvido",
           "texto": "INC-0001 resolvido: BCB · PTAX (Olinda) voltou após 1 dia(s) (aguardar)",
           "chave": "INC-0001"
+        },
+        {
+          "area": "fundo",
+          "tipo": "info",
+          "texto": "Rebalanceamento: giro R$ 30,5 mi, custo R$ 15.240",
+          "chave": null
         }
       ],
       "decisao": {
-        "existe": false,
-        "autor": null
+        "existe": true,
+        "autor": "times",
+        "intervencao": false
       }
     },
     {
@@ -512,20 +472,114 @@
           "tipo": "aberto",
           "texto": "INC-0001: BCB · PTAX (Olinda) — a fonte publicou atrasado",
           "chave": "INC-0001"
+        },
+        {
+          "area": "fundo",
+          "tipo": "info",
+          "texto": "Rebalanceamento: giro R$ 30,3 mi, custo R$ 15.154",
+          "chave": null
         }
       ],
       "decisao": {
-        "existe": false,
-        "autor": null
+        "existe": true,
+        "autor": "times",
+        "intervencao": false
       }
     }
+  ],
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia! Nenhum incidente aberto. Dívida técnica 35/100, equipe de 3. Seguimos monitorando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0002: BCB · SGS — a fonte publicou atrasado",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Faltam dados novos para: CDI (% a.a.), Selic meta (% a.a.), Dólar PTAX (R$). Credibilidade em 85%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:02",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "CDI (% a.a.) (1 dia(s) atrasado): `estimar` — o CDI acompanha a Selic, dá para estimar com folga.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:04",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Selic meta (% a.a.) (1 dia(s) atrasado): `usar_ontem` — número que muda devagar; repetir o último é seguro.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:06",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "Dólar PTAX (R$) (1 dia(s) atrasado): `estimar` — só um dia de atraso; estimo pela tendência da última semana.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo -0,13% contra o CDI em 21 dias, caixa da gestora R$ 2.000.831, credibilidade dos painéis 85%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,41 (-0,39%) [confiança 60%]; BOVA11 160,20 (+1,06%); Tesouro Prefixado 13,07 (-0,15%); Tesouro IPCA+ 7,34 (+1,66%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 0,999411 (-0,16% no dia), PL R$ 300,7 mi, fluxo de cotistas R$ 161 mil. Caixa da gestora R$ 2,00 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "datas": [
+    "2026-01-02",
+    "2026-01-05",
+    "2026-01-06"
   ],
   "historico": [
     {
       "data": "2026-01-02",
-      "cota": 0.99961568,
+      "cota": 0.99956522,
       "bench": 1.00055131,
-      "pl": 300200321.53,
+      "pl": 300185167.52,
       "fluxo": 315618.26,
       "divida_tecnica": 35.15,
       "credibilidade": 0.851,
@@ -533,106 +587,49 @@
       "incidentes_abertos": 1.0,
       "caixa_gestora": 2000400.66,
       "pesos": {
-        "caixa": 0.451,
-        "prefixado": 0.1504,
-        "inflacao": 0.1506,
-        "dolar": 0.0987,
-        "bolsa": 0.1493
+        "caixa": 0.35,
+        "prefixado": 0.2,
+        "inflacao": 0.2,
+        "dolar": 0.1,
+        "bolsa": 0.15
       }
     },
     {
       "data": "2026-01-05",
-      "cota": 1.00106778,
+      "cota": 1.00097556,
       "bench": 1.00110292,
-      "pl": 301069933.96,
-      "fluxo": 433522.14,
+      "pl": 301040322.86,
+      "fluxo": 431629.7,
       "divida_tecnica": 34.6,
       "credibilidade": 0.852,
       "confianca_media": 1.0,
       "incidentes_abertos": 0.0,
-      "caixa_gestora": 2000831.15,
+      "caixa_gestora": 2000830.65,
       "pesos": {
-        "caixa": 0.4513,
-        "prefixado": 0.1504,
-        "inflacao": 0.15,
-        "dolar": 0.0984,
+        "caixa": 0.25,
+        "prefixado": 0.25,
+        "inflacao": 0.25,
+        "dolar": 0.1,
         "bolsa": 0.15
       }
     },
     {
       "data": "2026-01-06",
-      "cota": 1.0005241,
+      "cota": 0.99941078,
       "bench": 1.00165484,
-      "pl": 301118152.26,
-      "fluxo": 211731.19,
+      "pl": 300730999.82,
+      "fluxo": 161280.36,
       "divida_tecnica": 34.75,
       "credibilidade": 0.851,
-      "confianca_media": 0.92,
+      "confianca_media": 0.9,
       "incidentes_abertos": 1.0,
-      "caixa_gestora": 2001272.35,
+      "caixa_gestora": 2001258.49,
       "pesos": {
-        "caixa": 0.4521,
-        "prefixado": 0.1505,
-        "inflacao": 0.1484,
-        "dolar": 0.0974,
-        "bolsa": 0.1515
-      }
-    },
-    {
-      "data": "2026-01-07",
-      "cota": 0.99870838,
-      "bench": 1.00220706,
-      "pl": 299476685.29,
-      "fluxo": -1095008.61,
-      "divida_tecnica": 34.2,
-      "credibilidade": 0.862,
-      "confianca_media": 1.0,
-      "incidentes_abertos": 0.0,
-      "caixa_gestora": 2001700.27,
-      "pesos": {
-        "caixa": 0.4512,
-        "prefixado": 0.1514,
-        "inflacao": 0.1483,
-        "dolar": 0.0981,
-        "bolsa": 0.151
-      }
-    },
-    {
-      "data": "2026-01-08",
-      "cota": 0.9996063,
-      "bench": 1.00275959,
-      "pl": 299662047.52,
-      "fluxo": -83891.07,
-      "divida_tecnica": 33.65,
-      "credibilidade": 0.863,
-      "confianca_media": 1.0,
-      "incidentes_abertos": 0.0,
-      "caixa_gestora": 2002095.42,
-      "pesos": {
-        "caixa": 0.4508,
-        "prefixado": 0.1514,
-        "inflacao": 0.1481,
-        "dolar": 0.098,
+        "caixa": 0.2509,
+        "prefixado": 0.2505,
+        "inflacao": 0.2478,
+        "dolar": 0.0991,
         "bolsa": 0.1517
-      }
-    },
-    {
-      "data": "2026-01-09",
-      "cota": 1.00018272,
-      "bench": 1.00331242,
-      "pl": 299095131.59,
-      "fluxo": -739716.33,
-      "divida_tecnica": 33.1,
-      "credibilidade": 0.864,
-      "confianca_media": 1.0,
-      "incidentes_abertos": 0.0,
-      "caixa_gestora": 2002494.1,
-      "pesos": {
-        "caixa": 0.4494,
-        "prefixado": 0.1516,
-        "inflacao": 0.1486,
-        "dolar": 0.0979,
-        "bolsa": 0.1525
       }
     }
   ],
@@ -670,8 +667,8 @@
         "url": "https://github.com/GloedenJoao/profissional/issues/8",
         "rotulos": [
           "area:executivos",
-          "cenario:2026",
-          "sev:baixa"
+          "sev:baixa",
+          "cenario:2026"
         ],
         "criada_em": "2026-10-02T01:42:02Z"
       }
@@ -684,34 +681,46 @@
   },
   "status_areas": {
     "extracao": {
-      "nivel": "ok",
-      "texto": "todas as fontes no ar · dívida técnica 33/100"
+      "nivel": "aviso",
+      "texto": "1 incidente(s) aberto(s): bcb_sgs"
     },
     "dashboards": {
-      "nivel": "ok",
-      "texto": "todos os números em dia · credibilidade 86%"
+      "nivel": "aviso",
+      "texto": "credibilidade 85% · defasados: cdi, selic, dolar"
     },
     "executivos": {
-      "nivel": "aviso",
-      "texto": "6 dias sem decisão"
+      "nivel": "ok",
+      "texto": "último ajuste do comitê em 05/01/2026"
     },
     "fundo": {
       "nivel": "aviso",
-      "texto": "abaixo do CDI · 21d +0,06% vs CDI +0,28%"
+      "texto": "abaixo do CDI · 21d -0,02% vs CDI +0,11%"
     }
   },
   "decisao_proxima": {
-    "data": "2026-01-12",
-    "caminho": "cenarios/2026/empresa/decisoes/2026-01-12.json",
+    "data": "2026-01-07",
+    "caminho": "cenarios/2026/empresa/decisoes/2026-01-07.json",
     "existe": false,
     "modelo": {
-      "data": "2026-01-12",
-      "autor": "joao",
+      "data": "2026-01-07",
+      "autor": "conselho",
+      "extracao": {
+        "acoes": {
+          "INC-0002": "aguardar"
+        }
+      },
+      "dashboards": {
+        "estrategias": {
+          "cdi": "estimar",
+          "selic": "usar_ontem",
+          "dolar": "estimar"
+        }
+      },
       "executivos": {
         "alocacao": {
-          "caixa": 0.45,
-          "prefixado": 0.15,
-          "inflacao": 0.15,
+          "caixa": 0.25,
+          "prefixado": 0.25,
+          "inflacao": 0.25,
           "dolar": 0.1,
           "bolsa": 0.15
         },
@@ -721,33 +730,20 @@
       },
       "observacoes": ""
     },
-    "link_criar": "https://github.com/GloedenJoao/profissional/new/main/cenarios/2026/empresa/decisoes?filename=2026-01-12.json&value=%7B%0A%20%20%22data%22%3A%20%222026-01-12%22%2C%0A%20%20%22autor%22%3A%20%22joao%22%2C%0A%20%20%22executivos%22%3A%20%7B%0A%20%20%20%20%22alocacao%22%3A%20%7B%0A%20%20%20%20%20%20%22caixa%22%3A%200.45%2C%0A%20%20%20%20%20%20%22prefixado%22%3A%200.15%2C%0A%20%20%20%20%20%20%22inflacao%22%3A%200.15%2C%0A%20%20%20%20%20%20%22dolar%22%3A%200.1%2C%0A%20%20%20%20%20%20%22bolsa%22%3A%200.15%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22equipe_extracao%22%3A%203%2C%0A%20%20%20%20%22orcamento_extracao_dia%22%3A%201000%2C%0A%20%20%20%20%22justificativa%22%3A%20%22%22%0A%20%20%7D%2C%0A%20%20%22observacoes%22%3A%20%22%22%0A%7D%0A",
-    "link_ver": "https://github.com/GloedenJoao/profissional/blob/main/cenarios/2026/empresa/decisoes/2026-01-12.json",
+    "link_criar": "https://github.com/GloedenJoao/profissional/new/main/cenarios/2026/empresa/decisoes?filename=2026-01-07.json&value=%7B%0A%20%20%22data%22%3A%20%222026-01-07%22%2C%0A%20%20%22autor%22%3A%20%22conselho%22%2C%0A%20%20%22extracao%22%3A%20%7B%0A%20%20%20%20%22acoes%22%3A%20%7B%0A%20%20%20%20%20%20%22INC-0002%22%3A%20%22aguardar%22%0A%20%20%20%20%7D%0A%20%20%7D%2C%0A%20%20%22dashboards%22%3A%20%7B%0A%20%20%20%20%22estrategias%22%3A%20%7B%0A%20%20%20%20%20%20%22cdi%22%3A%20%22estimar%22%2C%0A%20%20%20%20%20%20%22selic%22%3A%20%22usar_ontem%22%2C%0A%20%20%20%20%20%20%22dolar%22%3A%20%22estimar%22%0A%20%20%20%20%7D%0A%20%20%7D%2C%0A%20%20%22executivos%22%3A%20%7B%0A%20%20%20%20%22alocacao%22%3A%20%7B%0A%20%20%20%20%20%20%22caixa%22%3A%200.25%2C%0A%20%20%20%20%20%20%22prefixado%22%3A%200.25%2C%0A%20%20%20%20%20%20%22inflacao%22%3A%200.25%2C%0A%20%20%20%20%20%20%22dolar%22%3A%200.1%2C%0A%20%20%20%20%20%20%22bolsa%22%3A%200.15%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22equipe_extracao%22%3A%203%2C%0A%20%20%20%20%22orcamento_extracao_dia%22%3A%201000%2C%0A%20%20%20%20%22justificativa%22%3A%20%22%22%0A%20%20%7D%2C%0A%20%20%22observacoes%22%3A%20%22%22%0A%7D%0A",
+    "link_ver": "https://github.com/GloedenJoao/profissional/blob/main/cenarios/2026/empresa/decisoes/2026-01-07.json",
     "link_pasta": "https://github.com/GloedenJoao/profissional/tree/main/cenarios/2026/empresa/decisoes"
   },
   "tarefas": [
     {
-      "id": "DECISAO",
-      "area": "executivos",
+      "id": "INC-0002",
+      "area": "extracao",
       "nivel": "aviso",
-      "titulo": "Decisão de 12/01/2026",
-      "detalhe": "Sem arquivo em cenarios/2026/empresa/decisoes/2026-01-12.json: você decide. Sem decisão, o fundo segue no piloto automático.",
-      "link": "https://github.com/GloedenJoao/profissional/new/main/cenarios/2026/empresa/decisoes?filename=2026-01-12.json&value=%7B%0A%20%20%22data%22%3A%20%222026-01-12%22%2C%0A%20%20%22autor%22%3A%20%22joao%22%2C%0A%20%20%22executivos%22%3A%20%7B%0A%20%20%20%20%22alocacao%22%3A%20%7B%0A%20%20%20%20%20%20%22caixa%22%3A%200.45%2C%0A%20%20%20%20%20%20%22prefixado%22%3A%200.15%2C%0A%20%20%20%20%20%20%22inflacao%22%3A%200.15%2C%0A%20%20%20%20%20%20%22dolar%22%3A%200.1%2C%0A%20%20%20%20%20%20%22bolsa%22%3A%200.15%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22equipe_extracao%22%3A%203%2C%0A%20%20%20%20%22orcamento_extracao_dia%22%3A%201000%2C%0A%20%20%20%20%22justificativa%22%3A%20%22%22%0A%20%20%7D%2C%0A%20%20%22observacoes%22%3A%20%22%22%0A%7D%0A",
-      "acao": "Escrever decisão"
-    },
-    {
-      "id": "EXEC-AUSENTE",
-      "area": "executivos",
-      "nivel": "info",
-      "titulo": "Executivos sem decisão registrada",
-      "detalhe": "",
-      "link": "https://github.com/GloedenJoao/profissional/issues/8",
+      "titulo": "INC-0002 · BCB · SGS: a fonte publicou atrasado",
+      "detalhe": "dia 0, ação `aguardar`",
+      "link": "https://github.com/GloedenJoao/profissional/issues",
       "acao": "Ver alerta",
-      "issue": {
-        "numero": 8,
-        "url": "https://github.com/GloedenJoao/profissional/issues/8",
-        "estado": "open"
-      }
+      "issue": null
     }
   ]
 }

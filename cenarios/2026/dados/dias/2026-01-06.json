@@ -1,9 +1,101 @@
 {
   "data": "2026-01-06",
   "decisao": {
-    "existe": false,
-    "autor": null
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
   },
+  "decisoes": {
+    "extracao": {},
+    "dashboards": {
+      "cdi": "estimar",
+      "selic": "usar_ontem",
+      "dolar": "estimar"
+    },
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia! Nenhum incidente aberto. Dívida técnica 35/100, equipe de 3. Seguimos monitorando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0002: BCB · SGS — a fonte publicou atrasado",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Faltam dados novos para: CDI (% a.a.), Selic meta (% a.a.), Dólar PTAX (R$). Credibilidade em 85%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:02",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "CDI (% a.a.) (1 dia(s) atrasado): `estimar` — o CDI acompanha a Selic, dá para estimar com folga.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:04",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Selic meta (% a.a.) (1 dia(s) atrasado): `usar_ontem` — número que muda devagar; repetir o último é seguro.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:06",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "Dólar PTAX (R$) (1 dia(s) atrasado): `estimar` — só um dia de atraso; estimo pela tendência da última semana.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo -0,13% contra o CDI em 21 dias, caixa da gestora R$ 2.000.831, credibilidade dos painéis 85%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,41 (-0,39%) [confiança 60%]; BOVA11 160,20 (+1,06%); Tesouro Prefixado 13,07 (-0,15%); Tesouro IPCA+ 7,34 (+1,66%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 0,999411 (-0,16% no dia), PL R$ 300,7 mi, fluxo de cotistas R$ 161 mil. Caixa da gestora R$ 2,00 mi.",
+      "tipo": "fechamento"
+    }
+  ],
   "eventos": [
     {
       "area": "extracao",
@@ -20,27 +112,26 @@
     }
   ],
   "alertas_abertos": [
-    "EXEC-AUSENTE",
     "INC-0002"
   ],
   "alertas_fechados": [],
   "resumo": {
-    "cota": 1.0005241,
-    "pl": 301118152.26,
+    "cota": 0.99941078,
+    "pl": 300730999.82,
     "bench": 1.00165484,
-    "retorno_dia": -0.000543,
-    "fluxo": 211731.19,
+    "retorno_dia": -0.001563,
+    "fluxo": 161280.36,
     "pesos": {
-      "caixa": 0.4521,
-      "prefixado": 0.1505,
-      "inflacao": 0.1484,
-      "dolar": 0.0974,
-      "bolsa": 0.1515
+      "caixa": 0.2509,
+      "prefixado": 0.2505,
+      "inflacao": 0.2478,
+      "dolar": 0.0991,
+      "bolsa": 0.1517
     },
     "divida_tecnica": 34.75,
     "incidentes_abertos": 1,
     "credibilidade": 0.851,
-    "confianca_media": 0.92,
-    "caixa_gestora": 2001272.35
+    "confianca_media": 0.9,
+    "caixa_gestora": 2001258.49
   }
 }
