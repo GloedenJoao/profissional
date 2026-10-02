@@ -5,12 +5,12 @@
   "cenario": {
     "id": "2026",
     "nome": "Simulação 2026",
-    "descricao": "A mesma Capivara Asset fundada do zero em 1º de janeiro de 2026, sobre os dados reais do ano. Os times decidem sozinhos e a simulação anda sozinha, um dia útil a cada 30 minutos, até alcançar o presente: abra o Ao vivo para assistir às reuniões.",
+    "descricao": "A mesma Capivara Asset fundada do zero em 1º de janeiro de 2026, sobre os dados reais do ano. Os times decidem sozinhos; você manda simular o próximo dia pelo site (ou ela anda sozinha a cada 30 minutos) e assiste às reuniões no Ao vivo.",
     "modo": "simulacao",
     "inicio": "2026-01-01"
   },
-  "data_referencia": "2026-01-07",
-  "proximo_dia_util": "2026-01-08",
+  "data_referencia": "2026-01-08",
+  "proximo_dia_util": "2026-01-09",
   "proximo_fechamento_em": null,
   "feriados": [
     "2026-01-01",
@@ -44,25 +44,25 @@
     "2027-12-25",
     "2027-12-31"
   ],
-  "gerado_em": "2026-10-02T02:02:06+00:00",
+  "gerado_em": "2026-10-02T02:16:28+00:00",
   "resumo": {
-    "cota": 0.996918,
-    "pl": 298777289.46,
-    "retorno_dia": -0.002494727211380998,
-    "retorno_mes": -0.0026488516677281027,
-    "cdi_mes": 0.0016548376714431434,
-    "retorno_total": -0.0030824813645963234,
-    "cdi_total": 0.00220706432665585,
-    "fluxo_dia": -1203468.55,
-    "incidentes_abertos": 0,
-    "credibilidade": 0.812,
-    "confianca_media": 1.0,
-    "divida_tecnica": 34.2,
-    "caixa_gestora": 2001662.96,
-    "alertas": 1
+    "cota": 0.997681,
+    "pl": 298804805.06,
+    "retorno_dia": 0.0007654480392624841,
+    "retorno_mes": -0.0018854297471455617,
+    "cdi_mes": 0.002207063223973904,
+    "retorno_total": -0.002319392804650322,
+    "cdi_total": 0.002759591103289827,
+    "fluxo_dia": -201182.89,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.811,
+    "confianca_media": 0.92,
+    "divida_tecnica": 34.35,
+    "caixa_gestora": 2002028.75,
+    "alertas": 2
   },
   "extracao": {
-    "divida_tecnica": 34.2,
+    "divida_tecnica": 34.35,
     "equipe": 3,
     "orcamento_dia": 1000,
     "fontes": [
@@ -75,8 +75,8 @@
           "dolar",
           "ipca"
         ],
-        "real": "ok",
-        "erro_real": null,
+        "real": "erro",
+        "erro_real": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
         "liberado_ate": {
           "cdi": "2026-01-07",
           "selic": "2026-01-07",
@@ -84,7 +84,7 @@
           "ipca": "2026-01-01"
         },
         "alternativa_ligada": false,
-        "incidente": null
+        "incidente": "INC-0003"
       },
       {
         "id": "bcb_ptax",
@@ -95,7 +95,7 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "dolar_ptax": "2026-01-07"
+          "dolar_ptax": "2026-01-08"
         },
         "alternativa_ligada": false,
         "incidente": null
@@ -110,8 +110,8 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "focus_ipca": "2026-01-07",
-          "focus_selic": "2026-01-07"
+          "focus_ipca": "2026-01-08",
+          "focus_selic": "2026-01-08"
         },
         "alternativa_ligada": false,
         "incidente": null
@@ -125,7 +125,7 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "tesouro": "2026-01-07"
+          "tesouro": "2026-01-08"
         },
         "alternativa_ligada": false,
         "incidente": null
@@ -140,8 +140,8 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "ibov": "2026-01-07",
-          "bova11": "2026-01-07"
+          "ibov": "2026-01-08",
+          "bova11": "2026-01-08"
         },
         "alternativa_ligada": false,
         "incidente": null
@@ -155,13 +155,26 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "bova11_b3": "2026-01-07"
+          "bova11_b3": "2026-01-08"
         },
         "alternativa_ligada": false,
         "incidente": null
       }
     ],
     "incidentes": [
+      {
+        "id": "INC-0003",
+        "fonte": "bcb_sgs",
+        "tipo": "falha_real",
+        "aberto_em": "2026-01-08",
+        "estado": "aberto",
+        "dias": 0,
+        "acao": "corrigir_conector",
+        "detalhe": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+        "resolvido_em": null,
+        "historico": [],
+        "issue": null
+      },
       {
         "id": "INC-0002",
         "fonte": "bcb_sgs",
@@ -237,45 +250,56 @@
           "yahoo": "ok",
           "b3": "ok"
         }
+      },
+      {
+        "data": "2026-01-08",
+        "fontes": {
+          "bcb_sgs": "falha_real",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "ok"
+        }
       }
     ]
   },
   "dashboards": {
-    "credibilidade": 0.812,
-    "confianca_media": 1.0,
+    "credibilidade": 0.811,
+    "confianca_media": 0.92,
     "indicadores": [
       {
         "id": "cdi",
         "nome": "CDI (% a.a.)",
         "data_ref": "2026-01-07",
-        "defasagem": 0,
+        "defasagem": 1,
         "via": "principal",
-        "estrategia": null,
+        "estrategia": "estimar",
         "valor": 14.9,
-        "confianca": 1.0,
+        "confianca": 0.6,
         "valor_anterior": 14.9
       },
       {
         "id": "selic",
         "nome": "Selic meta (% a.a.)",
         "data_ref": "2026-01-07",
-        "defasagem": 0,
+        "defasagem": 1,
         "via": "principal",
-        "estrategia": null,
+        "estrategia": "usar_ontem",
         "valor": 15.0,
-        "confianca": 1.0,
+        "confianca": 0.8,
         "valor_anterior": 15.0
       },
       {
         "id": "dolar",
         "nome": "Dólar PTAX (R$)",
         "data_ref": "2026-01-07",
-        "defasagem": 0,
+        "defasagem": 1,
         "via": "principal",
-        "estrategia": null,
+        "estrategia": "usar_ontem",
         "valor": 5.388,
-        "confianca": 1.0,
-        "valor_anterior": 5.4141
+        "confianca": 0.8,
+        "valor_anterior": 5.388
       },
       {
         "id": "ipca_12m",
@@ -291,18 +315,18 @@
       {
         "id": "focus_ipca",
         "nome": "Focus IPCA do ano (%)",
-        "data_ref": "2026-01-07",
+        "data_ref": "2026-01-08",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 4.0624,
+        "valor": 4.0574,
         "confianca": 1.0,
-        "valor_anterior": 4.0681
+        "valor_anterior": 4.0624
       },
       {
         "id": "focus_selic",
         "nome": "Focus Selic fim do ano (%)",
-        "data_ref": "2026-01-07",
+        "data_ref": "2026-01-08",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
@@ -313,49 +337,55 @@
       {
         "id": "ibov",
         "nome": "Ibovespa (pts)",
-        "data_ref": "2026-01-07",
+        "data_ref": "2026-01-08",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 161975.0,
+        "valor": 162937.0,
         "confianca": 1.0,
-        "valor_anterior": 163664.0
+        "valor_anterior": 161975.0
       },
       {
         "id": "bova11",
         "nome": "BOVA11 (R$)",
-        "data_ref": "2026-01-07",
+        "data_ref": "2026-01-08",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 158.8,
+        "valor": 159.6,
         "confianca": 1.0,
-        "valor_anterior": 160.2
+        "valor_anterior": 158.8
       },
       {
         "id": "taxa_pre",
         "nome": "Tesouro Prefixado (% a.a.)",
-        "data_ref": "2026-01-07",
+        "data_ref": "2026-01-08",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 13.06,
+        "valor": 13.07,
         "confianca": 1.0,
-        "valor_anterior": 13.07
+        "valor_anterior": 13.06
       },
       {
         "id": "taxa_ipca",
         "nome": "Tesouro IPCA+ (% a.a. real)",
-        "data_ref": "2026-01-07",
+        "data_ref": "2026-01-08",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 7.42,
+        "valor": 7.43,
         "confianca": 1.0,
-        "valor_anterior": 7.34
+        "valor_anterior": 7.42
       }
     ],
-    "estimativas_pendentes": [],
+    "estimativas_pendentes": [
+      {
+        "indicador": "cdi",
+        "data": "2026-01-08",
+        "valor": 14.9
+      }
+    ],
     "estrategia_padrao": "usar_ontem"
   },
   "executivos": {
@@ -367,11 +397,11 @@
       "bolsa": 0.15
     },
     "pesos": {
-      "caixa": 0.24860373031097324,
-      "prefixado": 0.25233750187729165,
-      "inflacao": 0.24777138457483783,
-      "dolar": 0.09988427832097421,
-      "bolsa": 0.15140310491592313
+      "caixa": 0.2480048797502824,
+      "prefixado": 0.25237247929521467,
+      "inflacao": 0.2476328050006899,
+      "dolar": 0.09983800726741876,
+      "bolsa": 0.15215182868639437
     },
     "limites": {
       "caixa": [
@@ -411,8 +441,8 @@
       }
     ],
     "gestora": {
-      "caixa": 2001662.96,
-      "receita_dia": 11904.47,
+      "caixa": 2002028.75,
+      "receita_dia": 11865.79,
       "custo_dia": 11500
     }
   },
@@ -425,9 +455,34 @@
       "aberto_em": "2026-01-07",
       "detalhe": null,
       "issue": null
+    },
+    {
+      "chave": "INC-0003",
+      "titulo": "INC-0003 · BCB · SGS: o conector falhou de verdade nesta extração",
+      "area": "extracao",
+      "sev": "alta",
+      "aberto_em": "2026-01-08",
+      "detalhe": "dia 0, ação `corrigir_conector`",
+      "issue": null
     }
   ],
   "dias": [
+    {
+      "data": "2026-01-08",
+      "eventos": [
+        {
+          "area": "extracao",
+          "tipo": "aberto",
+          "texto": "INC-0003: falha real em BCB · SGS",
+          "chave": "INC-0003"
+        }
+      ],
+      "decisao": {
+        "existe": true,
+        "autor": "times",
+        "intervencao": false
+      }
+    },
     {
       "data": "2026-01-07",
       "eventos": [
@@ -517,47 +572,55 @@
       "area": "extracao",
       "quem": "Bia",
       "papel": "líder de Extração",
-      "texto": "Bom dia. Temos 1 incidente(s) aberto(s) e 3 pessoa(s) na equipe. Vamos priorizar.",
+      "texto": "Bom dia! Nenhum incidente aberto. Dívida técnica 34/100, equipe de 3. Seguimos monitorando.",
       "tipo": "fala"
-    },
-    {
-      "hora": "08:02",
-      "area": "extracao",
-      "quem": "Bia",
-      "papel": "líder de Extração",
-      "texto": "INC-0002 · BCB · SGS (a fonte publicou atrasado, aberto ontem): `aguardar` — atraso costuma se resolver sozinho.",
-      "tipo": "decisao"
     },
     {
       "hora": "08:40",
       "area": "extracao",
       "quem": "Téo",
       "papel": "engenheiro de plantão",
-      "texto": "INC-0002 resolvido: BCB · SGS voltou após 1 dia(s) (aguardar)",
-      "tipo": "evento"
+      "texto": "INC-0003: falha real em BCB · SGS",
+      "tipo": "alerta"
     },
     {
       "hora": "09:00",
       "area": "dashboards",
       "quem": "Caio",
       "papel": "líder de Dashboards",
-      "texto": "Todos os números chegaram em dia. Credibilidade dos painéis em 85%. Publicando.",
+      "texto": "Faltam dados novos para: CDI (% a.a.), Selic meta (% a.a.), Dólar PTAX (R$). Credibilidade em 81%.",
       "tipo": "fala"
     },
     {
-      "hora": "09:40",
+      "hora": "09:02",
       "area": "dashboards",
       "quem": "Lia",
       "papel": "analista de dados",
-      "texto": "Estimativa errada de dolar em 2026-01-06: 5.4141 vs real 5.3797",
-      "tipo": "alerta"
+      "texto": "CDI (% a.a.) (1 dia(s) atrasado): `estimar` — o CDI acompanha a Selic, dá para estimar com folga.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:04",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Selic meta (% a.a.) (1 dia(s) atrasado): `usar_ontem` — número que muda devagar; repetir o último é seguro.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:06",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Dólar PTAX (R$) (1 dia(s) atrasado): `usar_ontem` — errei a estimativa disso há pouco, vou de último valor.",
+      "tipo": "decisao"
     },
     {
       "hora": "10:00",
       "area": "executivos",
       "quem": "Helena",
       "papel": "CEO",
-      "texto": "Bom dia. Fundo -0,44% contra o CDI em 21 dias, caixa da gestora R$ 2.001.258, credibilidade dos painéis 81%.",
+      "texto": "Bom dia. Fundo -0,41% contra o CDI em 21 dias, caixa da gestora R$ 2.001.663, credibilidade dos painéis 81%.",
       "tipo": "fala"
     },
     {
@@ -565,7 +628,7 @@
       "area": "executivos",
       "quem": "Rafael",
       "papel": "CIO",
-      "texto": "No painel de hoje: Dólar PTAX 5,39 (-0,48%); BOVA11 158,80 (-0,87%); Tesouro Prefixado 13,06 (-0,08%); Tesouro IPCA+ 7,42 (+1,09%).",
+      "texto": "No painel de hoje: Dólar PTAX 5,39 (+0,00%) [confiança 80%]; BOVA11 159,60 (+0,50%); Tesouro Prefixado 13,07 (+0,08%); Tesouro IPCA+ 7,43 (+0,13%).",
       "tipo": "fala"
     },
     {
@@ -581,7 +644,7 @@
       "area": "fundo",
       "quem": "Administrador",
       "papel": "fechamento do fundo",
-      "texto": "Fechamento: cota 0,996918 (-0,25% no dia), PL R$ 298,8 mi, fluxo de cotistas R$ -1.203 mil. Caixa da gestora R$ 2,00 mi.",
+      "texto": "Fechamento: cota 0,997681 (+0,08% no dia), PL R$ 298,8 mi, fluxo de cotistas R$ -201 mil. Caixa da gestora R$ 2,00 mi.",
       "tipo": "fechamento"
     }
   ],
@@ -589,7 +652,8 @@
     "2026-01-02",
     "2026-01-05",
     "2026-01-06",
-    "2026-01-07"
+    "2026-01-07",
+    "2026-01-08"
   ],
   "historico": [
     {
@@ -667,6 +731,25 @@
         "dolar": 0.0999,
         "bolsa": 0.1514
       }
+    },
+    {
+      "data": "2026-01-08",
+      "cota": 0.99768061,
+      "bench": 1.00275959,
+      "pl": 298804805.06,
+      "fluxo": -201182.89,
+      "divida_tecnica": 34.35,
+      "credibilidade": 0.811,
+      "confianca_media": 0.92,
+      "incidentes_abertos": 1.0,
+      "caixa_gestora": 2002028.75,
+      "pesos": {
+        "caixa": 0.248,
+        "prefixado": 0.2524,
+        "inflacao": 0.2476,
+        "dolar": 0.0998,
+        "bolsa": 0.1522
+      }
     }
   ],
   "nomes": {
@@ -705,12 +788,12 @@
   },
   "status_areas": {
     "extracao": {
-      "nivel": "ok",
-      "texto": "todas as fontes no ar · dívida técnica 34/100"
+      "nivel": "ruim",
+      "texto": "1 incidente(s) aberto(s), 1 grave(s)"
     },
     "dashboards": {
-      "nivel": "ok",
-      "texto": "todos os números em dia · credibilidade 81%"
+      "nivel": "aviso",
+      "texto": "credibilidade 81% · defasados: cdi, selic, dolar"
     },
     "executivos": {
       "nivel": "ok",
@@ -718,16 +801,28 @@
     },
     "fundo": {
       "nivel": "aviso",
-      "texto": "abaixo do CDI · 21d -0,26% vs CDI +0,17%"
+      "texto": "abaixo do CDI · 21d -0,19% vs CDI +0,22%"
     }
   },
   "decisao_proxima": {
-    "data": "2026-01-08",
-    "caminho": "cenarios/2026/empresa/decisoes/2026-01-08.json",
+    "data": "2026-01-09",
+    "caminho": "cenarios/2026/empresa/decisoes/2026-01-09.json",
     "existe": false,
     "modelo": {
-      "data": "2026-01-08",
+      "data": "2026-01-09",
       "autor": "conselho",
+      "extracao": {
+        "acoes": {
+          "INC-0003": "corrigir_conector"
+        }
+      },
+      "dashboards": {
+        "estrategias": {
+          "cdi": "estimar",
+          "selic": "usar_ontem",
+          "dolar": "usar_ontem"
+        }
+      },
       "executivos": {
         "alocacao": {
           "caixa": 0.25,
@@ -742,11 +837,30 @@
       },
       "observacoes": ""
     },
-    "link_criar": "https://github.com/GloedenJoao/profissional/new/main/cenarios/2026/empresa/decisoes?filename=2026-01-08.json&value=%7B%0A%20%20%22data%22%3A%20%222026-01-08%22%2C%0A%20%20%22autor%22%3A%20%22conselho%22%2C%0A%20%20%22executivos%22%3A%20%7B%0A%20%20%20%20%22alocacao%22%3A%20%7B%0A%20%20%20%20%20%20%22caixa%22%3A%200.25%2C%0A%20%20%20%20%20%20%22prefixado%22%3A%200.25%2C%0A%20%20%20%20%20%20%22inflacao%22%3A%200.25%2C%0A%20%20%20%20%20%20%22dolar%22%3A%200.1%2C%0A%20%20%20%20%20%20%22bolsa%22%3A%200.15%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22equipe_extracao%22%3A%203%2C%0A%20%20%20%20%22orcamento_extracao_dia%22%3A%201000%2C%0A%20%20%20%20%22justificativa%22%3A%20%22%22%0A%20%20%7D%2C%0A%20%20%22observacoes%22%3A%20%22%22%0A%7D%0A",
-    "link_ver": "https://github.com/GloedenJoao/profissional/blob/main/cenarios/2026/empresa/decisoes/2026-01-08.json",
+    "link_criar": "https://github.com/GloedenJoao/profissional/new/main/cenarios/2026/empresa/decisoes?filename=2026-01-09.json&value=%7B%0A%20%20%22data%22%3A%20%222026-01-09%22%2C%0A%20%20%22autor%22%3A%20%22conselho%22%2C%0A%20%20%22extracao%22%3A%20%7B%0A%20%20%20%20%22acoes%22%3A%20%7B%0A%20%20%20%20%20%20%22INC-0003%22%3A%20%22corrigir_conector%22%0A%20%20%20%20%7D%0A%20%20%7D%2C%0A%20%20%22dashboards%22%3A%20%7B%0A%20%20%20%20%22estrategias%22%3A%20%7B%0A%20%20%20%20%20%20%22cdi%22%3A%20%22estimar%22%2C%0A%20%20%20%20%20%20%22selic%22%3A%20%22usar_ontem%22%2C%0A%20%20%20%20%20%20%22dolar%22%3A%20%22usar_ontem%22%0A%20%20%20%20%7D%0A%20%20%7D%2C%0A%20%20%22executivos%22%3A%20%7B%0A%20%20%20%20%22alocacao%22%3A%20%7B%0A%20%20%20%20%20%20%22caixa%22%3A%200.25%2C%0A%20%20%20%20%20%20%22prefixado%22%3A%200.25%2C%0A%20%20%20%20%20%20%22inflacao%22%3A%200.25%2C%0A%20%20%20%20%20%20%22dolar%22%3A%200.1%2C%0A%20%20%20%20%20%20%22bolsa%22%3A%200.15%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22equipe_extracao%22%3A%203%2C%0A%20%20%20%20%22orcamento_extracao_dia%22%3A%201000%2C%0A%20%20%20%20%22justificativa%22%3A%20%22%22%0A%20%20%7D%2C%0A%20%20%22observacoes%22%3A%20%22%22%0A%7D%0A",
+    "link_ver": "https://github.com/GloedenJoao/profissional/blob/main/cenarios/2026/empresa/decisoes/2026-01-09.json",
     "link_pasta": "https://github.com/GloedenJoao/profissional/tree/main/cenarios/2026/empresa/decisoes"
   },
   "tarefas": [
+    {
+      "id": "CONECTOR-bcb_sgs",
+      "area": "extracao",
+      "nivel": "ruim",
+      "titulo": "Conector BCB · SGS falhou de verdade",
+      "detalhe": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+      "link": "https://github.com/GloedenJoao/profissional/blob/main/gestora/fontes.py",
+      "acao": "Corrigir conector"
+    },
+    {
+      "id": "INC-0003",
+      "area": "extracao",
+      "nivel": "ruim",
+      "titulo": "INC-0003 · BCB · SGS: o conector falhou de verdade nesta extração",
+      "detalhe": "dia 0, ação `corrigir_conector`",
+      "link": "https://github.com/GloedenJoao/profissional/issues",
+      "acao": "Ver alerta",
+      "issue": null
+    },
     {
       "id": "ERRO-dolar-2026-01-06",
       "area": "dashboards",
