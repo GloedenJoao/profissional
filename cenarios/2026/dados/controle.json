@@ -1,0 +1,62 @@
+{
+  "executado_em": "2026-10-02T01:25:29+00:00",
+  "janela": [
+    "2025-12-17",
+    "2026-01-02"
+  ],
+  "fontes": {
+    "bcb_sgs": {
+      "status": "ok",
+      "erro": null,
+      "linhas_novas": 55,
+      "ultima_data": {
+        "cdi": "2026-01-02",
+        "selic": "2026-01-02",
+        "dolar": "2026-01-02",
+        "ipca": "2026-01-01"
+      }
+    },
+    "bcb_ptax": {
+      "status": "ok",
+      "erro": null,
+      "linhas_novas": 11,
+      "ultima_data": {
+        "dolar_ptax": "2026-01-02"
+      }
+    },
+    "bcb_focus": {
+      "status": "ok",
+      "erro": null,
+      "linhas_novas": 22,
+      "ultima_data": {
+        "focus_ipca": "2026-01-02",
+        "focus_selic": "2026-01-02"
+      }
+    },
+    "tesouro": {
+      "status": "ok",
+      "erro": null,
+      "linhas_novas": 107,
+      "ultima_data": {
+        "tesouro": "2026-01-02"
+      }
+    },
+    "yahoo": {
+      "status": "ok",
+      "erro": null,
+      "linhas_novas": 24,
+      "ultima_data": {
+        "ibov": "2026-01-02",
+        "bova11": "2026-01-02"
+      }
+    },
+    "b3": {
+      "status": "ok",
+      "erro": null,
+      "linhas_novas": 9,
+      "ultima_data": {
+        "bova11_b3": "2026-01-02"
+      }
+    }
+  }
+}

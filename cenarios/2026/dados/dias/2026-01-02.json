@@ -1,0 +1,45 @@
+{
+  "data": "2026-01-02",
+  "decisao": {
+    "existe": false,
+    "autor": null
+  },
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0001: BCB · PTAX (Olinda) — a fonte publicou atrasado",
+      "chave": "INC-0001"
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0001",
+      "fonte": "bcb_ptax",
+      "tipo": "atraso"
+    }
+  ],
+  "alertas_abertos": [
+    "INC-0001"
+  ],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 0.99961568,
+    "pl": 300200321.53,
+    "bench": 1.00055131,
+    "retorno_dia": -0.000384,
+    "fluxo": 315618.26,
+    "pesos": {
+      "caixa": 0.451,
+      "prefixado": 0.1504,
+      "inflacao": 0.1506,
+      "dolar": 0.0987,
+      "bolsa": 0.1493
+    },
+    "divida_tecnica": 35.15,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.851,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2000400.66
+  }
+}
