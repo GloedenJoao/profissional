@@ -1,0 +1,156 @@
+{
+  "data": "2026-01-02",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {},
+    "dashboards": {},
+    "executivos": {
+      "alocacao": {
+        "caixa": 0.35,
+        "prefixado": 0.2,
+        "inflacao": 0.2,
+        "dolar": 0.1,
+        "bolsa": 0.15
+      },
+      "justificativa": "Decidido: Tesouro IPCA+ +5 p.p. (juro real de 7,20%); Tesouro Prefixado +5 p.p. (mercado espera cortes de 2,75 p.p. na Selic). Caixa fica em 35%."
+    }
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia! Nenhum incidente aberto. Dívida técnica 35/100, equipe de 3. Seguimos monitorando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0001: BCB · PTAX (Olinda) — a fonte publicou atrasado",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Todos os números chegaram em dia. Credibilidade dos painéis em 85%. Publicando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo +0,00% contra o CDI em 21 dias, caixa da gestora R$ 2.000.000, credibilidade dos painéis 85%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,44; BOVA11 157,36; Tesouro Prefixado 13,16; Tesouro IPCA+ 7,20.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Comitê de investimentos (reunião semanal).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:06",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Tesouro IPCA+ pagando 7,20% acima da inflação.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:08",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Selic em 15,00% e Focus para o fim do ano em 12,25%: mercado espera cortes de 2,75 p.p. na Selic.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:10",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Decidido: Tesouro IPCA+ +5 p.p. (juro real de 7,20%); Tesouro Prefixado +5 p.p. (mercado espera cortes de 2,75 p.p. na Selic). Caixa fica em 35%.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "17:30",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Rebalanceamento: giro R$ 30,3 mi, custo R$ 15.154",
+      "tipo": "evento"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 0,999565 (-0,04% no dia), PL R$ 300,2 mi, fluxo de cotistas R$ 316 mil. Caixa da gestora R$ 2,00 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0001: BCB · PTAX (Olinda) — a fonte publicou atrasado",
+      "chave": "INC-0001"
+    },
+    {
+      "area": "fundo",
+      "tipo": "info",
+      "texto": "Rebalanceamento: giro R$ 30,3 mi, custo R$ 15.154",
+      "chave": null
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0001",
+      "fonte": "bcb_ptax",
+      "tipo": "atraso"
+    }
+  ],
+  "alertas_abertos": [
+    "INC-0001"
+  ],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 0.99956522,
+    "pl": 300185167.52,
+    "bench": 1.00055131,
+    "retorno_dia": -0.000435,
+    "fluxo": 315618.26,
+    "pesos": {
+      "caixa": 0.35,
+      "prefixado": 0.2,
+      "inflacao": 0.2,
+      "dolar": 0.1,
+      "bolsa": 0.15
+    },
+    "divida_tecnica": 35.15,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.851,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2000400.66
+  }
+}
