@@ -13,9 +13,6 @@ on:
       inicio:
         description: "Fundação da empresa AAAA-MM-DD (só vale se ainda não existe estado)"
         required: false
-  push:
-    branches: [claude/amazing-euler-shqkg6]
-    paths: ["gestora/**", "site/**", "empresa/politicas.json", ".github/workflows/fechamento.yml"]
 
 permissions:
   contents: write
