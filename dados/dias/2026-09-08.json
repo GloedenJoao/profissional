@@ -1,0 +1,39 @@
+{
+  "data": "2026-09-08",
+  "decisao": {
+    "existe": false,
+    "autor": null
+  },
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0003 resolvido: B3 · COTAHIST voltou após 2 dia(s) (corrigir_conector)",
+      "chave": "INC-0003"
+    }
+  ],
+  "incidentes_do_dia": [],
+  "alertas_abertos": [],
+  "alertas_fechados": [
+    "INC-0003"
+  ],
+  "resumo": {
+    "cota": 1.02706857,
+    "pl": 314756959.82,
+    "bench": 1.00725674,
+    "retorno_dia": 0.003037,
+    "fluxo": 610513.82,
+    "pesos": {
+      "caixa": 0.4524,
+      "prefixado": 0.1455,
+      "inflacao": 0.1475,
+      "dolar": 0.0931,
+      "bolsa": 0.1615
+    },
+    "divida_tecnica": 33.6,
+    "incidentes_abertos": 0,
+    "credibilidade": 0.896,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2009490.2
+  }
+}

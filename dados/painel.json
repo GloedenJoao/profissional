@@ -1,0 +1,1367 @@
+{
+  "empresa": "Capivara Asset",
+  "fundo": "Capivara Multimercado FIC FIM",
+  "aviso": "Empresa e fundo fictícios. Dados de mercado reais; nada aqui é recomendação de investimento.",
+  "data_referencia": "2026-09-30",
+  "proximo_dia_util": "2026-10-01",
+  "gerado_em": "2026-10-01T23:24:23+00:00",
+  "resumo": {
+    "cota": 1.035978,
+    "pl": 327530757.59,
+    "retorno_dia": 0.003782080703101931,
+    "retorno_mes": 0.020610739966181235,
+    "cdi_mes": 0.010816724663458288,
+    "retorno_total": 0.03597827840928747,
+    "cdi_total": 0.015526140170526004,
+    "fluxo_dia": 525120.48,
+    "incidentes_abertos": 0,
+    "credibilidade": 0.911,
+    "confianca_media": 1.0,
+    "divida_tecnica": 26.2,
+    "caixa_gestora": 2029491.49,
+    "alertas": 1
+  },
+  "extracao": {
+    "divida_tecnica": 26.2,
+    "equipe": 3,
+    "orcamento_dia": 1000,
+    "fontes": [
+      {
+        "id": "bcb_sgs",
+        "nome": "BCB · SGS",
+        "series": [
+          "cdi",
+          "selic",
+          "dolar",
+          "ipca"
+        ],
+        "real": "ok",
+        "erro_real": null,
+        "liberado_ate": {
+          "cdi": "2026-09-30",
+          "selic": "2026-09-30",
+          "dolar": "2026-09-30",
+          "ipca": "2026-08-01"
+        },
+        "alternativa_ligada": false,
+        "incidente": null
+      },
+      {
+        "id": "bcb_ptax",
+        "nome": "BCB · PTAX (Olinda)",
+        "series": [
+          "dolar_ptax"
+        ],
+        "real": "ok",
+        "erro_real": null,
+        "liberado_ate": {
+          "dolar_ptax": "2026-09-30"
+        },
+        "alternativa_ligada": false,
+        "incidente": null
+      },
+      {
+        "id": "bcb_focus",
+        "nome": "BCB · Focus (Olinda)",
+        "series": [
+          "focus_ipca",
+          "focus_selic"
+        ],
+        "real": "ok",
+        "erro_real": null,
+        "liberado_ate": {
+          "focus_ipca": "2026-09-25",
+          "focus_selic": "2026-09-25"
+        },
+        "alternativa_ligada": false,
+        "incidente": null
+      },
+      {
+        "id": "tesouro",
+        "nome": "Tesouro Direto (CSV)",
+        "series": [
+          "tesouro"
+        ],
+        "real": "ok",
+        "erro_real": null,
+        "liberado_ate": {
+          "tesouro": "2026-09-30"
+        },
+        "alternativa_ligada": false,
+        "incidente": null
+      },
+      {
+        "id": "yahoo",
+        "nome": "Yahoo Finance",
+        "series": [
+          "ibov",
+          "bova11"
+        ],
+        "real": "ok",
+        "erro_real": null,
+        "liberado_ate": {
+          "ibov": "2026-09-30",
+          "bova11": "2026-09-30"
+        },
+        "alternativa_ligada": false,
+        "incidente": null
+      },
+      {
+        "id": "b3",
+        "nome": "B3 · COTAHIST",
+        "series": [
+          "bova11_b3"
+        ],
+        "real": "ok",
+        "erro_real": null,
+        "liberado_ate": {
+          "bova11_b3": "2026-09-30"
+        },
+        "alternativa_ligada": false,
+        "incidente": null
+      }
+    ],
+    "incidentes": [
+      {
+        "id": "INC-0005",
+        "fonte": "yahoo",
+        "tipo": "atraso",
+        "aberto_em": "2026-09-23",
+        "estado": "resolvido",
+        "dias": 1,
+        "acao": "aguardar",
+        "detalhe": "a fonte publicou atrasado",
+        "resolvido_em": "2026-09-24",
+        "historico": [
+          "2026-09-24: resolvido (aguardar)"
+        ],
+        "issue": null
+      },
+      {
+        "id": "INC-0004",
+        "fonte": "b3",
+        "tipo": "atraso",
+        "aberto_em": "2026-09-22",
+        "estado": "resolvido",
+        "dias": 1,
+        "acao": "aguardar",
+        "detalhe": "a fonte publicou atrasado",
+        "resolvido_em": "2026-09-23",
+        "historico": [
+          "2026-09-23: resolvido (aguardar)"
+        ],
+        "issue": null
+      },
+      {
+        "id": "INC-0003",
+        "fonte": "b3",
+        "tipo": "mudanca_formato",
+        "aberto_em": "2026-09-03",
+        "estado": "resolvido",
+        "dias": 2,
+        "acao": "corrigir_conector",
+        "detalhe": "a fonte mudou o formato e o conector quebrou",
+        "resolvido_em": "2026-09-08",
+        "historico": [
+          "2026-09-08: resolvido (corrigir_conector)"
+        ],
+        "issue": null
+      },
+      {
+        "id": "INC-0002",
+        "fonte": "yahoo",
+        "tipo": "mudanca_formato",
+        "aberto_em": "2026-08-27",
+        "estado": "resolvido",
+        "dias": 2,
+        "acao": "corrigir_conector",
+        "detalhe": "a fonte mudou o formato e o conector quebrou",
+        "resolvido_em": "2026-08-31",
+        "historico": [
+          "2026-08-31: resolvido (corrigir_conector)"
+        ],
+        "issue": null
+      },
+      {
+        "id": "INC-0001",
+        "fonte": "bcb_sgs",
+        "tipo": "atraso",
+        "aberto_em": "2026-08-24",
+        "estado": "resolvido",
+        "dias": 5,
+        "acao": "aguardar",
+        "detalhe": "a fonte publicou atrasado",
+        "resolvido_em": "2026-08-31",
+        "historico": [
+          "2026-08-31: resolvido (aguardar)"
+        ],
+        "issue": null
+      }
+    ],
+    "disponibilidade": [
+      {
+        "data": "2026-09-02",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "ok"
+        }
+      },
+      {
+        "data": "2026-09-03",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "mudanca_formato"
+        }
+      },
+      {
+        "data": "2026-09-04",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "mudanca_formato"
+        }
+      },
+      {
+        "data": "2026-09-08",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "ok"
+        }
+      },
+      {
+        "data": "2026-09-09",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "ok"
+        }
+      },
+      {
+        "data": "2026-09-10",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "ok"
+        }
+      },
+      {
+        "data": "2026-09-11",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "ok"
+        }
+      },
+      {
+        "data": "2026-09-14",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "ok"
+        }
+      },
+      {
+        "data": "2026-09-15",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "ok"
+        }
+      },
+      {
+        "data": "2026-09-16",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "ok"
+        }
+      },
+      {
+        "data": "2026-09-17",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "ok"
+        }
+      },
+      {
+        "data": "2026-09-18",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "ok"
+        }
+      },
+      {
+        "data": "2026-09-21",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "ok"
+        }
+      },
+      {
+        "data": "2026-09-22",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "atraso"
+        }
+      },
+      {
+        "data": "2026-09-23",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "atraso",
+          "b3": "ok"
+        }
+      },
+      {
+        "data": "2026-09-24",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "ok"
+        }
+      },
+      {
+        "data": "2026-09-25",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "ok"
+        }
+      },
+      {
+        "data": "2026-09-28",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "ok"
+        }
+      },
+      {
+        "data": "2026-09-29",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "ok"
+        }
+      },
+      {
+        "data": "2026-09-30",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "ok"
+        }
+      }
+    ]
+  },
+  "dashboards": {
+    "credibilidade": 0.911,
+    "confianca_media": 1.0,
+    "indicadores": [
+      {
+        "id": "cdi",
+        "nome": "CDI (% a.a.)",
+        "data_ref": "2026-09-30",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 13.65,
+        "confianca": 1.0,
+        "valor_anterior": 13.65
+      },
+      {
+        "id": "selic",
+        "nome": "Selic meta (% a.a.)",
+        "data_ref": "2026-09-30",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 13.75,
+        "confianca": 1.0,
+        "valor_anterior": 13.75
+      },
+      {
+        "id": "dolar",
+        "nome": "Dólar PTAX (R$)",
+        "data_ref": "2026-09-30",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 5.1809,
+        "confianca": 1.0,
+        "valor_anterior": 5.2204
+      },
+      {
+        "id": "ipca_12m",
+        "nome": "IPCA 12 meses (%)",
+        "data_ref": "2026-08-01",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 4.22,
+        "confianca": 1.0,
+        "valor_anterior": 4.22
+      },
+      {
+        "id": "focus_ipca",
+        "nome": "Focus IPCA do ano (%)",
+        "data_ref": "2026-09-25",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 4.9915,
+        "confianca": 1.0,
+        "valor_anterior": 4.9915
+      },
+      {
+        "id": "focus_selic",
+        "nome": "Focus Selic fim do ano (%)",
+        "data_ref": "2026-09-25",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 13.5,
+        "confianca": 1.0,
+        "valor_anterior": 13.5
+      },
+      {
+        "id": "ibov",
+        "nome": "Ibovespa (pts)",
+        "data_ref": "2026-09-30",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 186340.0,
+        "confianca": 1.0,
+        "valor_anterior": 183828.0
+      },
+      {
+        "id": "bova11",
+        "nome": "BOVA11 (R$)",
+        "data_ref": "2026-09-30",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 184.08,
+        "confianca": 1.0,
+        "valor_anterior": 181.05
+      },
+      {
+        "id": "taxa_pre",
+        "nome": "Tesouro Prefixado (% a.a.)",
+        "data_ref": "2026-09-30",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 13.76,
+        "confianca": 1.0,
+        "valor_anterior": 13.87
+      },
+      {
+        "id": "taxa_ipca",
+        "nome": "Tesouro IPCA+ (% a.a. real)",
+        "data_ref": "2026-09-30",
+        "defasagem": 0,
+        "via": "principal",
+        "estrategia": null,
+        "valor": 7.43,
+        "confianca": 1.0,
+        "valor_anterior": 7.54
+      }
+    ],
+    "estimativas_pendentes": [],
+    "estrategia_padrao": "usar_ontem"
+  },
+  "executivos": {
+    "alvo": {
+      "caixa": 0.45,
+      "prefixado": 0.15,
+      "inflacao": 0.15,
+      "dolar": 0.1,
+      "bolsa": 0.15
+    },
+    "pesos": {
+      "caixa": 0.4682881529352956,
+      "prefixado": 0.141179814462613,
+      "inflacao": 0.14471132430985142,
+      "dolar": 0.09118261674878395,
+      "bolsa": 0.15463809154345604
+    },
+    "limites": {
+      "caixa": [
+        0.1,
+        1.0
+      ],
+      "prefixado": [
+        0.0,
+        0.4
+      ],
+      "inflacao": [
+        0.0,
+        0.4
+      ],
+      "dolar": [
+        0.0,
+        0.2
+      ],
+      "bolsa": [
+        0.0,
+        0.3
+      ]
+    },
+    "congelados": [],
+    "dias_sem_decisao": 30,
+    "ultima_decisao": null,
+    "decisoes_recentes": [],
+    "gestora": {
+      "caixa": 2029491.49,
+      "receita_dia": 12976.93,
+      "custo_dia": 11500
+    }
+  },
+  "alertas": [
+    {
+      "chave": "EXEC-AUSENTE",
+      "titulo": "Executivos sem decisão registrada",
+      "area": "executivos",
+      "sev": "baixa",
+      "aberto_em": "2026-08-21",
+      "detalhe": null,
+      "issue": {
+        "numero": 2,
+        "url": "https://github.com/GloedenJoao/profissional/issues/2",
+        "estado": "open"
+      }
+    }
+  ],
+  "dias": [
+    {
+      "data": "2026-09-30",
+      "eventos": [],
+      "decisao": {
+        "existe": false,
+        "autor": null
+      }
+    },
+    {
+      "data": "2026-09-29",
+      "eventos": [],
+      "decisao": {
+        "existe": false,
+        "autor": null
+      }
+    },
+    {
+      "data": "2026-09-28",
+      "eventos": [],
+      "decisao": {
+        "existe": false,
+        "autor": null
+      }
+    },
+    {
+      "data": "2026-09-25",
+      "eventos": [],
+      "decisao": {
+        "existe": false,
+        "autor": null
+      }
+    },
+    {
+      "data": "2026-09-24",
+      "eventos": [
+        {
+          "area": "extracao",
+          "tipo": "resolvido",
+          "texto": "INC-0005 resolvido: Yahoo Finance voltou após 1 dia(s) (aguardar)",
+          "chave": "INC-0005"
+        }
+      ],
+      "decisao": {
+        "existe": false,
+        "autor": null
+      }
+    },
+    {
+      "data": "2026-09-23",
+      "eventos": [
+        {
+          "area": "extracao",
+          "tipo": "resolvido",
+          "texto": "INC-0004 resolvido: B3 · COTAHIST voltou após 1 dia(s) (aguardar)",
+          "chave": "INC-0004"
+        },
+        {
+          "area": "extracao",
+          "tipo": "aberto",
+          "texto": "INC-0005: Yahoo Finance — a fonte publicou atrasado",
+          "chave": "INC-0005"
+        }
+      ],
+      "decisao": {
+        "existe": false,
+        "autor": null
+      }
+    },
+    {
+      "data": "2026-09-22",
+      "eventos": [
+        {
+          "area": "extracao",
+          "tipo": "aberto",
+          "texto": "INC-0004: B3 · COTAHIST — a fonte publicou atrasado",
+          "chave": "INC-0004"
+        }
+      ],
+      "decisao": {
+        "existe": false,
+        "autor": null
+      }
+    },
+    {
+      "data": "2026-09-21",
+      "eventos": [],
+      "decisao": {
+        "existe": false,
+        "autor": null
+      }
+    },
+    {
+      "data": "2026-09-18",
+      "eventos": [],
+      "decisao": {
+        "existe": false,
+        "autor": null
+      }
+    },
+    {
+      "data": "2026-09-17",
+      "eventos": [],
+      "decisao": {
+        "existe": false,
+        "autor": null
+      }
+    },
+    {
+      "data": "2026-09-16",
+      "eventos": [],
+      "decisao": {
+        "existe": false,
+        "autor": null
+      }
+    },
+    {
+      "data": "2026-09-15",
+      "eventos": [],
+      "decisao": {
+        "existe": false,
+        "autor": null
+      }
+    },
+    {
+      "data": "2026-09-14",
+      "eventos": [],
+      "decisao": {
+        "existe": false,
+        "autor": null
+      }
+    },
+    {
+      "data": "2026-09-11",
+      "eventos": [],
+      "decisao": {
+        "existe": false,
+        "autor": null
+      }
+    },
+    {
+      "data": "2026-09-10",
+      "eventos": [],
+      "decisao": {
+        "existe": false,
+        "autor": null
+      }
+    }
+  ],
+  "historico": [
+    {
+      "data": "2026-08-19",
+      "cota": 1.00158249,
+      "bench": 1.0005166,
+      "pl": 300422289.91,
+      "fluxo": -52456.9,
+      "divida_tecnica": 34.45,
+      "credibilidade": 0.851,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2000424.07,
+      "pesos": {
+        "caixa": 0.4494,
+        "prefixado": 0.15,
+        "inflacao": 0.1503,
+        "dolar": 0.0992,
+        "bolsa": 0.1511
+      }
+    },
+    {
+      "data": "2026-08-20",
+      "cota": 1.00208502,
+      "bench": 1.00103347,
+      "pl": 300867399.42,
+      "fluxo": 294376.95,
+      "divida_tecnica": 33.9,
+      "credibilidade": 0.852,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2000852.04,
+      "pesos": {
+        "caixa": 0.4499,
+        "prefixado": 0.1498,
+        "inflacao": 0.15,
+        "dolar": 0.0994,
+        "bolsa": 0.1509
+      }
+    },
+    {
+      "data": "2026-08-21",
+      "cota": 1.00654014,
+      "bench": 1.0015506,
+      "pl": 302158665.86,
+      "fluxo": -46344.7,
+      "divida_tecnica": 33.35,
+      "credibilidade": 0.853,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2001344.78,
+      "pesos": {
+        "caixa": 0.448,
+        "prefixado": 0.1495,
+        "inflacao": 0.1507,
+        "dolar": 0.0985,
+        "bolsa": 0.1533
+      }
+    },
+    {
+      "data": "2026-08-24",
+      "cota": 1.00711669,
+      "bench": 1.002068,
+      "pl": 303603730.68,
+      "fluxo": 1271985.57,
+      "divida_tecnica": 33.5,
+      "credibilidade": 0.852,
+      "confianca_media": 0.92,
+      "incidentes_abertos": 1.0,
+      "caixa_gestora": 2001842.55,
+      "pesos": {
+        "caixa": 0.4503,
+        "prefixado": 0.149,
+        "inflacao": 0.1498,
+        "dolar": 0.0978,
+        "bolsa": 0.1532
+      }
+    },
+    {
+      "data": "2026-08-25",
+      "cota": 1.01036719,
+      "bench": 1.00258567,
+      "pl": 304994676.55,
+      "fluxo": 411056.69,
+      "divida_tecnica": 33.65,
+      "credibilidade": 0.851,
+      "confianca_media": 0.88,
+      "incidentes_abertos": 1.0,
+      "caixa_gestora": 2002429.68,
+      "pesos": {
+        "caixa": 0.4497,
+        "prefixado": 0.1485,
+        "inflacao": 0.1494,
+        "dolar": 0.0973,
+        "bolsa": 0.1551
+      }
+    },
+    {
+      "data": "2026-08-26",
+      "cota": 1.01181272,
+      "bench": 1.00310361,
+      "pl": 306304406.65,
+      "fluxo": 873374.42,
+      "divida_tecnica": 33.8,
+      "credibilidade": 0.849,
+      "confianca_media": 0.84,
+      "incidentes_abertos": 1.0,
+      "caixa_gestora": 2003050.44,
+      "pesos": {
+        "caixa": 0.4509,
+        "prefixado": 0.1482,
+        "inflacao": 0.1495,
+        "dolar": 0.0971,
+        "bolsa": 0.1543
+      }
+    },
+    {
+      "data": "2026-08-27",
+      "cota": 1.01185856,
+      "bench": 1.00362181,
+      "pl": 306381544.83,
+      "fluxo": 63262.2,
+      "divida_tecnica": 34.65,
+      "credibilidade": 0.845,
+      "confianca_media": 0.76,
+      "incidentes_abertos": 2.0,
+      "caixa_gestora": 2003706.41,
+      "pesos": {
+        "caixa": 0.4511,
+        "prefixado": 0.148,
+        "inflacao": 0.1488,
+        "dolar": 0.0972,
+        "bolsa": 0.1548
+      }
+    },
+    {
+      "data": "2026-08-28",
+      "cota": 1.01390329,
+      "bench": 1.00414028,
+      "pl": 307531347.67,
+      "fluxo": 530677.52,
+      "divida_tecnica": 35.5,
+      "credibilidade": 0.84,
+      "confianca_media": 0.72,
+      "incidentes_abertos": 2.0,
+      "caixa_gestora": 2004389.46,
+      "pesos": {
+        "caixa": 0.4514,
+        "prefixado": 0.1477,
+        "inflacao": 0.1489,
+        "dolar": 0.0975,
+        "bolsa": 0.1545
+      }
+    },
+    {
+      "data": "2026-08-31",
+      "cota": 1.0150572,
+      "bench": 1.00465902,
+      "pl": 308924612.12,
+      "fluxo": 1043265.01,
+      "divida_tecnica": 34.95,
+      "credibilidade": 0.891,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2005107.46,
+      "pesos": {
+        "caixa": 0.4529,
+        "prefixado": 0.147,
+        "inflacao": 0.1478,
+        "dolar": 0.0967,
+        "bolsa": 0.1557
+      }
+    },
+    {
+      "data": "2026-09-01",
+      "cota": 1.01520216,
+      "bench": 1.00517803,
+      "pl": 308759045.15,
+      "fluxo": -209684.57,
+      "divida_tecnica": 34.4,
+      "credibilidade": 0.892,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2005868.61,
+      "pesos": {
+        "caixa": 0.4527,
+        "prefixado": 0.1468,
+        "inflacao": 0.1465,
+        "dolar": 0.0963,
+        "bolsa": 0.1578
+      }
+    },
+    {
+      "data": "2026-09-02",
+      "cota": 1.02190279,
+      "bench": 1.0056973,
+      "pl": 311824157.44,
+      "fluxo": 1027215.12,
+      "divida_tecnica": 33.85,
+      "credibilidade": 0.893,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2006702.31,
+      "pesos": {
+        "caixa": 0.4517,
+        "prefixado": 0.146,
+        "inflacao": 0.1467,
+        "dolar": 0.0948,
+        "bolsa": 0.1608
+      }
+    },
+    {
+      "data": "2026-09-03",
+      "cota": 1.0229289,
+      "bench": 1.00621684,
+      "pl": 313018537.08,
+      "fluxo": 881271.63,
+      "divida_tecnica": 34.0,
+      "credibilidade": 0.894,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 1.0,
+      "caixa_gestora": 2007589.2,
+      "pesos": {
+        "caixa": 0.453,
+        "prefixado": 0.1459,
+        "inflacao": 0.1471,
+        "dolar": 0.0939,
+        "bolsa": 0.1602
+      }
+    },
+    {
+      "data": "2026-09-04",
+      "cota": 1.0239593,
+      "bench": 1.00673666,
+      "pl": 313195421.06,
+      "fluxo": -138420.45,
+      "divida_tecnica": 34.15,
+      "credibilidade": 0.895,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 1.0,
+      "caixa_gestora": 2008523.58,
+      "pesos": {
+        "caixa": 0.4525,
+        "prefixado": 0.1458,
+        "inflacao": 0.1475,
+        "dolar": 0.0943,
+        "bolsa": 0.1598
+      }
+    },
+    {
+      "data": "2026-09-08",
+      "cota": 1.02706857,
+      "bench": 1.00725674,
+      "pl": 314756959.82,
+      "fluxo": 610513.82,
+      "divida_tecnica": 33.6,
+      "credibilidade": 0.896,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2009490.2,
+      "pesos": {
+        "caixa": 0.4524,
+        "prefixado": 0.1455,
+        "inflacao": 0.1475,
+        "dolar": 0.0931,
+        "bolsa": 0.1615
+      }
+    },
+    {
+      "data": "2026-09-09",
+      "cota": 1.0259758,
+      "bench": 1.00777708,
+      "pl": 314562197.18,
+      "fluxo": 140130.28,
+      "divida_tecnica": 33.05,
+      "credibilidade": 0.897,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2010467.76,
+      "pesos": {
+        "caixa": 0.4533,
+        "prefixado": 0.1457,
+        "inflacao": 0.1476,
+        "dolar": 0.0934,
+        "bolsa": 0.16
+      }
+    },
+    {
+      "data": "2026-09-10",
+      "cota": 1.02786009,
+      "bench": 1.0082977,
+      "pl": 316055350.24,
+      "fluxo": 915433.73,
+      "divida_tecnica": 32.5,
+      "credibilidade": 0.898,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2011473.81,
+      "pesos": {
+        "caixa": 0.4542,
+        "prefixado": 0.1448,
+        "inflacao": 0.1465,
+        "dolar": 0.0933,
+        "bolsa": 0.1612
+      }
+    },
+    {
+      "data": "2026-09-11",
+      "cota": 1.0288817,
+      "bench": 1.00881859,
+      "pl": 318032184.51,
+      "fluxo": 1662699.82,
+      "divida_tecnica": 31.95,
+      "credibilidade": 0.899,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2012528.65,
+      "pesos": {
+        "caixa": 0.4568,
+        "prefixado": 0.1444,
+        "inflacao": 0.1474,
+        "dolar": 0.0923,
+        "bolsa": 0.1591
+      }
+    },
+    {
+      "data": "2026-09-14",
+      "cota": 1.0276511,
+      "bench": 1.00933974,
+      "pl": 318434562.71,
+      "fluxo": 782762.21,
+      "divida_tecnica": 31.4,
+      "credibilidade": 0.9,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2013634.38,
+      "pesos": {
+        "caixa": 0.4589,
+        "prefixado": 0.1437,
+        "inflacao": 0.1461,
+        "dolar": 0.0936,
+        "bolsa": 0.1577
+      }
+    },
+    {
+      "data": "2026-09-15",
+      "cota": 1.02935993,
+      "bench": 1.00986117,
+      "pl": 319868601.11,
+      "fluxo": 904530.4,
+      "divida_tecnica": 30.85,
+      "credibilidade": 0.901,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2014792.19,
+      "pesos": {
+        "caixa": 0.4599,
+        "prefixado": 0.1435,
+        "inflacao": 0.1457,
+        "dolar": 0.0928,
+        "bolsa": 0.1582
+      }
+    },
+    {
+      "data": "2026-09-16",
+      "cota": 1.02809507,
+      "bench": 1.01038286,
+      "pl": 320357364.17,
+      "fluxo": 881810.78,
+      "divida_tecnica": 30.3,
+      "credibilidade": 0.902,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2015970.29,
+      "pesos": {
+        "caixa": 0.4621,
+        "prefixado": 0.1432,
+        "inflacao": 0.145,
+        "dolar": 0.0927,
+        "bolsa": 0.1569
+      }
+    },
+    {
+      "data": "2026-09-17",
+      "cota": 1.02981209,
+      "bench": 1.01089602,
+      "pl": 321548683.3,
+      "fluxo": 656291.97,
+      "divida_tecnica": 29.75,
+      "credibilidade": 0.903,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2017204.62,
+      "pesos": {
+        "caixa": 0.4627,
+        "prefixado": 0.143,
+        "inflacao": 0.1452,
+        "dolar": 0.0924,
+        "bolsa": 0.1568
+      }
+    },
+    {
+      "data": "2026-09-18",
+      "cota": 1.02919254,
+      "bench": 1.01140943,
+      "pl": 322392966.55,
+      "fluxo": 1037731.53,
+      "divida_tecnica": 29.2,
+      "credibilidade": 0.904,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2018457.32,
+      "pesos": {
+        "caixa": 0.4649,
+        "prefixado": 0.1426,
+        "inflacao": 0.1446,
+        "dolar": 0.0922,
+        "bolsa": 0.1557
+      }
+    },
+    {
+      "data": "2026-09-21",
+      "cota": 1.03011063,
+      "bench": 1.01192311,
+      "pl": 323336542.73,
+      "fluxo": 655983.93,
+      "divida_tecnica": 28.65,
+      "credibilidade": 0.905,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2019762.61,
+      "pesos": {
+        "caixa": 0.4657,
+        "prefixado": 0.1424,
+        "inflacao": 0.1442,
+        "dolar": 0.0911,
+        "bolsa": 0.1565
+      }
+    },
+    {
+      "data": "2026-09-22",
+      "cota": 1.0304036,
+      "bench": 1.01243704,
+      "pl": 324545377.28,
+      "fluxo": 1116877.57,
+      "divida_tecnica": 28.8,
+      "credibilidade": 0.906,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 1.0,
+      "caixa_gestora": 2021097.58,
+      "pesos": {
+        "caixa": 0.4676,
+        "prefixado": 0.142,
+        "inflacao": 0.1433,
+        "dolar": 0.0909,
+        "bolsa": 0.1562
+      }
+    },
+    {
+      "data": "2026-09-23",
+      "cota": 1.03010516,
+      "bench": 1.01295124,
+      "pl": 324410765.09,
+      "fluxo": -40614.89,
+      "divida_tecnica": 28.95,
+      "credibilidade": 0.906,
+      "confianca_media": 0.96,
+      "incidentes_abertos": 1.0,
+      "caixa_gestora": 2022473.15,
+      "pesos": {
+        "caixa": 0.4679,
+        "prefixado": 0.1421,
+        "inflacao": 0.1435,
+        "dolar": 0.0914,
+        "bolsa": 0.1551
+      }
+    },
+    {
+      "data": "2026-09-24",
+      "cota": 1.02924331,
+      "bench": 1.0134657,
+      "pl": 324314338.94,
+      "fluxo": 174997.09,
+      "divida_tecnica": 28.4,
+      "credibilidade": 0.907,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2023836.33,
+      "pesos": {
+        "caixa": 0.4688,
+        "prefixado": 0.1421,
+        "inflacao": 0.1436,
+        "dolar": 0.0921,
+        "bolsa": 0.1534
+      }
+    },
+    {
+      "data": "2026-09-25",
+      "cota": 1.03026834,
+      "bench": 1.01398041,
+      "pl": 324389009.04,
+      "fluxo": -248316.36,
+      "divida_tecnica": 27.85,
+      "credibilidade": 0.908,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2025219.27,
+      "pesos": {
+        "caixa": 0.4681,
+        "prefixado": 0.1419,
+        "inflacao": 0.1442,
+        "dolar": 0.0924,
+        "bolsa": 0.1534
+      }
+    },
+    {
+      "data": "2026-09-28",
+      "cota": 1.02971113,
+      "bench": 1.01449539,
+      "pl": 325055649.71,
+      "fluxo": 842082.59,
+      "divida_tecnica": 27.3,
+      "credibilidade": 0.909,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2026585.4,
+      "pesos": {
+        "caixa": 0.4699,
+        "prefixado": 0.1416,
+        "inflacao": 0.1435,
+        "dolar": 0.0924,
+        "bolsa": 0.1525
+      }
+    },
+    {
+      "data": "2026-09-29",
+      "cota": 1.03207489,
+      "bench": 1.01501064,
+      "pl": 325773535.31,
+      "fluxo": -28296.7,
+      "divida_tecnica": 26.75,
+      "credibilidade": 0.91,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2028014.56,
+      "pesos": {
+        "caixa": 0.469,
+        "prefixado": 0.1416,
+        "inflacao": 0.1441,
+        "dolar": 0.0924,
+        "bolsa": 0.1529
+      }
+    },
+    {
+      "data": "2026-09-30",
+      "cota": 1.03597828,
+      "bench": 1.01552614,
+      "pl": 327530757.59,
+      "fluxo": 525120.48,
+      "divida_tecnica": 26.2,
+      "credibilidade": 0.911,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2029491.49,
+      "pesos": {
+        "caixa": 0.4683,
+        "prefixado": 0.1412,
+        "inflacao": 0.1447,
+        "dolar": 0.0912,
+        "bolsa": 0.1546
+      }
+    }
+  ],
+  "nomes": {
+    "ativos": {
+      "caixa": "Caixa (CDI)",
+      "prefixado": "Tesouro Prefixado",
+      "inflacao": "Tesouro IPCA+",
+      "dolar": "Dólar",
+      "bolsa": "Ações (BOVA11)"
+    },
+    "acoes_extracao": {
+      "aguardar": "esperar a fonte voltar sozinha",
+      "fonte_alternativa": "ligar a fonte alternativa (quando existe)",
+      "corrigir_conector": "a equipe trabalha no conector até resolver",
+      "escalar": "pedir ajuda aos executivos (mais orçamento/equipe)"
+    },
+    "estrategias": {
+      "usar_ontem": "repete o último valor conhecido, com aviso de defasagem",
+      "estimar": "estima o valor de hoje a partir de outras séries",
+      "suspender": "não publica o número (executivos não decidem sobre ele)"
+    },
+    "tipos_incidente": {
+      "atraso": "a fonte publicou atrasado",
+      "fora_do_ar": "a fonte saiu do ar",
+      "mudanca_formato": "a fonte mudou o formato e o conector quebrou",
+      "falha_real": "o conector falhou de verdade nesta extração"
+    }
+  },
+  "processos": {
+    "issues_abertas": [
+      {
+        "numero": 2,
+        "titulo": "Executivos sem decisão registrada",
+        "url": "https://github.com/GloedenJoao/profissional/issues/2",
+        "rotulos": [
+          "simulacao",
+          "area:executivos",
+          "sev:baixa"
+        ],
+        "criada_em": "2026-10-01T23:22:32Z"
+      }
+    ],
+    "repositorio": "GloedenJoao/profissional"
+  }
+}

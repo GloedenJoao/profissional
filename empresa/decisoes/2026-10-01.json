@@ -1,0 +1,11 @@
+{
+  "data": "2026-10-01",
+  "autor": "agente",
+  "executivos": {
+    "alocacao": {"caixa": 0.4, "prefixado": 0.2, "inflacao": 0.15, "dolar": 0.1, "bolsa": 0.15},
+    "equipe_extracao": 3,
+    "orcamento_extracao_dia": 1200,
+    "justificativa": "Selic em 13,75% e Focus apontando 13,5% no fim do ano: prefixado a 13,76% ganha se o ciclo virar. Sobe prefixado de 15% para 20% tirando do caixa. Orçamento de Extração sobe para R$ 1.200 para manter a dívida técnica (26) baixa."
+  },
+  "observacoes": "Primeira decisão da diretoria. Fontes todas no ar no fechamento de 30/09."
+}

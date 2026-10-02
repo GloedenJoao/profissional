@@ -1,0 +1,104 @@
+name: Fechamento
+
+# O dia útil da Capivara Asset: extrai as fontes públicas reais, simula as áreas da empresa,
+# espelha os alertas em issues, grava os dados no repositório e publica o site dos painéis.
+on:
+  schedule:
+    - cron: "7 11 * * 1-5" # 08:07 em Brasília, seg–sex (o motor pula feriados da B3)
+  workflow_dispatch:
+    inputs:
+      data:
+        description: "Data de referência AAAA-MM-DD (vazio = dia útil anterior a hoje)"
+        required: false
+      inicio:
+        description: "Fundação da empresa AAAA-MM-DD (só vale se ainda não existe estado)"
+        required: false
+
+permissions:
+  contents: write
+  issues: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: fechamento-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  fechamento:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Testes do motor
+        run: |
+          pip install -q pytest
+          python -m pytest -q
+
+      - name: Extrair e simular
+        env:
+          DATA: ${{ inputs.data }}
+          INICIO: ${{ inputs.inicio }}
+        run: python -m gestora fechamento ${DATA:+--data "$DATA"} ${INICIO:+--inicio "$INICIO"}
+
+      - name: Abrir, comentar e fechar issues
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python -m gestora sincronizar
+
+      - name: Gravar os dados do dia
+        run: |
+          git config user.name "capivara-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dados
+          if git diff --cached --quiet; then echo "nada novo"; exit 0; fi
+          ref=$(python -c "import json;print(json.load(open('dados/estado.json'))['ultima_data'])")
+          git commit -q -m "dados: fechamento de $ref"
+          for i in 1 2 3 4; do
+            git push && exit 0
+            git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" || true
+            sleep $((i * 3))
+          done
+          exit 1
+
+      - name: Montar o site
+        run: |
+          mkdir -p _site
+          cp site/* _site/
+          cp dados/painel.json _site/painel.json
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Avisar se o fechamento quebrou
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          titulo="Fechamento falhou em $(date -u +%F)"
+          gh label create simulacao --color 5319e7 2>/dev/null || true
+          gh label create area:extracao --color 0e8a16 2>/dev/null || true
+          if ! gh issue list --label simulacao --state open --search "\"$titulo\" in:title" --json number -q '.[0].number' | grep -q .; then
+            gh issue create --title "$titulo" --label simulacao --label area:extracao \
+              --body "O workflow de fechamento quebrou: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}. A Extração precisa investigar."
+          fi
+
+  site:
+    needs: fechamento
+    runs-on: ubuntu-latest
+    continue-on-error: true # depende do GitHub Pages ligado (Settings → Pages → Source: GitHub Actions)
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - id: deploy
+        uses: actions/deploy-pages@v4

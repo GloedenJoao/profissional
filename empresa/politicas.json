@@ -1,0 +1,61 @@
+{
+  "versao": 1,
+  "extracao": {
+    "acao_padrao": {
+      "atraso": "aguardar",
+      "fora_do_ar": "fonte_alternativa",
+      "mudanca_formato": "corrigir_conector",
+      "falha_real": "corrigir_conector"
+    }
+  },
+  "dashboards": {
+    "estrategia_padrao": "usar_ontem",
+    "por_indicador": {
+      "cdi": "estimar"
+    },
+    "tolerancia_erro_estimativa": {
+      "cdi": 0.05,
+      "selic": 0.01,
+      "dolar": 0.006,
+      "ipca_12m": 0.1,
+      "focus_ipca": 0.1,
+      "focus_selic": 0.1,
+      "ibov": 0.012,
+      "bova11": 0.012,
+      "taxa_pre": 0.08,
+      "taxa_ipca": 0.08
+    }
+  },
+  "executivos": {
+    "max_defasagem_para_operar": 2,
+    "rebalancear_se_desvio_maior_que": 0.05
+  },
+  "fundo": {
+    "pl_inicial": 300000000,
+    "taxa_adm": 0.01,
+    "custo_transacao": 0.0005,
+    "limites": {
+      "caixa": [0.1, 1.0],
+      "prefixado": [0.0, 0.4],
+      "inflacao": [0.0, 0.4],
+      "dolar": [0.0, 0.2],
+      "bolsa": [0.0, 0.3]
+    },
+    "alocacao_inicial": {
+      "caixa": 0.45,
+      "prefixado": 0.15,
+      "inflacao": 0.15,
+      "dolar": 0.1,
+      "bolsa": 0.15
+    }
+  },
+  "gestora": {
+    "caixa_inicial": 2000000,
+    "custo_fixo_dia": 6000,
+    "custo_engenheiro_dia": 1500,
+    "equipe_extracao_inicial": 3,
+    "orcamento_extracao_dia_inicial": 1000,
+    "equipe_max": 8,
+    "orcamento_max_dia": 5000
+  }
+}

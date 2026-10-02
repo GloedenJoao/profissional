@@ -1,0 +1,27 @@
+{
+  "data_ref": "2026-09-30",
+  "issues": {
+    "EXEC-AUSENTE": {
+      "numero": 2,
+      "url": "https://github.com/GloedenJoao/profissional/issues/2",
+      "estado": "open"
+    }
+  },
+  "abertas": [
+    {
+      "numero": 2,
+      "titulo": "Executivos sem decisão registrada",
+      "url": "https://github.com/GloedenJoao/profissional/issues/2",
+      "rotulos": [
+        "simulacao",
+        "area:executivos",
+        "sev:baixa"
+      ],
+      "criada_em": "2026-10-01T23:22:32Z"
+    }
+  ],
+  "detalhes": {
+    "EXEC-AUSENTE": null
+  },
+  "log": []
+}
