@@ -11,6 +11,8 @@ import re
 import urllib.error
 import urllib.request
 
+from . import config
+
 CORES = {"simulacao": "5319e7", "area:extracao": "0e8a16", "area:dashboards": "1d76db", "area:executivos": "b60205",
          "area:fundo": "fbca04", "sev:alta": "d93f0b", "sev:media": "fbca04", "sev:baixa": "c2e0c6",
          "conselho": "000000", "dia": "bfdadc", "controle": "0052cc"}
@@ -131,7 +133,8 @@ def texto_controle(cenario: dict) -> str:
     return (f"Painel de controle do cenário **{cenario['nome']}** (`{cenario['id']}`).\n\n"
             f"{cenario.get('descricao', '')}\n\n"
             f"**Quem decide são os times** (Extração, Dashboards e o Comitê de Executivos). {ritmo} "
-            "Para assistir às reuniões, abra a aba **Ao vivo** do cenário no site.\n\n"
+            f"Para acompanhar cada etapa, com as contas de cada fala, abra a **Simulação** no site "
+            f"(https://{config.REPO.split('/')[0].lower()}.github.io/{config.REPO.split('/')[1]}/#/simulacao/dia).\n\n"
             "Para adiantar (só o dono do repositório), comente aqui:\n\n"
             "- `/avancar` — avança 1 dia útil\n"
             "- `/avancar 5` — avança 5 dias úteis\n"

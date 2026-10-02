@@ -106,7 +106,8 @@ def test_resumo_do_avanco(raiz, tmp_path):
     feitos = _avancar(dias=2)
     texto = cli.resumo_avanco(feitos)
     assert texto.startswith("### Teste: 2026-08-04 → 2026-08-05 (2 dia(s)")
-    assert "O que os times decidiram" in texto and "#/teste/aovivo" in texto
+    assert "O que os times decidiram" in texto and "#/simulacao/dia/2026-08-05" in texto
+    assert "valor das decisões" in texto
 
 
 def test_site_reune_os_paineis(raiz):
