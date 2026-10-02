@@ -1,0 +1,102 @@
+{
+  "data": "2026-01-23",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {
+      "INC-0005": "aguardar"
+    },
+    "dashboards": {},
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia. Temos 1 incidente(s) aberto(s) e 3 pessoa(s) na equipe. Vamos priorizar.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:02",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "INC-0005 · BCB · Focus (Olinda) (a fonte publicou atrasado, aberto ontem): `aguardar` — atraso costuma se resolver sozinho.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Todos os números chegaram em dia. Credibilidade dos painéis em 85%. Publicando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo +0,78% contra o CDI em 21 dias, caixa da gestora R$ 2.004.911, credibilidade dos painéis 85%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,29 (-0,45%); BOVA11 175,70 (+1,71%); Tesouro Prefixado 13,10 (-0,23%); Tesouro IPCA+ 7,63 (-0,39%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,015671 (+0,50% no dia), PL R$ 301,3 mi, fluxo de cotistas R$ 962 mil. Caixa da gestora R$ 2,01 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0005",
+      "fonte": "bcb_focus",
+      "tipo": "atraso"
+    }
+  ],
+  "alertas_abertos": [],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 1.01567106,
+    "pl": 301298279.38,
+    "bench": 1.00885753,
+    "retorno_dia": 0.005007,
+    "fluxo": 962449.84,
+    "pesos": {
+      "caixa": 0.1519,
+      "prefixado": 0.2473,
+      "inflacao": 0.2475,
+      "dolar": 0.0975,
+      "bolsa": 0.2558
+    },
+    "divida_tecnica": 31.1,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.848,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2005329.07
+  }
+}
