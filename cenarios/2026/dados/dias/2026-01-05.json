@@ -1,0 +1,39 @@
+{
+  "data": "2026-01-05",
+  "decisao": {
+    "existe": false,
+    "autor": null
+  },
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0001 resolvido: BCB · PTAX (Olinda) voltou após 1 dia(s) (aguardar)",
+      "chave": "INC-0001"
+    }
+  ],
+  "incidentes_do_dia": [],
+  "alertas_abertos": [],
+  "alertas_fechados": [
+    "INC-0001"
+  ],
+  "resumo": {
+    "cota": 1.00106778,
+    "pl": 301069933.96,
+    "bench": 1.00110292,
+    "retorno_dia": 0.001453,
+    "fluxo": 433522.14,
+    "pesos": {
+      "caixa": 0.4513,
+      "prefixado": 0.1504,
+      "inflacao": 0.15,
+      "dolar": 0.0984,
+      "bolsa": 0.15
+    },
+    "divida_tecnica": 34.6,
+    "incidentes_abertos": 0,
+    "credibilidade": 0.852,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2000831.15
+  }
+}

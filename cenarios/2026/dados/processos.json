@@ -1,33 +1,33 @@
 {
-  "data_ref": "2026-01-02",
+  "data_ref": "2026-01-09",
   "issues": {
-    "INC-0001": {
-      "numero": 6,
-      "url": "https://github.com/GloedenJoao/profissional/issues/6",
+    "EXEC-AUSENTE": {
+      "numero": 8,
+      "url": "https://github.com/GloedenJoao/profissional/issues/8",
       "estado": "open"
     }
   },
   "abertas": [
     {
-      "numero": 6,
-      "titulo": "[2026] INC-0001 · BCB · PTAX (Olinda): a fonte publicou atrasado",
-      "url": "https://github.com/GloedenJoao/profissional/issues/6",
+      "numero": 8,
+      "titulo": "[2026] Executivos sem decisão registrada",
+      "url": "https://github.com/GloedenJoao/profissional/issues/8",
       "rotulos": [
-        "area:extracao",
+        "area:executivos",
         "cenario:2026",
-        "sev:media"
+        "sev:baixa"
       ],
-      "criada_em": "2026-10-02T01:26:13Z"
+      "criada_em": "2026-10-02T01:42:02Z"
     }
   ],
   "detalhes": {
-    "INC-0001": "dia 0, ação `aguardar`"
+    "EXEC-AUSENTE": null
   },
   "log": [
-    "aberta #6 INC-0001"
+    "aberta #8 EXEC-AUSENTE"
   ],
   "controle": {
-    "numero": 7,
-    "url": "https://github.com/GloedenJoao/profissional/issues/7"
+    "numero": 9,
+    "url": "https://github.com/GloedenJoao/profissional/issues/9"
   }
 }
