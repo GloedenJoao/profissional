@@ -1,0 +1,183 @@
+{
+  "data": "2026-10-01",
+  "decisao": {
+    "existe": true,
+    "autor": "conselho + times",
+    "intervencao": true
+  },
+  "decisoes": {
+    "extracao": {},
+    "dashboards": {
+      "ibov": "estimar",
+      "bova11": "estimar"
+    },
+    "executivos": {
+      "alocacao": {
+        "caixa": 0.4,
+        "prefixado": 0.2,
+        "inflacao": 0.15,
+        "dolar": 0.1,
+        "bolsa": 0.15
+      },
+      "equipe_extracao": 3,
+      "orcamento_extracao_dia": 1200,
+      "justificativa": "Selic em 13,75% e Focus apontando 13,5% no fim do ano: prefixado a 13,76% ganha se o ciclo virar. Sobe prefixado de 15% para 20% tirando do caixa. Orçamento de Extração sobe para R$ 1.200 para manter a dívida técnica (26) baixa."
+    }
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia! Nenhum incidente aberto. Dívida técnica 26/100, equipe de 3. Seguimos monitorando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0006: BCB · PTAX (Olinda) — a fonte publicou atrasado",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "08:42",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0007: falha real em Yahoo Finance",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Faltam dados novos para: Ibovespa (pts), BOVA11 (R$). Credibilidade em 91%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:02",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "Ibovespa (pts) (1 dia(s) atrasado): `estimar` — só um dia de atraso; estimo pela tendência da última semana.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:04",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "BOVA11 (R$) (1 dia(s) atrasado): `estimar` — só um dia de atraso; estimo pela tendência da última semana.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo +0,90% contra o CDI em 21 dias, caixa da gestora R$ 2.029.491, credibilidade dos painéis 91%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,21 (+0,52%); BOVA11 184,32 (+0,13%) [confiança 60%]; Tesouro Prefixado 13,86 (+0,73%); Tesouro IPCA+ 7,56 (+1,75%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Conselho",
+      "papel": "diretriz de agente",
+      "texto": "Alocação definida pelo conselho: Caixa (CDI) 40%, Tesouro Prefixado 20%, Tesouro IPCA+ 15%, Dólar 10%, Ações (BOVA11) 15%.",
+      "tipo": "conselho"
+    },
+    {
+      "hora": "10:06",
+      "area": "executivos",
+      "quem": "Conselho",
+      "papel": "diretriz de agente",
+      "texto": "Equipe de Extração 3, orçamento R$ 1.200/dia.",
+      "tipo": "conselho"
+    },
+    {
+      "hora": "17:30",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Rebalanceamento: giro R$ 24,9 mi, custo R$ 12.458",
+      "tipo": "evento"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,035250 (-0,07% no dia), PL R$ 329,0 mi, fluxo de cotistas R$ 1.678 mil. Caixa da gestora R$ 2,03 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0006: BCB · PTAX (Olinda) — a fonte publicou atrasado",
+      "chave": "INC-0006"
+    },
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0007: falha real em Yahoo Finance",
+      "chave": "INC-0007"
+    },
+    {
+      "area": "fundo",
+      "tipo": "info",
+      "texto": "Rebalanceamento: giro R$ 24,9 mi, custo R$ 12.458",
+      "chave": null
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0006",
+      "fonte": "bcb_ptax",
+      "tipo": "atraso"
+    },
+    {
+      "id": "INC-0007",
+      "fonte": "yahoo",
+      "tipo": "falha_real"
+    }
+  ],
+  "alertas_abertos": [
+    "INC-0006",
+    "INC-0007"
+  ],
+  "alertas_fechados": [
+    "EXEC-AUSENTE"
+  ],
+  "resumo": {
+    "cota": 1.03524992,
+    "pl": 328978233.59,
+    "bench": 1.01604191,
+    "retorno_dia": -0.000703,
+    "fluxo": 1677813.93,
+    "pesos": {
+      "caixa": 0.4,
+      "prefixado": 0.2,
+      "inflacao": 0.15,
+      "dolar": 0.1,
+      "bolsa": 0.15
+    },
+    "divida_tecnica": 27.05,
+    "incidentes_abertos": 2,
+    "credibilidade": 0.91,
+    "confianca_media": 0.92,
+    "caixa_gestora": 2030780.61
+  }
+}

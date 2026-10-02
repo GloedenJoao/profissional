@@ -1,13 +1,40 @@
 {
-  "data_ref": "2026-09-30",
+  "data_ref": "2026-10-01",
   "issues": {
-    "EXEC-AUSENTE": {
-      "numero": 2,
-      "url": "https://github.com/GloedenJoao/profissional/issues/2",
+    "INC-0007": {
+      "numero": 14,
+      "url": "https://github.com/GloedenJoao/profissional/issues/14",
+      "estado": "open"
+    },
+    "INC-0006": {
+      "numero": 15,
+      "url": "https://github.com/GloedenJoao/profissional/issues/15",
       "estado": "open"
     }
   },
   "abertas": [
+    {
+      "numero": 14,
+      "titulo": "INC-0007 · Yahoo Finance: o conector falhou de verdade nesta extração",
+      "url": "https://github.com/GloedenJoao/profissional/issues/14",
+      "rotulos": [
+        "area:extracao",
+        "sev:alta",
+        "simulacao"
+      ],
+      "criada_em": "2026-10-02T16:36:53Z"
+    },
+    {
+      "numero": 15,
+      "titulo": "INC-0006 · BCB · PTAX (Olinda): a fonte publicou atrasado",
+      "url": "https://github.com/GloedenJoao/profissional/issues/15",
+      "rotulos": [
+        "area:extracao",
+        "sev:media",
+        "simulacao"
+      ],
+      "criada_em": "2026-10-02T16:36:54Z"
+    },
     {
       "numero": 2,
       "titulo": "Executivos sem decisão registrada",
@@ -21,7 +48,12 @@
     }
   ],
   "detalhes": {
-    "EXEC-AUSENTE": null
+    "INC-0006": "dia 0, ação `aguardar`",
+    "INC-0007": "dia 0, ação `corrigir_conector`"
   },
-  "log": []
+  "log": [
+    "aberta #14 INC-0007",
+    "aberta #15 INC-0006",
+    "fechada #2 EXEC-AUSENTE"
+  ]
 }
