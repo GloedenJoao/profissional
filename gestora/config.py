@@ -120,12 +120,14 @@ TIPOS_INCIDENTE = {
 # ====================================================================== cenários
 AO_VIVO = {
     "id": CENARIO_PADRAO,
-    "nome": "Ao vivo",
-    "descricao": "A empresa do dia a dia: fecha sozinha de segunda a sexta e o agente decide pelo PR do dia.",
+    "nome": "Dia a dia",
+    "descricao": "A empresa do dia a dia: fecha sozinha de segunda a sexta, com os times decidindo sobre os dados "
+                 "reais do dia anterior.",
     "modo": "diario",
     "dados": "dados",
     "empresa": "empresa",
     "issues": True,
+    "times": True,
 }
 
 
@@ -136,7 +138,7 @@ def listar_cenarios() -> list[dict]:
         cid = arq.parent.name
         meta = json.loads(arq.read_text(encoding="utf-8"))
         rel = arq.parent.relative_to(RAIZ).as_posix()
-        itens.append({"modo": "manual", "issues": False, **meta, "id": cid,
+        itens.append({"modo": "simulacao", "issues": False, "times": True, **meta, "id": cid,
                       "dados": f"{rel}/dados", "empresa": f"{rel}/empresa"})
     return itens
 

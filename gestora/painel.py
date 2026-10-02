@@ -1,4 +1,4 @@
-"""Saídas para quem olha a empresa: painel.json (site e app Android) e briefing.md (agente)."""
+"""Saídas para quem olha a empresa: painel.json (site e app Android) e briefing.md (conselho)."""
 from __future__ import annotations
 
 import csv
@@ -115,6 +115,9 @@ def montar_painel(estado: dict, dias: list[dict], historico: list[dict], control
         "alertas": [{"chave": k, **{c: a.get(c) for c in ("titulo", "area", "sev", "aberto_em", "detalhe")},
                      "issue": issues.get(k)} for k, a in sorted(estado["alertas"].items())],
         "dias": [{"data": r["data"], "eventos": r["eventos"], "decisao": r["decisao"]} for r in reversed(dias[-15:])],
+        # a reunião do último dia (o site toca as outras a partir de dias/AAAA-MM-DD.json)
+        "ata": (dias[-1].get("ata") or []) if dias else [],
+        "datas": [ln["data"] for ln in historico],
         "historico": [{k: ln[k] for k in ("data", "cota", "bench", "pl", "fluxo", "divida_tecnica", "credibilidade",
                                          "confianca_media", "incidentes_abertos", "caixa_gestora")}
                       | {"pesos": {a: ln[f"peso_{a}"] for a in config.ATIVOS}} for ln in historico],
@@ -164,7 +167,7 @@ def status_areas(painel: dict, politicas: dict) -> dict:
 
     if _alertas_com_prefixo(painel, "DESENQ-", "CRISE-CAIXA"):
         st_exe = ("ruim", "; ".join(a["titulo"] for a in _alertas_com_prefixo(painel, "DESENQ-", "CRISE-CAIXA")))
-    elif exe["dias_sem_decisao"] >= 3 or exe["congelados"]:
+    elif exe["dias_sem_decisao"] >= 3 or exe["congelados"]:  # dias sem decisão só acontece sem os times
         partes = []
         if exe["dias_sem_decisao"] >= 3:
             partes.append(f"{exe['dias_sem_decisao']} dias sem decisão")
@@ -172,7 +175,8 @@ def status_areas(painel: dict, politicas: dict) -> dict:
             partes.append("congelados: " + ", ".join(exe["congelados"]))
         st_exe = ("aviso", " · ".join(partes))
     else:
-        st_exe = ("ok", f"última decisão em {_br(exe['ultima_decisao'])}")
+        st_exe = ("ok", f"último ajuste do comitê em {_br(exe['ultima_decisao'])}" if exe["ultima_decisao"]
+                  else "comitê mantém a alocação inicial")
 
     vs = "—" if r["retorno_mes"] is None else f"21d {_pct_br(r['retorno_mes'])} vs CDI {_pct_br(r['cdi_mes'])}"
     if _alertas_com_prefixo(painel, "RESGATE-"):
@@ -186,10 +190,10 @@ def status_areas(painel: dict, politicas: dict) -> dict:
 
 
 def modelo_decisao(painel: dict, politicas: dict) -> dict:
-    """Decisão do próximo dia já preenchida com o que vale hoje: é só editar e salvar."""
+    """Diretriz do conselho para o próximo dia, já preenchida com o que vale hoje: é só editar e salvar.
+    Os times decidem sozinhos; o que estiver aqui vale por cima da decisão deles (apague o que não quiser impor)."""
     ex, db, exe = painel["extracao"], painel["dashboards"], painel["executivos"]
-    dec: dict = {"data": painel["proximo_dia_util"],
-                 "autor": "agente" if painel["cenario"]["modo"] == "diario" else "joao"}
+    dec: dict = {"data": painel["proximo_dia_util"], "autor": "conselho"}
     acoes = {i["id"]: i["acao"] for i in ex["incidentes"] if i["estado"] == "aberto"}
     if acoes:
         dec["extracao"] = {"acoes": acoes}
@@ -230,13 +234,11 @@ def tarefas(painel: dict) -> list[dict]:
     dec = painel["decisao_proxima"]
     manual = painel["cenario"]["modo"] != "diario"
     out = []
-    if not dec["existe"]:
-        quem = "você decide" if manual else "o agente decide no PR do dia; você pode deixar uma diretriz"
-        out.append({"id": "DECISAO", "area": "executivos",
-                    "nivel": "aviso" if painel["executivos"]["dias_sem_decisao"] >= 3 else "info",
-                    "titulo": f"Decisão de {_br(dec['data'])}",
-                    "detalhe": f"Sem arquivo em {dec['caminho']}: {quem}. Sem decisão, o fundo segue no piloto automático.",
-                    "link": dec["link_criar"], "acao": "Escrever decisão"})
+    if dec["existe"]:
+        out.append({"id": "DIRETRIZ", "area": "executivos", "nivel": "info",
+                    "titulo": f"Diretriz do conselho para {_br(dec['data'])} registrada",
+                    "detalhe": f"{dec['caminho']} vale por cima da decisão dos times no próximo "
+                               f"{'avanço' if manual else 'fechamento'}.", "link": dec["link_ver"], "acao": "Ver"})
     for f in painel["extracao"]["fontes"]:
         if f["real"] == "erro":
             out.append({"id": f"CONECTOR-{f['id']}", "area": "extracao", "nivel": "ruim",
@@ -244,13 +246,8 @@ def tarefas(painel: dict) -> list[dict]:
                         "link": f"{repo}/blob/main/gestora/fontes.py", "acao": "Corrigir conector"})
     for a in painel["alertas"]:
         sev = {"alta": "ruim", "media": "aviso", "baixa": "info"}.get(a["sev"], "info")
-        if a["chave"].startswith("INC-"):
-            acao = "Escolher ação"
-        elif a["chave"].startswith("DEFAS-"):
-            acao = "Escolher estratégia"
-        else:
-            acao = "Ver alerta"
-        link = (a.get("issue") or {}).get("url") or (dec["link_criar"] if acao != "Ver alerta" else None)
+        acao = "Ver alerta"
+        link = (a.get("issue") or {}).get("url")
         out.append({"id": a["chave"], "area": a["area"], "nivel": sev, "titulo": a["titulo"],
                     "detalhe": a.get("detalhe") or "", "link": link or f"{repo}/issues", "acao": acao,
                     "issue": a.get("issue")})
@@ -259,12 +256,12 @@ def tarefas(painel: dict) -> list[dict]:
             out.append({"id": f"CONSELHO-{i['numero']}", "area": "executivos", "nivel": "aviso",
                         "titulo": f"Diretriz do conselho #{i['numero']}: {i['titulo']}", "detalhe": "",
                         "link": i["url"], "acao": "Responder"})
-    out.sort(key=lambda t: (ORDEM_NIVEL[t["nivel"]], t["id"] != "DECISAO"))
+    out.sort(key=lambda t: ORDEM_NIVEL[t["nivel"]])
     return out
 
 
 def briefing(painel: dict) -> str:
-    """Resumo curto para o agente decidir o próximo dia útil sem precisar calcular nada."""
+    """Resumo curto do último dia, com as decisões dos times, para quem acompanha (ou quer intervir)."""
     r, ex, db, exe = painel["resumo"], painel["extracao"], painel["dashboards"], painel["executivos"]
     pct = lambda v: "—" if v is None else f"{v:+.2%}"  # noqa: E731
     cen = painel.get("cenario") or {}
@@ -273,7 +270,7 @@ def briefing(painel: dict) -> str:
     linhas = [
         f"# Briefing · fechamento de {painel['data_referencia']}{titulo}",
         "",
-        f"Próxima decisão: `{caminho}` (aplicada no fechamento desse dia).",
+        f"Os times decidem sozinhos. Diretriz do conselho (opcional): `{caminho}` vale por cima deles nesse dia.",
         "",
         "## Fundo",
         f"- Cota {r['cota']:.6f} · PL R$ {r['pl']:,.0f} · dia {pct(r['retorno_dia'])} · 21d {pct(r['retorno_mes'])} "
@@ -302,6 +299,9 @@ def briefing(painel: dict) -> str:
                       f"{i['defasagem']} | {i['estrategia'] or '—'} | {i['confianca']:.0%} |")
     linhas += ["", "## Alertas ativos"]
     linhas += [f"- [{a['sev']}] {a['chave']} — {a['titulo']}" for a in painel["alertas"]] or ["- nenhum"]
+    decididas = [f"- {f['hora']} · {f['quem']} ({f['papel']}): {f['texto']}" for f in painel.get("ata", [])
+                 if f["tipo"] in ("decisao", "conselho")]
+    linhas += ["", "## Decisões dos times no último dia"] + (decididas or ["- nenhuma mudança: os times mantiveram tudo"])
     linhas += ["", "## Últimos eventos"]
     eventos = [f"- {dia['data']} · {e['area']} · {e['texto']}" for dia in painel["dias"][:5] for e in dia["eventos"]]
     linhas += eventos[:12] or ["- nenhum nos últimos 5 dias úteis"]

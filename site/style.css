@@ -200,3 +200,75 @@ svg.grafico .zero { stroke: var(--suave); stroke-width: 1; opacity: .6; }
   .tarefa .botao { order: 3; }
   .marca .botao { display: none; }
 }
+
+/* ------------------------------------------------------------ ao vivo: reuniões dos times */
+:root { --a-extracao: #0e8a5f; --a-dashboards: #2457a6; --a-executivos: #a3361f; --a-fundo: #6b5b00; --a-conselho: #7a2d9c; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --a-extracao: #5fd394; --a-dashboards: #8fb4ff; --a-executivos: #ff9b85; --a-fundo: #e7c94f; --a-conselho: #d29bf0; }
+}
+:root[data-theme="dark"] { --a-extracao: #5fd394; --a-dashboards: #8fb4ff; --a-executivos: #ff9b85; --a-fundo: #e7c94f; --a-conselho: #d29bf0; }
+.area-cor.extracao, .fala.extracao { --a: var(--a-extracao); }
+.area-cor.dashboards, .fala.dashboards { --a: var(--a-dashboards); }
+.area-cor.executivos, .fala.executivos { --a: var(--a-executivos); }
+.area-cor.fundo, .fala.fundo { --a: var(--a-fundo); }
+.area-cor { color: var(--a, var(--texto)); }
+.frescor { font-size: 12px; color: var(--suave); display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.frescor.erro { color: var(--ruim); }
+.pulso { width: 8px; height: 8px; border-radius: 50%; background: var(--ruim); display: inline-block; flex: none;
+  animation: pulso 1.6s ease-in-out infinite; }
+.frescor .pulso { background: var(--ok); }
+@keyframes pulso { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(.75); } }
+@media (prefers-reduced-motion: reduce) { .pulso { animation: none; } }
+.palco { display: grid; gap: 12px; }
+.palco-cab { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+.pl-dia { font-size: 20px !important; text-transform: none !important; letter-spacing: -.01em !important; color: var(--texto) !important;
+  margin: 2px 0 0 !important; }
+.pl-dia::first-letter { text-transform: uppercase; }
+.relogio { font: 700 28px/1 ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; color: var(--marca-2); }
+.salas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.sala { border: 1px solid var(--linha); border-radius: 10px; padding: 6px 8px; font-size: 13px; font-weight: 600; color: var(--suave);
+  display: grid; gap: 1px; transition: background .3s, color .3s, border-color .3s; }
+.sala b { font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.sala.feita { color: var(--texto); }
+.sala.feita b::after { content: " ✓"; color: var(--ok); }
+.sala.ativa { color: var(--texto); border-color: var(--marca-2); background: color-mix(in srgb, var(--marca-2) 12%, var(--cartao)); }
+.sala.ativa b::after { content: " · agora"; color: var(--ruim); }
+.controles { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.controles select { font: inherit; padding: 4px 6px; border-radius: 8px; border: 1px solid var(--linha); background: var(--cartao); color: var(--texto); }
+.controles input[type="range"] { flex: 1 1 200px; accent-color: var(--marca-2); }
+.grade-palco { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 900px) { .grade-palco { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); } .lateral { position: sticky; top: 130px; } }
+.feed { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.fala { display: grid; grid-template-columns: 44px 1fr; gap: 8px; align-items: start; animation: entra .35s ease-out; }
+@keyframes entra { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .fala { animation: none; } }
+.fala .hora { font-size: 12px; color: var(--suave); font-variant-numeric: tabular-nums; padding-top: 9px; }
+.balao { border: 1px solid var(--linha); border-left: 3px solid var(--a, var(--linha)); border-radius: 10px; padding: 8px 10px;
+  background: var(--cartao); min-width: 0; overflow-wrap: anywhere; }
+.balao .quem { font-size: 12px; color: var(--suave); margin-bottom: 2px; }
+.balao .quem b { font-size: 13px; }
+.fala.decisao .balao { background: color-mix(in srgb, var(--info) 7%, var(--cartao)); }
+.fala.conselho .balao { border-left-color: var(--a-conselho); background: color-mix(in srgb, var(--a-conselho) 8%, var(--cartao)); }
+.fala.alerta .balao { background: color-mix(in srgb, var(--aviso) 8%, var(--cartao)); }
+.fala.evento .balao, .fala.alerta .balao { font-size: 14px; }
+.fala.fechamento .balao { background: color-mix(in srgb, var(--a-fundo) 8%, var(--cartao)); font-weight: 600; }
+code { font: 12.5px ui-monospace, SFMono-Regular, Menlo, monospace; background: color-mix(in srgb, var(--suave) 14%, transparent);
+  padding: 0 4px; border-radius: 4px; }
+.digitando { margin: 10px 0 0 52px; font-size: 13px; color: var(--suave); font-style: italic; }
+.digitando::after { content: "▍"; animation: pulso 1s steps(2) infinite; margin-left: 2px; }
+.espera { margin-top: 14px; padding: 10px 12px; border-radius: 10px; border: 1px dashed var(--linha); font-size: 14px; color: var(--suave);
+  display: flex; gap: 8px; align-items: center; }
+.pesos { display: flex; height: 12px; border-radius: 6px; overflow: hidden; margin-top: 12px; background: var(--linha); }
+.pesos span { background: var(--cor); height: 100%; transition: width .6s; }
+.lista.decididas li { font-size: 13px; }
+.reuniao-mini { border-top: 1px solid var(--linha); padding-top: 10px; }
+.reuniao-mini ul { margin: 4px 0 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 13px; }
+.reuniao-mini li { overflow-wrap: anywhere; }
+.abas .pulso { width: 7px; height: 7px; }
+@media (max-width: 520px) {
+  .salas { grid-template-columns: repeat(2, 1fr); }
+  .relogio { font-size: 22px; }
+  .fala { grid-template-columns: 1fr; gap: 2px; }
+  .fala .hora { padding-top: 0; }
+  .digitando { margin-left: 0; }
+}

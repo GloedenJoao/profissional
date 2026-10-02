@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import shutil
 import sys
@@ -67,13 +68,14 @@ def fechamento(data_ref: date | None, inicio: date | None, extrair: bool = True,
             if problemas:
                 print("decisão inválida ignorada:\n  " + "\n  ".join(problemas))
                 dec = None
-        estado, reg = simulacao.simular_dia(estado, d, mercado, politicas, dec, controle if d == ref else None)
+        estado, reg = simulacao.simular_dia(estado, d, mercado, politicas, dec, controle if d == ref else None,
+                                            times=config.cenario().get("times", True))
         armazem.gravar_json(config.DIAS / f"{d}.json", reg)
         painel.registrar_historico(reg)
         feitos.append(d.isoformat())
         r = reg["resumo"]
         print(f"{d}: cota {r['cota']:.6f} PL {r['pl']:,.0f} incidentes {r['incidentes_abertos']} "
-              f"credibilidade {r['credibilidade']:.0%} decisão={'sim' if dec else 'não'}")
+              f"credibilidade {r['credibilidade']:.0%} decisão={reg['decisao']['autor'] or 'piloto automático'}")
     armazem.gravar_json(config.DADOS / "estado.json", estado)
     gerar_painel(controle)
     return feitos
@@ -105,6 +107,20 @@ def avancar(dias: int | None = None, ate: date | None = None, extrair: bool = Tr
     return feitos
 
 
+def pendentes(hoje: date | None = None) -> list[str]:
+    """Cenários com `automatico` em cenario.json que ainda têm dia útil para simular até ontem."""
+    limite = calendario.dia_util_anterior(hoje or _hoje())
+    ids = []
+    for c in config.listar_cenarios():
+        if not c.get("automatico"):
+            continue
+        estado = armazem.ler_json(config.RAIZ / c["dados"] / "estado.json")
+        base = date.fromisoformat(estado["ultima_data"] if estado else c["inicio"])
+        if calendario.dias_uteis_entre(base, limite):
+            ids.append(c["id"])
+    return ids
+
+
 def resumo_avanco(feitos: list[str]) -> str:
     """Markdown curto do que aconteceu nos dias avançados (vai como comentário na issue de controle)."""
     p = armazem.ler_json(config.DADOS / "painel.json")
@@ -121,16 +137,19 @@ def resumo_avanco(feitos: list[str]) -> str:
     st = p["status_areas"]
     icone = {"ok": "🟢", "aviso": "🟡", "ruim": "🔴"}
     linhas += [f"{icone[v['nivel']]} **{simulacao.AREAS[a]}**: {v['texto']}  " for a, v in st.items()] + [""]
-    eventos = []
+    eventos, decididas = [], []
     for d in feitos:
         reg = armazem.ler_json(config.DIAS / f"{d}.json") or {}
         eventos += [f"- {d} · {simulacao.AREAS.get(e['area'], e['area'])} · {e['texto']}" for e in reg.get("eventos", [])
                     if e["tipo"] != "info"]
+        decididas += [f"- {d} · {f['quem']} ({f['papel']}): {f['texto']}" for f in reg.get("ata", [])
+                      if f["tipo"] in ("decisao", "conselho")]
+    if decididas:
+        linhas += ["<details><summary>O que os times decidiram</summary>", "", *decididas[-25:], "", "</details>", ""]
     if eventos:
         linhas += ["<details><summary>O que aconteceu</summary>", "", *eventos[-20:], "", "</details>", ""]
-    dec = p["decisao_proxima"]
-    linhas.append(f"**Próximo:** decisão de {dec['data']} → [escrever]({dec['link_criar']}) · "
-                  f"[painel](https://{config.REPO.split('/')[0].lower()}.github.io/{config.REPO.split('/')[1]}/#/{cen['id']})")
+    site = f"https://{config.REPO.split('/')[0].lower()}.github.io/{config.REPO.split('/')[1]}"
+    linhas.append(f"**Assistir:** [reuniões ao vivo]({site}/#/{cen['id']}/aovivo) · [painel]({site}/#/{cen['id']})")
     return "\n".join(linhas) + "\n"
 
 
@@ -143,10 +162,9 @@ def sincronizar() -> None:
     estado = armazem.ler_json(config.DADOS / "estado.json")
     anterior = armazem.ler_json(config.DADOS / "processos.json")
     paralelo = None if cen["id"] == config.CENARIO_PADRAO else cen["id"]
-    if cen.get("issues", True):
-        resultado = processos.sincronizar(gh, estado["alertas"], estado["ultima_data"], anterior, paralelo)
-    else:
-        resultado = {"data_ref": estado["ultima_data"], "issues": {}, "abertas": [], "detalhes": {}, "log": []}
+    # sem issues de alerta (cenário que anda sozinho a cada meia hora): fecha as que tiverem sobrado abertas
+    alertas = estado["alertas"] if cen.get("issues", True) else {}
+    resultado = processos.sincronizar(gh, alertas, estado["ultima_data"], anterior, paralelo)
     if paralelo:
         resultado["controle"] = processos.garantir_controle(gh, cen)
     armazem.gravar_json(config.DADOS / "processos.json", resultado)
@@ -162,14 +180,28 @@ def montar_site(destino: Path) -> list[dict]:
     shutil.copytree(config.RAIZ / "site", destino)
     indice = []
     for c in config.listar_cenarios():
-        origem = config.RAIZ / c["dados"] / "painel.json"
-        rel = "painel.json" if c["id"] == config.CENARIO_PADRAO else f"cenarios/{c['id']}/painel.json"
-        if origem.exists():
-            (destino / rel).parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy(origem, destino / rel)
-        indice.append({k: c.get(k) for k in ("id", "nome", "descricao", "modo", "inicio")}
-                      | {"painel": rel if origem.exists() else None})
+        origem = config.RAIZ / c["dados"]
+        base = "" if c["id"] == config.CENARIO_PADRAO else f"cenarios/{c['id']}/"
+        existe = (origem / "painel.json").exists()
+        if existe:
+            (destino / base).mkdir(parents=True, exist_ok=True)
+            shutil.copy(origem / "painel.json", destino / base / "painel.json")
+            if (origem / "dias").exists():  # cada dia com a ata das reuniões: o modo ao vivo toca daqui
+                shutil.copytree(origem / "dias", destino / base / "dias")
+        indice.append({k: c.get(k) for k in ("id", "nome", "descricao", "modo", "inicio", "automatico")}
+                      | {"painel": f"{base}painel.json" if existe else None, "dias": f"{base}dias/" if existe else None})
     armazem.gravar_json(destino / "cenarios.json", {"repositorio": config.REPO, "cenarios": indice})
+    # Versão do site: entra no nome dos arquivos (o navegador nunca usa app.js velho) e em versao.json, que a
+    # página consulta de tempos em tempos para se atualizar sozinha quando sai um fechamento ou avanço novo.
+    # `codigo` só muda quando muda o código do site: aí a página se recarrega sozinha; dado novo só recarrega os JSONs.
+    versao = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
+    codigo = hashlib.sha256(b"".join((config.RAIZ / "site" / n).read_bytes()
+                                     for n in ("index.html", "app.js", "style.css"))).hexdigest()[:12]
+    paineis = {c["id"]: armazem.ler_json(destino / c["painel"]).get("data_referencia") for c in indice if c["painel"]}
+    armazem.gravar_json(destino / "versao.json", {"versao": versao, "codigo": codigo, "paineis": paineis})
+    pagina = destino / "index.html"
+    pagina.write_text(pagina.read_text(encoding="utf-8").replace("__VERSAO__", versao).replace("__CODIGO__", codigo),
+                      encoding="utf-8")
     return indice
 
 
@@ -186,6 +218,7 @@ def main(argv: list[str] | None = None) -> int:
     av.add_argument("--dias", type=int, help="quantos dias úteis avançar (padrão 1)")
     av.add_argument("--ate", type=date.fromisoformat, help="avança até esta data (no máximo ontem)")
     av.add_argument("--comando", help="texto de um comentário `/avancar ...` (issue de controle)")
+    av.add_argument("--automatico", action="store_true", help="avança o que `automatico` de cenario.json manda")
     av.add_argument("--resumo", type=Path, help="grava aqui o resumo em Markdown do avanço")
     av.add_argument("--sem-extracao", action="store_true", help="usa só os dados já gravados")
     sub.add_parser("sincronizar", help="espelha os alertas em issues do GitHub")
@@ -193,6 +226,7 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("painel", help="regera painel.json e briefing.md")
     ce = sub.add_parser("cenarios", help="lista os cenários")
     ce.add_argument("--ids", action="store_true", help="só os ids, um por linha")
+    ce.add_argument("--pendentes", action="store_true", help="só os automáticos com dia a simular (ids)")
     si = sub.add_parser("site", help="monta o site estático com os painéis de todos os cenários")
     si.add_argument("destino", type=Path, nargs="?", default=Path("_site"))
     a = ap.parse_args(argv)
@@ -218,6 +252,8 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"comando inválido: {e}")
                 return 2
             dias, ate = pedido.get("dias"), date.fromisoformat(pedido["ate"]) if "ate" in pedido else None
+        elif a.automatico:
+            dias = int((config.cenario().get("automatico") or {}).get("dias_por_execucao", 1))
         feitos = avancar(dias, ate, extrair=not a.sem_extracao)
         if a.resumo:
             a.resumo.write_text(resumo_avanco(feitos), encoding="utf-8")
@@ -233,6 +269,8 @@ def main(argv: list[str] | None = None) -> int:
         return 1 if erros else 0
     elif a.cmd == "painel":
         gerar_painel()
+    elif a.cmd == "cenarios" and a.pendentes:
+        print("\n".join(pendentes()))
     elif a.cmd == "cenarios":
         for c in config.listar_cenarios():
             existe = (config.RAIZ / c["dados"] / "estado.json").exists()

@@ -124,23 +124,34 @@ def sincronizar(gh, alertas: dict, data_ref: str, anterior: dict | None = None, 
     }
 
 
+def texto_controle(cenario: dict) -> str:
+    auto = cenario.get("automatico") or {}
+    ritmo = (f"Ela anda sozinha: {auto.get('dias_por_execucao', 1)} dia útil a cada {auto.get('intervalo', '30 min')}, "
+             "até alcançar o presente." if auto else "Ela só anda quando alguém manda.")
+    return (f"Painel de controle do cenário **{cenario['nome']}** (`{cenario['id']}`).\n\n"
+            f"{cenario.get('descricao', '')}\n\n"
+            f"**Quem decide são os times** (Extração, Dashboards e o Comitê de Executivos). {ritmo} "
+            "Para assistir às reuniões, abra a aba **Ao vivo** do cenário no site.\n\n"
+            "Para adiantar (só o dono do repositório), comente aqui:\n\n"
+            "- `/avancar` — avança 1 dia útil\n"
+            "- `/avancar 5` — avança 5 dias úteis\n"
+            "- `/avancar ate 2026-03-31` — avança até a data (nunca passa de ontem)\n\n"
+            f"Intervir é opcional: um arquivo em `{cenario['empresa']}/decisoes/AAAA-MM-DD.json` vira diretriz do "
+            "conselho e vale por cima dos times naquele dia (o painel tem o link pronto).\n\n"
+            "Cada avanço pedido aqui responde com o resumo do que os times decidiram.")
+
+
 def garantir_controle(gh, cenario: dict) -> dict:
-    """A issue de controle de um cenário manual: comentar `/avancar N` nela avança a simulação."""
+    """A issue de controle de um cenário paralelo: comentar `/avancar N` nela adianta a simulação."""
     base = f"cenario:{cenario['id']}"
     for nome in ("controle", base):
         gh.req("POST", "/labels", {"name": nome, "color": CORES.get(nome, "5319e7")})
+    corpo = texto_controle(cenario)
     for i in gh.req("GET", f"/issues?labels=controle,{base}&state=open&per_page=10") or []:
         if "pull_request" not in i:
+            if (i.get("body") or "") != corpo:
+                gh.req("PATCH", f"/issues/{i['number']}", {"body": corpo})
             return {"numero": i["number"], "url": i["html_url"]}
-    corpo = (f"Painel de controle do cenário **{cenario['nome']}** (`{cenario['id']}`).\n\n"
-             f"{cenario.get('descricao', '')}\n\n"
-             "Comente aqui para mover a simulação (só o dono do repositório):\n\n"
-             "- `/avancar` — avança 1 dia útil\n"
-             "- `/avancar 5` — avança 5 dias úteis\n"
-             "- `/avancar ate 2026-03-31` — avança até a data (nunca passa de ontem)\n\n"
-             f"Antes de avançar, deixe a decisão do próximo dia em `{cenario['empresa']}/decisoes/AAAA-MM-DD.json` "
-             "(o painel tem o link pronto). Sem decisão, o fundo segue no piloto automático.\n\n"
-             "Cada avanço responde aqui com o resumo do que aconteceu.")
     i = gh.req("POST", "/issues", {"title": f"Controle · {cenario['nome']}", "body": corpo,
                                    "labels": ["controle", base]})
     return {"numero": i["number"], "url": i["html_url"]}

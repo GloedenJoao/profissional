@@ -1,4 +1,4 @@
-"""Validação das políticas e dos arquivos de decisão escritos pelo agente (ou por gente)."""
+"""Validação das políticas e das diretrizes do conselho (arquivos em decisoes/, opcionais)."""
 from __future__ import annotations
 
 from datetime import date

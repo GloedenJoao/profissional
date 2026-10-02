@@ -38,7 +38,7 @@ def _avancar(**kw):
 
 def test_cenario_tem_pastas_proprias(raiz):
     meta = config.usar_cenario("teste")
-    assert meta["modo"] == "manual" and config.DADOS == raiz / "cenarios" / "teste" / "dados"
+    assert meta["modo"] == "simulacao" and config.DADOS == raiz / "cenarios" / "teste" / "dados"
     assert config.SEMENTE == "teste"
     config.usar_cenario("ao-vivo")
     assert config.DADOS == raiz / "dados" and config.SEMENTE == ""
@@ -73,27 +73,32 @@ def test_semente_do_cenario_muda_o_acaso():
     assert a != b
 
 
-def test_painel_traz_status_tarefas_e_decisao_pronta(raiz):
+def test_painel_traz_status_ata_e_diretriz_opcional(raiz):
     config.usar_cenario("teste")
     _avancar(dias=3)
     p = armazem.ler_json(config.DADOS / "painel.json")
     assert p["cenario"]["id"] == "teste" and p["proximo_fechamento_em"] is None
     assert set(p["status_areas"]) == {"extracao", "dashboards", "executivos", "fundo"}
+    assert p["datas"] == ["2026-08-04", "2026-08-05", "2026-08-06"]
+    assert p["ata"] and {f["area"] for f in p["ata"]} >= {"extracao", "dashboards", "executivos", "fundo"}
+    # ninguém precisa escrever decisão: os times decidem
+    assert not any(t["id"] in ("DECISAO", "DIRETRIZ") for t in p["tarefas"])
     dec = p["decisao_proxima"]
     assert dec["caminho"] == "cenarios/teste/empresa/decisoes/2026-08-07.json" and not dec["existe"]
     assert "new/main/cenarios/teste/empresa/decisoes?filename=2026-08-07.json" in dec["link_criar"]
-    assert p["tarefas"][0]["id"] in ("DECISAO", *[t["id"] for t in p["tarefas"] if t["nivel"] == "ruim"])
-    assert any(t["id"] == "DECISAO" for t in p["tarefas"])
-    # o modelo pronto é uma decisão válida: salva, ela some das tarefas e vale no próximo avanço
+    # a diretriz pronta é válida: salva, vale por cima dos times no próximo avanço e entra na ata
     modelo = dec["modelo"] | {"executivos": dec["modelo"]["executivos"] | {"justificativa": "teste"}}
     armazem.gravar_json(config.DECISOES / "2026-08-07.json", modelo)
     assert cli.main(["--cenario", "teste", "validar"]) == 0
     cli.gerar_painel()
     p = armazem.ler_json(config.DADOS / "painel.json")
-    assert p["decisao_proxima"]["existe"] and not any(t["id"] == "DECISAO" for t in p["tarefas"])
+    assert p["decisao_proxima"]["existe"] and any(t["id"] == "DIRETRIZ" for t in p["tarefas"])
     _avancar(dias=1)
+    reg = armazem.ler_json(config.DIAS / "2026-08-07.json")
+    assert reg["decisao"] == {"existe": True, "autor": "conselho + times", "intervencao": True}
+    assert any(f["tipo"] == "conselho" for f in reg["ata"])
     estado = armazem.ler_json(config.DADOS / "estado.json")
-    assert estado["executivos"]["ultima_decisao"] == "2026-08-07"
+    assert estado["executivos"]["alvo"] == modelo["executivos"]["alocacao"]
 
 
 def test_resumo_do_avanco(raiz, tmp_path):
@@ -101,7 +106,7 @@ def test_resumo_do_avanco(raiz, tmp_path):
     feitos = _avancar(dias=2)
     texto = cli.resumo_avanco(feitos)
     assert texto.startswith("### Teste: 2026-08-04 → 2026-08-05 (2 dia(s)")
-    assert "Próximo:** decisão de 2026-08-06" in texto and "#/teste" in texto
+    assert "O que os times decidiram" in texto and "#/teste/aovivo" in texto
 
 
 def test_site_reune_os_paineis(raiz):
@@ -111,7 +116,13 @@ def test_site_reune_os_paineis(raiz):
     assert [c["id"] for c in indice] == ["ao-vivo", "teste"]
     assert indice[0]["painel"] is None and indice[1]["painel"] == "cenarios/teste/painel.json"
     assert (raiz / "_site" / "cenarios" / "teste" / "painel.json").exists()
-    assert json.loads((raiz / "_site" / "cenarios.json").read_text())["cenarios"][1]["modo"] == "manual"
+    assert (raiz / "_site" / "cenarios" / "teste" / "dias" / "2026-08-04.json").exists()
+    versao = json.loads((raiz / "_site" / "versao.json").read_text())
+    assert versao["paineis"] == {"teste": "2026-08-04"}
+    pagina = (raiz / "_site" / "index.html").read_text()
+    assert "__VERSAO__" not in pagina and f"app.js?v={versao['codigo']}" in pagina
+    assert f'window.VERSAO = "{versao["versao"]}"' in pagina
+    assert json.loads((raiz / "_site" / "cenarios.json").read_text())["cenarios"][1]["modo"] == "simulacao"
     assert (raiz / "_site" / "index.html").exists()
 
 
@@ -130,3 +141,17 @@ def test_interpretar_comando(texto, esperado):
 def test_comando_invalido(texto):
     with pytest.raises(ValueError):
         comandos.interpretar(texto)
+
+
+def test_cenario_automatico_anda_sozinho_ate_o_presente(raiz, monkeypatch):
+    monkeypatch.setattr(cli, "_hoje", lambda: HOJE)
+    meta = armazem.ler_json(raiz / "cenarios" / "teste" / "cenario.json")
+    armazem.gravar_json(raiz / "cenarios" / "teste" / "cenario.json", meta | {"automatico": {"dias_por_execucao": 2}})
+    assert cli.pendentes(HOJE) == ["teste"]  # ainda sem estado: a primeira execução funda a empresa
+    config.usar_cenario("teste")
+    _avancar(ate=date(2026, 9, 29))
+    assert cli.pendentes(HOJE) == ["teste"]
+    assert cli.main(["--cenario", "teste", "avancar", "--automatico", "--sem-extracao"]) == 0
+    estado = armazem.ler_json(config.DADOS / "estado.json")
+    assert estado["ultima_data"] == "2026-10-01"  # dois dias por execução, sem passar de ontem
+    assert cli.pendentes(HOJE) == []

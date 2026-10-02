@@ -1,6 +1,8 @@
 "use strict";
 // Central da Capivara Asset: lê o painel.json de cada cenário (foto do último fechamento) e, quando o
-// GitHub responde, completa com o que está acontecendo agora (execuções, PRs, issues, decisões salvas).
+// GitHub responde, completa com o que está acontecendo agora (execuções, PRs, issues).
+// O modo "Ao vivo" toca as reuniões dos times dia a dia (dias/AAAA-MM-DD.json → ata) e segue sozinho quando
+// chega um dia novo: a página confere versao.json a cada minuto, sem precisar de Shift+F5.
 const REPO = "GloedenJoao/profissional";
 const GH = `https://github.com/${REPO}`;
 const API = `https://api.github.com/repos/${REPO}`;
@@ -25,7 +27,7 @@ const NIVEL = {
   ok: { icone: "✓", rotulo: "Feito", ordem: 3 },
 };
 const WORKFLOWS = { "Fechamento": "fechamento.yml", "Simulação · avançar": "simulacao.yml", "CI": "ci.yml" };
-const ABAS = [["hoje", "Hoje"], ["extracao", "Extração"], ["dashboards", "Dashboards"], ["executivos", "Executivos"], ["processos", "Processos"]];
+const ABAS = [["aovivo", "Ao vivo"], ["hoje", "Hoje"], ["extracao", "Extração"], ["dashboards", "Dashboards"], ["executivos", "Executivos"], ["processos", "Processos"]];
 
 let CENARIOS = []; // [{id, nome, descricao, modo, inicio, P}]
 let VIVO = null; // o que o GitHub diz agora: {runs, prs, issues, decisoes, erro}
@@ -52,8 +54,8 @@ function haQuanto(iso) {
 }
 
 // ------------------------------------------------------------------ carga
-async function json(url) {
-  const r = await fetch(url, { cache: "no-store" });
+async function json(url, fresco = true) {
+  const r = await fetch(fresco && !url.startsWith("http") ? `${url}${url.includes("?") ? "&" : "?"}t=${Date.now()}` : url, { cache: fresco ? "no-store" : "default" });
   if (!r.ok) throw new Error(`${url}: ${r.status}`);
   return r.json();
 }
@@ -64,7 +66,7 @@ async function carregarCenarios() {
     indice = (await json("cenarios.json")).cenarios;
   } catch (_) {
     // site aberto direto do repositório (sem `python -m gestora site`): só o ao vivo
-    indice = [{ id: "ao-vivo", nome: "Ao vivo", modo: "diario", painel: "painel.json", alternativo: "../dados/painel.json" }];
+    indice = [{ id: "ao-vivo", nome: "Dia a dia", modo: "diario", painel: "painel.json", alternativo: "../dados/painel.json", dias: "../dados/dias/" }];
   }
   return Promise.all(indice.map(async (c) => {
     let painel = null;
@@ -134,8 +136,9 @@ function situacao(c) {
   const ontem = diaUtilAnterior(agoraBRT().data, fer);
   const total = diasUteisEntre(P.cenario.inicio, ontem, fer);
   const faltam = diasUteisEntre(P.data_referencia, ontem, fer);
-  if (!faltam) return { nivel: "ok", rotulo: "Alcançou o presente", texto: "não há mais dias para avançar", progresso: 1 };
-  return { nivel: "info", rotulo: `Pausada em ${dataBR(P.data_referencia)}`, texto: `${total - faltam} de ${total} dias úteis · faltam ${faltam} até ontem`, progresso: (total - faltam) / total };
+  if (!faltam) return { nivel: "ok", rotulo: "Alcançou o presente", texto: "agora anda um dia útil por dia, como o ao vivo", progresso: 1 };
+  const auto = c.automatico;
+  return { nivel: "info", rotulo: auto ? "Andando sozinha" : `Pausada em ${dataBR(P.data_referencia)}`, texto: `${total - faltam} de ${total} dias úteis · faltam ${faltam} até ontem${auto ? ` · ${auto.dias_por_execucao || 1} dia(s) a cada ${auto.intervalo || "30 min"}` : ""}`, progresso: (total - faltam) / total };
 }
 
 function pior(niveis) {
@@ -146,15 +149,10 @@ function pior(niveis) {
 function tarefasDe(c) {
   const out = [];
   if (!c.P) {
-    out.push({ nivel: "info", area: "executivos", titulo: `Começar a ${c.nome}`, detalhe: `Rode o workflow "Simulação · avançar" com cenário ${c.id}. Ele funda a empresa em ${dataBR(c.inicio)} e cria a issue de controle.`, link: `${GH}/actions/workflows/simulacao.yml`, acao: "Começar" });
+    out.push({ nivel: "info", area: "executivos", titulo: `Começar a ${c.nome}`, detalhe: c.automatico ? `A próxima execução agendada (a cada ${c.automatico.intervalo || "30 min"}) funda a empresa em ${dataBR(c.inicio)}; para não esperar, rode o workflow.` : `Rode o workflow "Simulação · avançar" com cenário ${c.id}: ele funda a empresa em ${dataBR(c.inicio)}.`, link: `${GH}/actions/workflows/simulacao.yml`, acao: "Começar agora" });
     return out.map((t) => ({ ...t, cenario: c }));
   }
-  const pronta = decisaoPronta(c);
   for (const t of c.P.tarefas || []) {
-    if (t.id === "DECISAO" && pronta) {
-      out.push({ ...t, nivel: "ok", titulo: `Decisão de ${dataBR(c.P.decisao_proxima.data)} pronta`, detalhe: c.modo === "diario" ? "entra no próximo fechamento" : "entra no próximo avanço", link: c.P.decisao_proxima.link_ver, acao: "Ver decisão" });
-      continue;
-    }
     if (t.id.startsWith("CONSELHO-") && VIVO && !VIVO.erro && !VIVO.issues.some((i) => `CONSELHO-${i.numero}` === t.id)) continue; // já respondida e fechada
     out.push(t);
   }
@@ -282,7 +280,7 @@ function linhaTarefa(t, comCenario = true) {
     <span class="nivel"><b aria-hidden="true">${n.icone}</b>${n.rotulo}</span>
     <div class="corpo">
       <div class="tit">${esc(t.titulo)}</div>
-      <div class="det">${comCenario && t.cenario ? `<a class="chip" href="#/${esc(t.cenario.id)}">${esc(t.cenario.nome)}</a>` : ""}${t.area ? `<span class="chip">${esc(NOME_AREA[t.area] || t.area)}</span>` : ""}${esc(t.detalhe || "")}</div>
+      <div class="det">${comCenario && t.cenario ? `<a class="chip" href="#/${esc(t.cenario.id)}">${esc(t.cenario.nome)}</a>` : ""}${t.area ? `<span class="chip">${esc(NOME_AREA[t.area] || t.area)}</span>` : ""}${textoFala(t.detalhe || "")}</div>
     </div>
     ${t.link ? externo(t.link, `${esc(t.acao || "Abrir")} <span aria-hidden="true">↗</span>`, "botao pequeno") : ""}
   </li>`;
@@ -296,27 +294,37 @@ function areas(c) {
 
 function botoesAvancar(c) {
   const ctl = controleDe(c);
-  if (!ctl) return externo(`${GH}/actions/workflows/simulacao.yml`, c.P ? "Avançar pelo Actions ↗" : "Começar a simulação ↗", "botao prim");
-  return [1, 5, 20].map((n, k) => `<button class="botao ${k ? "" : "prim"}" type="button" data-copiar="/avancar${n > 1 ? ` ${n}` : ""}" data-abrir="${esc(ctl.url)}">Avançar ${n} dia${n > 1 ? "s" : ""}</button>`).join("")
-    + externo(`${GH}/actions/workflows/simulacao.yml`, "Pelo Actions ↗", "botao leve");
+  if (!ctl) return externo(`${GH}/actions/workflows/simulacao.yml`, c.P ? "Adiantar pelo Actions ↗" : "Começar a simulação ↗", c.P ? "botao leve" : "botao prim");
+  return [5, 20].map((n) => `<button class="botao leve" type="button" data-copiar="/avancar${n > 1 ? ` ${n}` : ""}" data-abrir="${esc(ctl.url)}" title="Adianta a simulação sem esperar o ritmo automático">Adiantar ${n} dias</button>`).join("");
+}
+
+function botaoIntervir(c) {
+  const dec = c.P?.decisao_proxima;
+  if (!dec) return "";
+  return decisaoPronta(c)
+    ? externo(dec.link_ver, `✓ Diretriz de ${dataBR(dec.data)}`, "botao leve")
+    : externo(dec.link_criar, "Intervir (opcional) ↗", "botao leve");
 }
 
 function acoesCenario(c) {
-  const P = c.P, dec = P?.decisao_proxima;
-  const decisao = !P ? "" : decisaoPronta(c)
-    ? externo(dec.link_ver, `✓ Decisão de ${dataBR(dec.data)}`, "botao")
-    : externo(dec.link_criar, `Escrever decisão de ${dataBR(dec.data)} ↗`, "botao");
-  if (c.modo === "diario") {
-    return `${decisao}${externo(`${GH}/actions/workflows/fechamento.yml`, "Rodar fechamento ↗")}${externo(`${GH}/issues/new?labels=conselho&title=${encodeURIComponent("Diretriz do conselho: ")}&body=${encodeURIComponent("O que os executivos devem considerar na próxima decisão:\n\n")}`, "Enviar diretriz ↗")}${externo(`${GH}/pulls?q=is%3Apr+label%3Adia`, "PRs do dia ↗")}`;
-  }
-  return `${botoesAvancar(c)}${decisao}`;
+  const assistir = c.P ? `<a class="botao prim" href="#/${esc(c.id)}/aovivo">▶ Assistir às reuniões</a>` : "";
+  if (c.modo === "diario") return `${assistir}${externo(`${GH}/actions/workflows/fechamento.yml`, "Rodar fechamento ↗", "botao leve")}${botaoIntervir(c)}`;
+  return `${assistir}${botoesAvancar(c)}${botaoIntervir(c)}`;
 }
 
 // ------------------------------------------------------------------ central
+function ultimaReuniao(c) {
+  const falas = (c.P?.ata || []).filter((f) => f.tipo === "decisao" || f.tipo === "conselho");
+  if (!c.P?.ata?.length) return "";
+  const itens = falas.length ? falas.slice(-3).map((f) => `<li><b class="area-cor ${esc(f.area)}">${esc(f.quem)}</b> ${textoFala(f.texto)}</li>`).join("")
+    : `<li>Ninguém mudou nada: os times mantiveram ações, estratégias e carteira.</li>`;
+  return `<div class="reuniao-mini"><div class="det">Decisões dos times em ${dataBR(c.P.data_referencia)}${falas.length > 3 ? ` (últimas 3 de ${falas.length})` : ""}</div><ul>${itens}</ul></div>`;
+}
+
 function cartaoCenario(c) {
   const s = situacao(c);
   const P = c.P;
-  const cab = `<div class="cen-cab"><div><h2 class="cen-nome"><a href="#/${esc(c.id)}">${esc(c.nome)}</a></h2><div class="det">${c.modo === "diario" ? "diário · roda sozinho seg–sex" : "manual · anda quando você manda"}</div></div>${s.link ? `<a class="pilula-link" href="${esc(s.link)}" target="_blank" rel="noopener">${pilula(s.nivel, s.rotulo)}</a>` : pilula(s.nivel, s.rotulo)}</div>`;
+  const cab = `<div class="cen-cab"><div><h2 class="cen-nome"><a href="#/${esc(c.id)}">${esc(c.nome)}</a></h2><div class="det">${c.modo === "diario" ? "diário · roda sozinho seg–sex, 08h" : c.automatico ? "simulação · anda sozinha" : "simulação · anda quando você manda"}</div></div>${s.link ? `<a class="pilula-link" href="${esc(s.link)}" target="_blank" rel="noopener">${pilula(s.nivel, s.rotulo)}</a>` : pilula(s.nivel, s.rotulo)}</div>`;
   const prog = s.progresso != null ? `<div class="progresso" role="progressbar" aria-valuenow="${Math.round(s.progresso * 100)}" aria-valuemin="0" aria-valuemax="100"><span style="width:${(s.progresso * 100).toFixed(1)}%"></span></div>` : "";
   if (!P) {
     return `<section class="cartao cen">${cab}<p class="det">${esc(s.texto)}</p><p>${esc(c.descricao || "")}</p><div class="acoes">${acoesCenario(c)}</div></section>`;
@@ -335,8 +343,9 @@ function cartaoCenario(c) {
       { nome: "Fundo", pontos: h.map((x) => [x.data, (x.cota - 1) * 100]) },
       { nome: "CDI", pontos: h.map((x) => [x.data, (x.bench - 1) * 100]), tracejado: true, cor: "var(--ref)" },
     ], { altura: 120, compacto: true, formato: (v) => `${num(v, 1)}%` })}
+    ${ultimaReuniao(c)}
     ${areas(c)}
-    <div class="acoes">${acoesCenario(c)}${`<a class="botao leve" href="#/${esc(c.id)}">Abrir painel →</a>`}</div>
+    <div class="acoes">${acoesCenario(c)}<a class="botao leve" href="#/${esc(c.id)}/hoje">Painel →</a></div>
   </section>`;
 }
 
@@ -378,11 +387,12 @@ function central() {
     <div class="cartao"><h2>Automação no GitHub</h2>${pipeline()}</div>
   </section>
   ${comparacao()}
-  <section class="cartao"><h2>Como acompanhar</h2>
+  <section class="cartao"><h2>Como funciona</h2>
     <ol class="passos">
-      <li><strong>Ao vivo</strong>: o fechamento roda de segunda a sexta às 08h e o agente decide no PR do dia. Aqui você vê se rodou, o que ficou pendente e pode deixar uma diretriz.</li>
-      <li><strong>Simulação 2026</strong>: começa em 1º de janeiro e só anda quando você manda. Escreva a decisão do próximo dia (o link abre o arquivo já preenchido) e avance 1, 5 ou 20 dias: o botão copia o comando e abre a issue de controle; cole no comentário.</li>
-      <li>Cada avanço responde na issue de controle com o que aconteceu e atualiza este painel em poucos minutos.</li>
+      <li><strong>Quem decide são os times.</strong> Todo dia útil a Extração (Bia e Téo) faz a triagem dos incidentes, os Dashboards (Caio e Lia) decidem o que publicar quando falta dado e o Comitê (Helena, Rafael e Marta) mexe na carteira, na equipe e no orçamento olhando só os números do painel.</li>
+      <li><strong>Ao vivo</strong> (aba de cada cenário): as reuniões tocam fala por fala, na ordem em que aconteceram. Quando chega um dia novo, a página percebe sozinha em até um minuto e continua.</li>
+      <li><strong>Dia a dia</strong> fecha de segunda a sexta às 08h com os dados reais de ontem. <strong>Simulação 2026</strong> refaz o ano desde 1º de janeiro, um dia útil a cada 30 minutos, até alcançar o presente.</li>
+      <li><strong>Você não precisa fazer nada.</strong> Se quiser intervir, "Intervir" abre uma diretriz do conselho já preenchida: o que estiver nela vale por cima dos times naquele dia, e a ata registra.</li>
     </ol>
   </section>`;
 }
@@ -405,7 +415,7 @@ function hoje() {
     ${kpi("Credibilidade dos painéis", pctSimples(r.credibilidade), `confiança hoje ${pctSimples(r.confianca_media)}`)}
     ${kpi("Caixa da gestora", mi(r.caixa_gestora), "receita de taxa − custos", sinal(r.caixa_gestora))}
   </section>
-  <section class="cartao"><h2>Próximo passo</h2><div class="acoes">${acoesCenario(C)}</div>
+  <section class="cartao"><h2>Acompanhar</h2><div class="acoes">${acoesCenario(C)}</div>
     ${tarefas.length ? `<ul class="lista tarefas" style="margin-top:12px">${tarefas.map((t) => linhaTarefa(t, false)).join("")}</ul>` : ""}</section>
   <section class="cartao"><h2>Cota × CDI desde a fundação</h2>${grafico([
     { nome: "Fundo", pontos: h.map((x) => [x.data, (x.cota - 1) * 100]) },
@@ -427,7 +437,7 @@ function extracao() {
        <div class="legenda caixas"><span><i style="--cor:var(--ok)"></i>ok</span><span><i style="--cor:var(--aviso)"></i>atraso</span><span><i style="--cor:var(--ruim)"></i>fora do ar / falha real</span><span><i style="--cor:var(--formato)"></i>mudou formato</span></div>`
     : `<p class="vazio">Sem histórico.</p>`;
   const incs = ex.incidentes.length
-    ? ex.incidentes.map((i) => `<details ${i.estado === "aberto" ? "open" : ""}><summary>${selo(i.estado === "aberto" ? i.tipo : "resolvido", i.estado === "aberto" ? TIPO_INC[i.tipo] : "ok")} <strong>${i.id}</strong> · ${esc(i.fonte)} · ${dataBR(i.aberto_em)}${i.resolvido_em ? " → " + dataBR(i.resolvido_em) : ""}${linkIssue(i.issue)}</summary><p>${esc(i.detalhe)}. Ação: <code>${esc(i.acao)}</code>, ${i.dias} dia(s).${i.estado === "aberto" ? ` ${externo(P.decisao_proxima.link_criar, "Mudar a ação ↗", "")}` : ""}</p><ul>${i.historico.map((h) => `<li>${esc(h)}</li>`).join("")}</ul></details>`).join("")
+    ? ex.incidentes.map((i) => `<details ${i.estado === "aberto" ? "open" : ""}><summary>${selo(i.estado === "aberto" ? i.tipo : "resolvido", i.estado === "aberto" ? TIPO_INC[i.tipo] : "ok")} <strong>${i.id}</strong> · ${esc(i.fonte)} · ${dataBR(i.aberto_em)}${i.resolvido_em ? " → " + dataBR(i.resolvido_em) : ""}${linkIssue(i.issue)}</summary><p>${esc(i.detalhe)}. Ação: <code>${esc(i.acao)}</code>, ${i.dias} dia(s).</p><ul>${i.historico.map((h) => `<li>${esc(h)}</li>`).join("")}</ul></details>`).join("")
     : `<p class="vazio">Nenhum incidente nos últimos 30 dias.</p>`;
   return `
   <section class="grade">
@@ -470,18 +480,18 @@ function executivos() {
   }).join("");
   const decs = e.decisoes_recentes.length
     ? `<ul class="lista">${e.decisoes_recentes.map((d) => `<li><span class="quando">${dataBR(d.data)}</span><div>${selo(d.autor, "info")} ${esc(d.resumo || "sem justificativa")}</div></li>`).join("")}</ul>`
-    : `<p class="vazio">Nenhuma decisão registrada ainda: o fundo está no piloto automático.</p>`;
+    : `<p class="vazio">O comitê ainda não mudou nada desde a fundação.</p>`;
   return `
   <section class="grade">
-    ${kpi("Dias sem decisão", e.dias_sem_decisao, e.ultima_decisao ? `última em ${dataBR(e.ultima_decisao)}` : "nenhuma ainda", e.dias_sem_decisao >= 3 ? "neg" : "")}
+    ${kpi("Último ajuste do comitê", e.ultima_decisao ? dataBR(e.ultima_decisao) : "—", e.ultima_decisao ? "alocação, equipe ou orçamento" : "mantém a alocação inicial")}
     ${kpi("Receita do dia", brl(g.receita_dia), "taxa de administração")}
     ${kpi("Custo do dia", brl(g.custo_dia), "casa + equipe + orçamento")}
     ${kpi("Caixa da gestora", mi(g.caixa), "", sinal(g.caixa))}
   </section>
-  <section class="cartao"><h2>Alocação: atual (barra) × alvo (traço) × limite (faixa)</h2><div style="display:grid;gap:10px">${aloc}</div>${e.congelados.length ? `<p class="vazio" style="margin-top:8px">❄ congelado: sem número confiável no painel, os executivos não mexem.</p>` : ""}<div class="acoes" style="margin-top:12px">${decisaoPronta(C) ? externo(P.decisao_proxima.link_ver, `✓ Decisão de ${dataBR(P.decisao_proxima.data)}`) : externo(P.decisao_proxima.link_criar, `Escrever decisão de ${dataBR(P.decisao_proxima.data)} ↗`, "botao prim")}</div></section>
+  <section class="cartao"><h2>Alocação: atual (barra) × alvo (traço) × limite (faixa)</h2><div style="display:grid;gap:10px">${aloc}</div>${e.congelados.length ? `<p class="vazio" style="margin-top:8px">❄ congelado: sem número confiável no painel, os executivos não mexem.</p>` : ""}<div class="acoes" style="margin-top:12px"><a class="botao" href="#/${esc(C.id)}/aovivo">▶ Ver o comitê decidindo</a>${botaoIntervir(C)}</div></section>
   <section class="cartao"><h2>Patrimônio</h2>${grafico([{ nome: "PL", pontos: P.historico.map((x) => [x.data, x.pl / 1e6]) }], { formato: (v) => `${num(v, 0)} mi` })}</section>
   <section class="cartao"><h2>Pesos ao longo do tempo</h2>${grafico(Object.keys(e.alvo).map((a) => ({ nome: P.nomes.ativos[a], pontos: P.historico.map((x) => [x.data, x.pesos[a] * 100]) })), { formato: (v) => `${num(v, 0)}%`, zero: true })}</section>
-  <section class="cartao"><h2>Decisões recentes</h2>${decs}</section>`;
+  <section class="cartao"><h2>Ajustes recentes do comitê</h2>${decs}</section>`;
 }
 
 function processos() {
@@ -491,31 +501,255 @@ function processos() {
   return `
   <section class="cartao"><h2>Onde as coisas acontecem</h2><div class="acoes">
     ${ctl ? externo(ctl.url, `Issue de controle #${ctl.numero} ↗`) : ""}
-    ${externo(pasta, "Decisões ↗")}${externo(pasta.replace(/decisoes$/, "diario"), "Diário ↗")}
+    ${externo(pasta, "Diretrizes do conselho ↗")}${externo(pasta.replace(/decisoes$/, "diario"), "Diário ↗")}
     ${externo(`${GH}/issues?q=is%3Aopen+label%3A${encodeURIComponent(C.id === "ao-vivo" ? "simulacao" : `cenario:${C.id}`)}`, "Issues do cenário ↗")}
     ${externo(`${GH}/actions/workflows/${C.modo === "diario" ? "fechamento.yml" : "simulacao.yml"}`, "Execuções ↗")}
   </div></section>
   <section class="cartao"><h2>Issues abertas</h2>${abertas.length ? `<ul class="lista">${abertas.map((i) => `<li><span class="quando">#${i.numero}</span><div><a href="${esc(i.url)}">${esc(i.titulo)}</a><div class="det">${i.rotulos.map((r) => esc(r)).join(" · ")}</div></div></li>`).join("")}</ul>` : `<p class="vazio">Nenhuma issue aberta no último fechamento.</p>`}</section>
-  <section class="cartao"><h2>Dias simulados</h2><ul class="lista">${P.dias.map((d) => `<li><span class="quando">${dataBR(d.data)}</span><div>${d.decisao.existe ? selo("decisão: " + d.decisao.autor, "info") : selo("piloto automático", "")} ${d.eventos.length} evento(s)</div></li>`).join("")}</ul></section>
+  <section class="cartao"><h2>Dias simulados</h2><ul class="lista">${P.dias.map((d) => `<li><span class="quando">${dataBR(d.data)}</span><div>${d.decisao.intervencao ? selo("conselho + times", "aviso") : d.decisao.autor === "times" ? selo("times", "info") : d.decisao.existe ? selo(d.decisao.autor || "decisão", "info") : selo("piloto automático", "")} ${d.eventos.length} evento(s) · <a href="#/${esc(C.id)}/aovivo/${d.data}">assistir</a></div></li>`).join("")}</ul></section>
   <section class="cartao"><h2>Como este cenário funciona</h2>
     <p>${esc(C.descricao || P.cenario?.descricao || "")}</p>
     <ol>
       <li><strong>${C.modo === "diario" ? "Fechamento" : "Avanço"}</strong>: extrai BCB, Tesouro, Yahoo e B3; simula Extração → Dashboards → Executivos → fundo; abre e fecha issues.</li>
-      <li><strong>Decisão</strong>: ${C.modo === "diario" ? "o agente Claude lê o briefing e abre o PR do dia" : "você escreve o arquivo do próximo dia (ou pede ao Claude)"} em <code>${esc(P.decisao_proxima.caminho.replace(/[^/]+$/, ""))}</code>.</li>
-      <li>A decisão vale no dia seguinte: o que acontece hoje muda o amanhã.</li>
+      <li><strong>Reuniões</strong>: Extração (08h) → Dashboards (09h) → Comitê (10h) decidem com o que a área anterior entregou; tudo vai para a ata do dia.</li>
+      <li><strong>Diretriz do conselho</strong> (opcional): um arquivo em <code>${esc(P.decisao_proxima.caminho.replace(/[^/]+$/, ""))}</code> vale por cima dos times naquele dia.</li>
+      <li>O que acontece hoje muda o amanhã: dívida técnica, credibilidade, caixa e carteira passam de um dia para o outro.</li>
     </ol>
   </section>`;
 }
 
-const VISOES = { hoje, extracao, dashboards, executivos, processos };
+// ------------------------------------------------------------------ ao vivo: as reuniões dos times, fala por fala
+const NOME_SALA = { extracao: "Extração", dashboards: "Dashboards", executivos: "Comitê", fundo: "Fechamento" };
+const HORA_SALA = { extracao: "08:00", dashboards: "09:00", executivos: "10:00", fundo: "18:00" };
+const ROTULO_TIPO = { decisao: "decisão", conselho: "conselho", alerta: "alerta", fechamento: "fechamento" };
+const VELOCIDADES = [["1", "1×"], ["2", "2×"], ["5", "5×"], ["0", "tudo"]];
+const PLAY = { cen: null, datas: [], i: -1, n: 0, dia: null, tocando: true, vel: 1, seguir: true, timer: null, fim: false };
+const VISTO = (id) => `capivara-visto-${id}`;
+const ler = (k, padrao) => { try { return localStorage.getItem(k) ?? padrao; } catch (_) { return padrao; } };
+const gravar = (k, v) => { try { localStorage.setItem(k, v); } catch (_) { /* navegador sem storage: tudo bem */ } };
+const textoFala = (t) => esc(t).replace(/`([^`]+)`/g, "<code>$1</code>");
+const diaSemana = (iso) => new Date(`${iso}T12:00:00Z`).toLocaleDateString("pt-BR", { weekday: "long", timeZone: "UTC" });
+
+function aovivo() {
+  return `
+  <section class="cartao palco">
+    <div class="palco-cab">
+      <div>
+        <div class="det" id="pl-pos"></div>
+        <h2 class="pl-dia" id="pl-dia">carregando…</h2>
+      </div>
+      <div class="relogio" id="pl-relogio" aria-hidden="true">--:--</div>
+    </div>
+    <div class="salas" id="pl-salas">${Object.entries(NOME_SALA).map(([a, n]) => `<div class="sala" data-sala="${a}"><b>${HORA_SALA[a]}</b>${n}</div>`).join("")}</div>
+    <div class="controles" role="group" aria-label="Controles">
+      <button class="botao leve" type="button" data-pl="ant" title="Dia anterior">⏮</button>
+      <button class="botao prim" type="button" data-pl="play" id="pl-play">⏸ Pausar</button>
+      <button class="botao leve" type="button" data-pl="prox" title="Próximo dia">⏭</button>
+      <label class="det">Ritmo <select id="pl-vel">${VELOCIDADES.map(([v, n]) => `<option value="${v}">${n}</option>`).join("")}</select></label>
+      <label class="det"><input type="checkbox" id="pl-seguir" checked> seguir para o próximo dia</label>
+      <input type="range" id="pl-linha" min="0" max="0" value="0" aria-label="Escolher o dia">
+    </div>
+  </section>
+  <section class="grade-palco">
+    <div class="cartao"><h2>Ata do dia</h2><ol class="feed" id="pl-feed" role="log" aria-live="polite"></ol><div id="pl-digitando" class="digitando" hidden></div><div id="pl-espera" class="espera" hidden></div></div>
+    <div class="cartao lateral"><h2>Resultado do dia</h2><div id="pl-resultado"><p class="vazio">Aparece no fechamento, às 18h.</p></div></div>
+  </section>`;
+}
+
+function iniciarPlayer(c, data) {
+  if (PLAY.timer) clearTimeout(PLAY.timer);
+  PLAY.cen = c.id;
+  PLAY.datas = c.P?.datas || [];
+  PLAY.vel = Number(ler("capivara-vel", "1"));
+  PLAY.seguir = ler("capivara-seguir", "1") === "1";
+  $("#pl-vel").value = String(PLAY.vel);
+  $("#pl-seguir").checked = PLAY.seguir;
+  const linha = $("#pl-linha");
+  linha.max = Math.max(0, PLAY.datas.length - 1);
+  if (!PLAY.datas.length) { $("#pl-dia").textContent = "Ainda não há dias simulados"; return; }
+  let i = data ? PLAY.datas.indexOf(data) : -1;
+  if (i < 0) {
+    // continua de onde parou; se já viu tudo (ou nunca viu), começa pelo dia mais recente
+    const visto = PLAY.datas.indexOf(ler(VISTO(c.id), ""));
+    i = visto >= 0 && visto < PLAY.datas.length - 1 ? visto + 1 : PLAY.datas.length - 1;
+  }
+  PLAY.tocando = true;
+  irPara(i);
+}
+
+async function irPara(i) {
+  const c = CENARIOS.find((x) => x.id === PLAY.cen);
+  if (!c || i < 0 || i >= PLAY.datas.length) return;
+  if (PLAY.timer) clearTimeout(PLAY.timer);
+  PLAY.i = i; PLAY.n = 0; PLAY.fim = false;
+  const data = PLAY.datas[i];
+  $("#pl-linha").value = i;
+  $("#pl-pos").textContent = `Dia ${i + 1} de ${PLAY.datas.length} · ${c.nome}`;
+  $("#pl-dia").textContent = `${diaSemana(data)}, ${dataBR(data)}`;
+  $("#pl-feed").innerHTML = "";
+  $("#pl-espera").hidden = true;
+  $("#pl-resultado").innerHTML = `<p class="vazio">Aparece no fechamento, às 18h.</p>`;
+  marcarSala(null);
+  let dia = null;
+  for (const url of [`${c.dias || `cenarios/${c.id}/dias/`}${data}.json`, `../${c.id === "ao-vivo" ? "dados" : `cenarios/${c.id}/dados`}/dias/${data}.json`]) {
+    try { dia = await json(url, false); break; } catch (_) { /* tenta o próximo */ }
+  }
+  if (PLAY.datas[PLAY.i] !== data) return; // trocou de dia enquanto carregava
+  PLAY.dia = dia || { data, ata: [], eventos: [], resumo: null };
+  if (!PLAY.dia.ata?.length) {
+    // dia anterior aos times: só os acontecimentos
+    PLAY.dia.ata = (PLAY.dia.eventos || []).map((e) => ({ hora: "", area: e.area, quem: NOME_AREA[e.area] || e.area, papel: "", texto: e.texto, tipo: e.tipo === "aberto" || e.tipo === "alerta" ? "alerta" : "evento" }));
+    PLAY.dia.ata.unshift({ hora: "", area: "fundo", quem: "Arquivo", papel: "", texto: "Dia anterior aos times: não há ata das reuniões, só os acontecimentos.", tipo: "evento" });
+  }
+  atualizarBotaoPlay();
+  passo();
+}
+
+function marcarSala(area) {
+  const ordem = Object.keys(NOME_SALA);
+  const k = ordem.indexOf(area);
+  document.querySelectorAll(".sala").forEach((el) => {
+    const j = ordem.indexOf(el.dataset.sala);
+    el.classList.toggle("ativa", j === k);
+    el.classList.toggle("feita", k >= 0 && j < k);
+  });
+}
+
+function mostrarFala(f) {
+  const li = document.createElement("li");
+  li.className = `fala ${f.area} ${f.tipo}`;
+  li.innerHTML = `<span class="hora">${esc(f.hora)}</span><div class="balao"><div class="quem"><b class="area-cor ${esc(f.area)}">${esc(f.quem)}</b>${f.papel ? ` · ${esc(f.papel)}` : ""}${ROTULO_TIPO[f.tipo] ? ` <span class="selo ${f.tipo === "decisao" ? "info" : f.tipo === "alerta" ? "aviso" : f.tipo === "conselho" ? "ruim" : "ok"}">${ROTULO_TIPO[f.tipo]}</span>` : ""}</div><div class="txt">${textoFala(f.texto)}</div></div>`;
+  $("#pl-feed").append(li);
+  if (f.hora) $("#pl-relogio").textContent = f.hora;
+  marcarSala(f.area);
+  const box = li.getBoundingClientRect();
+  if (box.bottom > window.innerHeight || box.top < 0) li.scrollIntoView({ block: "nearest", behavior: PLAY.vel ? "smooth" : "auto" });
+}
+
+function passo() {
+  if (PLAY.timer) clearTimeout(PLAY.timer);
+  const ata = PLAY.dia?.ata || [];
+  const digitando = $("#pl-digitando");
+  if (!digitando) return; // saiu da tela do ao vivo
+  if (PLAY.vel === 0) {
+    while (PLAY.n < ata.length) mostrarFala(ata[PLAY.n++]);
+  }
+  if (PLAY.n >= ata.length) { digitando.hidden = true; return terminarDia(); }
+  if (!PLAY.tocando) { digitando.hidden = true; return; }
+  const f = ata[PLAY.n];
+  digitando.hidden = false;
+  digitando.textContent = `${f.quem} está ${f.tipo === "fechamento" || f.tipo === "evento" || f.tipo === "alerta" ? "registrando" : "falando"}…`;
+  const espera = (700 + Math.min(2600, f.texto.length * 22)) / PLAY.vel;
+  PLAY.timer = setTimeout(() => { mostrarFala(f); PLAY.n++; passo(); }, espera);
+}
+
+function terminarDia() {
+  PLAY.fim = true;
+  marcarSala("fim");
+  const c = CENARIOS.find((x) => x.id === PLAY.cen);
+  const data = PLAY.datas[PLAY.i];
+  if (PLAY.datas.indexOf(ler(VISTO(c.id), "")) < PLAY.i) gravar(VISTO(c.id), data);
+  $("#pl-resultado").innerHTML = resultadoDia(PLAY.dia, c);
+  const ultimo = PLAY.i >= PLAY.datas.length - 1;
+  if (!ultimo && PLAY.seguir && PLAY.tocando) {
+    mostrarEspera(`Próximo dia em instantes: ${dataBR(PLAY.datas[PLAY.i + 1])}.`);
+    PLAY.timer = setTimeout(() => irPara(PLAY.i + 1), 2500 / (PLAY.vel || 4));
+  } else if (ultimo) {
+    mostrarEspera(proximoDiaTexto(c));
+  } else {
+    mostrarEspera(`Fim de ${dataBR(data)}. ⏭ para o próximo dia.`);
+  }
+  atualizarBotaoPlay();
+}
+
+function mostrarEspera(texto) {
+  const e = $("#pl-espera");
+  if (!e) return;
+  e.hidden = false;
+  e.innerHTML = `<span class="pulso" aria-hidden="true"></span>${esc(texto)}`;
+}
+
+function proximoDiaTexto(c) {
+  const s = situacao(c);
+  if (c.modo === "diario") return `Você está em dia. Próximo fechamento: ${c.P?.proximo_fechamento_em ? `${dataBR(c.P.proximo_fechamento_em)} às 08h` : "no próximo dia útil"}. A página confere sozinha e toca a reunião nova quando ela chegar.`;
+  if (s.rotulo === "Rodando agora") return "Os times estão reunidos agora: o próximo dia aparece aqui em instantes.";
+  if (s.progresso === 1) return "A simulação alcançou o presente. Um dia novo por dia útil; a página confere sozinha.";
+  if (c.automatico) return `Você está em dia. A simulação anda sozinha (${c.automatico.dias_por_execucao || 1} dia útil a cada ${c.automatico.intervalo || "30 min"}): o próximo dia aparece aqui sem recarregar.`;
+  return "Você está em dia. O próximo dia aparece quando a simulação avançar.";
+}
+
+function resultadoDia(dia, c) {
+  const r = dia?.resumo;
+  if (!r) return `<p class="vazio">Sem resultado registrado.</p>`;
+  const anterior = PLAY.i > 0 ? (c.P.historico || []).find((h) => h.data === PLAY.datas[PLAY.i - 1]) : null;
+  const vsCdi = anterior ? (r.retorno_dia - (r.bench / anterior.bench - 1)) : null;
+  const decididas = (dia.ata || []).filter((f) => f.tipo === "decisao" || f.tipo === "conselho");
+  const pesos = Object.entries(r.pesos || {});
+  return `
+    <div class="mini-kpis">
+      <div><span class="rot">Cota</span><strong>${num(r.cota, 6)}</strong><span class="det ${sinal(r.retorno_dia)}">dia ${pct(r.retorno_dia)}</span></div>
+      <div><span class="rot">Contra o CDI no dia</span><strong class="${sinal(vsCdi)}">${pct(vsCdi, 3)}</strong><span class="det">desde o início ${pct(r.cota - 1)} vs ${pct(r.bench - 1)}</span></div>
+      <div><span class="rot">Patrimônio</span><strong>${mi(r.pl)}</strong><span class="det">fluxo ${brl(r.fluxo)}</span></div>
+      <div><span class="rot">Caixa da gestora</span><strong class="${sinal(r.caixa_gestora)}">${mi(r.caixa_gestora)}</strong><span class="det">${r.incidentes_abertos} incidente(s) · cred. ${pctSimples(r.credibilidade)}</span></div>
+    </div>
+    <div class="pesos">${pesos.map(([a, w], k) => `<span style="width:${(w * 100).toFixed(2)}%;--cor:var(--serie-${k + 1})" title="${esc(c.P.nomes?.ativos?.[a] || a)} ${pctSimples(w, 1)}"></span>`).join("")}</div>
+    <div class="legenda caixas">${pesos.map(([a, w], k) => `<span><i style="--cor:var(--serie-${k + 1})"></i>${esc(c.P.nomes?.ativos?.[a] || a)} ${pctSimples(w)}</span>`).join("")}</div>
+    <h3 style="margin-top:14px">${decididas.length ? `${decididas.length} decisão(ões) no dia` : "Ninguém mudou nada"}</h3>
+    ${decididas.length ? `<ul class="lista decididas">${decididas.map((f) => `<li><span class="quando">${esc(f.hora)}</span><div><b class="area-cor ${esc(f.area)}">${esc(f.quem)}</b> ${textoFala(f.texto)}</div></li>`).join("")}</ul>` : `<p class="vazio">Os times mantiveram ações, estratégias e carteira.</p>`}`;
+}
+
+function atualizarBotaoPlay() {
+  const b = $("#pl-play");
+  if (!b) return;
+  if (PLAY.fim && PLAY.i >= PLAY.datas.length - 1) b.textContent = "↺ Rever o dia";
+  else b.textContent = PLAY.tocando ? "⏸ Pausar" : "▶ Continuar";
+}
+
+function controlePlayer(acao) {
+  if (acao === "ant") return irPara(PLAY.i - 1);
+  if (acao === "prox") return irPara(PLAY.i + 1);
+  if (acao === "play") {
+    if (PLAY.fim) { PLAY.tocando = true; return PLAY.i >= PLAY.datas.length - 1 ? irPara(PLAY.i) : irPara(PLAY.i + 1); }
+    PLAY.tocando = !PLAY.tocando;
+    atualizarBotaoPlay();
+    passo();
+  }
+}
+
+// chegou dia novo enquanto a página estava aberta: o player continua sozinho se estava esperando
+function novosDias(c) {
+  if (PLAY.cen !== c.id || !$("#pl-feed")) return;
+  const antes = PLAY.datas.length;
+  PLAY.datas = c.P?.datas || PLAY.datas;
+  $("#pl-linha").max = Math.max(0, PLAY.datas.length - 1);
+  $("#pl-pos").textContent = `Dia ${PLAY.i + 1} de ${PLAY.datas.length} · ${c.nome}`;
+  if (PLAY.datas.length > antes && PLAY.fim && PLAY.seguir && PLAY.tocando) {
+    mostrarEspera(`Chegou ${dataBR(PLAY.datas[PLAY.i + 1])}: os times estão entrando na sala…`);
+    PLAY.timer = setTimeout(() => irPara(PLAY.i + 1), 2500);
+  } else if (PLAY.fim && PLAY.i >= PLAY.datas.length - 1) {
+    mostrarEspera(proximoDiaTexto(c));
+  }
+}
+
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-pl]");
+  if (b) controlePlayer(b.dataset.pl);
+});
+document.addEventListener("change", (e) => {
+  if (e.target.id === "pl-vel") { PLAY.vel = Number(e.target.value); gravar("capivara-vel", e.target.value); passo(); }
+  if (e.target.id === "pl-seguir") { PLAY.seguir = e.target.checked; gravar("capivara-seguir", PLAY.seguir ? "1" : "0"); if (PLAY.fim) terminarDia(); }
+  if (e.target.id === "pl-linha") { PLAY.tocando = true; irPara(Number(e.target.value)); }
+});
+
+const VISOES = { aovivo, hoje, extracao, dashboards, executivos, processos };
 
 // ------------------------------------------------------------------ navegação
 function rota() {
   const h = location.hash.replace(/^#\/?/, "");
   if (VISOES[h]) return { cenario: "ao-vivo", aba: h }; // links antigos (#extracao)
-  const [cen, aba] = h.split("/");
+  const [cen, aba, data] = h.split("/");
   if (!cen || cen === "central" || !CENARIOS.some((c) => c.id === cen)) return { cenario: null };
-  return { cenario: cen, aba: VISOES[aba] ? aba : "hoje" };
+  return { cenario: cen, aba: VISOES[aba] ? aba : "aovivo", data: /^\d{4}-\d{2}-\d{2}$/.test(data || "") ? data : null };
 }
 
 function nav(r) {
@@ -526,15 +760,27 @@ function nav(r) {
   }).join("");
   const abas = $("#nav-abas");
   abas.hidden = !r.cenario || !C?.P;
-  if (!abas.hidden) abas.innerHTML = ABAS.map(([id, nome]) => `<a href="#/${esc(r.cenario)}/${id}" aria-current="${r.aba === id ? "page" : "false"}">${nome}</a>`).join("");
+  if (!abas.hidden) abas.innerHTML = ABAS.map(([id, nome]) => `<a href="#/${esc(r.cenario)}/${id}" aria-current="${r.aba === id ? "page" : "false"}">${id === "aovivo" ? `<span class="pulso" aria-hidden="true"></span>` : ""}${nome}</a>`).join("");
 }
 
-function render() {
+let MONTADO = null; // a tela do ao vivo não é redesenhada quando os dados mudam: o player continua tocando
+function render(forcar = false) {
   const r = rota();
   C = r.cenario ? CENARIOS.find((c) => c.id === r.cenario) : null;
   P = C?.P || null;
-  GRAFICOS = [];
   nav(r);
+  const chave = `${r.cenario}/${r.aba}/${r.data || ""}`;
+  if (C && P && r.aba === "aovivo") {
+    $("#sub").textContent = `${C.nome} · reuniões dos times`;
+    if (MONTADO === chave && !forcar && $("#pl-feed")) return novosDias(C);
+    MONTADO = chave;
+    $("#conteudo").innerHTML = aovivo();
+    iniciarPlayer(C, r.data);
+    return;
+  }
+  MONTADO = chave;
+  if (PLAY.timer) clearTimeout(PLAY.timer);
+  GRAFICOS = [];
   if (!C) {
     $("#sub").textContent = "Central · todos os cenários";
     $("#conteudo").innerHTML = central();
@@ -565,22 +811,57 @@ document.addEventListener("click", async (e) => {
 });
 window.addEventListener("hashchange", () => CENARIOS.length && render());
 let redim;
-window.addEventListener("resize", () => { clearTimeout(redim); redim = setTimeout(() => CENARIOS.length && render(), 150); });
-$("#atualizar").addEventListener("click", async () => {
-  $("#atualizar").disabled = true;
-  CENARIOS = await carregarCenarios();
-  VIVO = await consultarGitHub(true);
-  $("#atualizar").disabled = false;
-  render();
-});
+window.addEventListener("resize", () => { clearTimeout(redim); redim = setTimeout(() => CENARIOS.length && rota().aba !== "aovivo" && render(), 150); });
+
+// ------------------------------------------------------------------ atualização sozinha (adeus, Shift+F5)
+// versao.json muda a cada fechamento/avanço publicado. Dado novo: recarrega só os JSONs e redesenha.
+// Código novo (`codigo`): abre a página de novo por um endereço inédito, o que fura o cache do navegador.
+const ESTADO = { conferido: null, paineis: null, erro: false };
+function frescor() {
+  const el = $("#frescor");
+  if (!el) return;
+  const quando = ESTADO.conferido ? haQuanto(ESTADO.conferido.toISOString()) : "";
+  el.className = `frescor ${ESTADO.erro ? "erro" : ""}`;
+  el.innerHTML = ESTADO.erro ? "sem conexão" : `<span class="pulso" aria-hidden="true"></span>${quando === "agora" ? "atualizado agora" : `conferido ${quando}`}`;
+}
+
+async function conferirVersao() {
+  if (String(window.VERSAO || "").startsWith("__")) return; // aberto direto do repositório (desenvolvimento)
+  let v;
+  try { v = await json("versao.json"); ESTADO.erro = false; } catch (_) { ESTADO.erro = true; frescor(); return; }
+  ESTADO.conferido = new Date();
+  if (v.codigo && v.codigo !== window.CODIGO) {
+    let tentou = null;
+    try { tentou = sessionStorage.getItem("capivara-codigo"); sessionStorage.setItem("capivara-codigo", v.codigo); } catch (_) { /* tudo bem */ }
+    if (tentou !== v.codigo) { location.replace(`${location.pathname}?v=${v.codigo}${location.hash}`); return; }
+  }
+  const mudou = JSON.stringify(v.paineis) !== JSON.stringify(ESTADO.paineis);
+  if (ESTADO.paineis && mudou) {
+    CENARIOS = await carregarCenarios();
+    VIVO = await consultarGitHub(true);
+    render();
+    avisar("Dados novos chegaram.");
+  }
+  ESTADO.paineis = v.paineis;
+  frescor();
+}
 
 carregarCenarios().then(async (lista) => {
   CENARIOS = lista;
   const algum = lista.find((c) => c.P);
   $("#aviso").textContent = algum?.P.aviso || "";
   render();
+  conferirVersao();
   VIVO = await consultarGitHub();
-  render();
+  if (rota().aba !== "aovivo") render();
+  setInterval(() => { if (!document.hidden) conferirVersao(); }, 60000);
+  setInterval(frescor, 15000);
+  setInterval(async () => {
+    if (document.hidden) return;
+    VIVO = await consultarGitHub(true);
+    if (rota().aba !== "aovivo") render(); else nav(rota());
+  }, 180000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) conferirVersao(); });
 }).catch((e) => {
   $("#sub").textContent = "sem dados";
   $("#conteudo").innerHTML = `<div class="cartao"><p class="vazio">Não foi possível carregar os painéis: ${esc(e.message)}</p></div>`;

@@ -10,7 +10,7 @@ import math
 import random
 from datetime import date, timedelta
 
-from . import calendario, config
+from . import calendario, config, times as times_
 from .mercado import Mercado
 
 AREAS = {"extracao": "Extração", "dashboards": "Dashboards", "executivos": "Executivos", "fundo": "Fundo"}
@@ -263,10 +263,13 @@ def _estimar(ind: str, mercado: Mercado, base: tuple[str, float], liberado: dict
     return base[1]
 
 
-def _passo_dashboards(estado: dict, d: date, mercado: Mercado, politicas: dict, decisao: dict, eventos: list) -> None:
+def _passo_dashboards(estado: dict, d: date, mercado: Mercado, politicas: dict, decisao: dict, eventos: list,
+                      decidir=None) -> dict:
+    """`decidir(defasados)` é a reunião do time de Dashboards: recebe {indicador: dias de atraso} e devolve
+    {indicador: estratégia}. Devolve as estratégias usadas no dia."""
     db = estado["dashboards"]
     pol = politicas["dashboards"]
-    escolhas = (decisao.get("dashboards") or {}).get("estrategias", {})
+    escolhas = dict((decisao.get("dashboards") or {}).get("estrategias", {}))
     fontes = estado["extracao"]["fontes"]
     liberado_por_ind = {}
     for ind, meta in config.INDICADORES.items():
@@ -279,13 +282,11 @@ def _passo_dashboards(estado: dict, d: date, mercado: Mercado, politicas: dict, 
                 lib, via = alt_lib, "alternativa"
         liberado_por_ind[ind] = (lib, via)
 
-    confs = []
+    situacao = {}
     for ind, meta in config.INDICADORES.items():
         lib, via = liberado_por_ind[ind]
-        serie_usada = meta["serie"] if via == "principal" else meta["alt"][1]
         if via == "alternativa":
-            u = mercado.ultimo(serie_usada, lib)
-            base = u
+            base = mercado.ultimo(meta["alt"][1], lib)
         else:
             base = _valor_indicador(ind, mercado, lib, estado)
         esperada = _data_esperada(meta["serie"], meta["fonte"], d)
@@ -293,6 +294,14 @@ def _passo_dashboards(estado: dict, d: date, mercado: Mercado, politicas: dict, 
             atraso = 0 if base and base[0] >= esperada.isoformat() else 1
         else:
             atraso = calendario.defasagem(date.fromisoformat(base[0]) if base else None, esperada)
+        situacao[ind] = (base, via, esperada, atraso)
+    if decidir:
+        escolhas = decidir({ind: s[3] for ind, s in situacao.items() if s[3] > 0}) | escolhas
+    usadas = {}
+
+    confs = []
+    for ind, meta in config.INDICADORES.items():
+        base, via, esperada, atraso = situacao[ind]
         anterior = db["indicadores"].get(ind, {})
         reg = {"nome": meta["nome"], "data_ref": base[0] if base else None, "defasagem": atraso, "via": via,
                "estrategia": None, "valor": base[1] if base else None, "confianca": 1.0 if via == "principal" else 0.9,
@@ -300,6 +309,7 @@ def _passo_dashboards(estado: dict, d: date, mercado: Mercado, politicas: dict, 
         if atraso > 0:
             est = escolhas.get(ind) or pol.get("por_indicador", {}).get(ind) or pol["estrategia_padrao"]
             reg["estrategia"] = est
+            usadas[ind] = est
             if base is None or est == "suspender":
                 reg["valor"], reg["confianca"] = None, 0.0
             elif est == "usar_ontem":
@@ -338,6 +348,7 @@ def _passo_dashboards(estado: dict, d: date, mercado: Mercado, politicas: dict, 
         erro = abs(e["valor"] - real[1]) / (abs(real[1]) if ind in ("dolar", "ibov", "bova11") else 1)
         if erro > tol.get(ind, 0.01):
             db["credibilidade"] = max(0.0, db["credibilidade"] - 0.05)
+            times_.registrar_erro_estimativa(estado, ind, d)
             chave = f"ERRO-{ind}-{e['data']}"
             estado["alertas"][chave] = {
                 "titulo": f"Painel errou {config.INDICADORES[ind]['nome']} de {e['data']}", "area": "dashboards",
@@ -352,6 +363,7 @@ def _passo_dashboards(estado: dict, d: date, mercado: Mercado, politicas: dict, 
     media = sum(confs) / len(confs)
     db["confianca_media"] = round(media, 3)
     db["credibilidade"] = round(min(1.0, max(0.0, db["credibilidade"] + 0.02 * (media - 0.95))), 3)
+    return usadas
 
 
 # ====================================================================== executivos + fundo
@@ -361,7 +373,8 @@ def _pesos(posicoes: dict) -> dict:
 
 
 def _passo_fundo(estado: dict, d: date, anterior: date, mercado: Mercado, politicas: dict, decisao: dict,
-                 eventos: list) -> None:
+                 eventos: list, decidir=None) -> dict:
+    """`decidir(ctx)` é a reunião dos executivos: devolve o bloco `executivos` da decisão do dia."""
     fundo, exe, g = estado["fundo"], estado["executivos"], estado["gestora"]
     pf, pg = politicas["fundo"], politicas["gestora"]
 
@@ -418,6 +431,8 @@ def _passo_fundo(estado: dict, d: date, anterior: date, mercado: Mercado, politi
         reg = indicadores.get(ind, {})
         if meta["ativo"] and meta["ativo"] != "caixa" and (reg.get("valor") is None or reg.get("defasagem", 0) > max_def):
             congelados.add(meta["ativo"])
+    if decidir:
+        dex = decidir({"congelados": sorted(congelados), "excesso_21d": excesso, "fluxo_pct": fluxo_pct})
     pesos = _pesos(fundo["posicoes"])
     alvo = dict(exe["alvo"])
     if dex.get("alocacao"):
@@ -430,8 +445,9 @@ def _passo_fundo(estado: dict, d: date, anterior: date, mercado: Mercado, politi
             if abs(alvo[ativo] - exe["alvo"].get(ativo, 0)) > 0.02 and reg.get("confianca", 1) < 0.5:
                 eventos.append(_evento("executivos", "alerta", f"Mudaram {config.ATIVOS[ativo]} olhando um número "
                                        f"com confiança {reg.get('confianca', 0):.0%}"))
-    elif decisao:
-        exe["ultima_decisao"] = d.isoformat()
+    elif decisao or decidir:
+        if dex or not decidir:  # com os times, "decisão" é quando o comitê muda alguma coisa
+            exe["ultima_decisao"] = d.isoformat()
         exe["dias_sem_decisao"] = 0
         estado["alertas"].pop("EXEC-AUSENTE", None)
     else:
@@ -453,7 +469,7 @@ def _passo_fundo(estado: dict, d: date, anterior: date, mercado: Mercado, politi
         estado["extracao"]["equipe"] = int(dex["equipe_extracao"])
     if "orcamento_extracao_dia" in dex:
         estado["extracao"]["orcamento_dia"] = float(dex["orcamento_extracao_dia"])
-    if decisao:
+    if decisao and (dex or not decidir):
         exe["decisoes_recentes"] = (exe["decisoes_recentes"] + [{"data": d.isoformat(), "autor": decisao.get("autor", "?"),
                                     "resumo": (dex.get("justificativa") or decisao.get("observacoes") or "")[:300]}])[-10:]
 
@@ -469,7 +485,7 @@ def _passo_fundo(estado: dict, d: date, anterior: date, mercado: Mercado, politi
         for a in alvo:
             fundo["posicoes"][a]["valor"] = alvo[a] * total
         if giro > 0:
-            eventos.append(_evento("fundo", "info", f"Rebalanceamento: giro R$ {giro:,.0f}, custo R$ {custo:,.0f}"))
+            eventos.append(_evento("fundo", "info", f"Rebalanceamento: giro R$ {times_._num(giro / 1e6, 1)} mi, custo R$ {times_._num(custo, 0)}"))
     fundo["pl"] = round(sum(p["valor"] for p in fundo["posicoes"].values()), 2)
     fundo["cota"] = fundo["pl"] / fundo["cotas"]
     fundo["retorno_dia"] = fundo["cota"] / cota_ant - 1
@@ -498,6 +514,7 @@ def _passo_fundo(estado: dict, d: date, anterior: date, mercado: Mercado, politi
             "corpo": "A receita de taxa não cobre os custos. Reduzir equipe/orçamento ou recuperar PL."})
     else:
         estado["alertas"].pop("CRISE-CAIXA", None)
+    return dex
 
 
 # ====================================================================== alertas e eventos
@@ -527,30 +544,66 @@ def _alertas_de_incidentes(estado: dict, d: date) -> None:
             del estado["alertas"][chave]
 
 
+# ====================================================================== ata
+def _narrar_dia(estado: dict, ata, eventos: list) -> None:
+    """Os acontecimentos do dia entram na ata no horário da área, e o administrador fecha o dia."""
+    for e in eventos:
+        tipo = "alerta" if e["tipo"] in ("aberto", "alerta") else "evento"
+        area = e["area"] if e["area"] in times_.PESSOAS else "fundo"
+        quem = 1 if area in ("extracao", "dashboards") else 0
+        if area == "executivos":
+            quem = 2
+        ata.diz(area, quem, e["texto"], tipo=tipo, hora=times_.HORA_EVENTO.get(area))
+    f = estado["fundo"]
+    n = times_._num
+    ata.diz("fundo", 0, f"Fechamento: cota {n(f['cota'], 6)} ({'+' if f['retorno_dia'] >= 0 else ''}"
+            f"{n(f['retorno_dia'] * 100)}% no dia), PL R$ {n(f['pl'] / 1e6, 1)} mi, fluxo de cotistas R$ "
+            f"{n(f['fluxo_dia'] / 1e3, 0)} mil. Caixa da gestora R$ {n(estado['gestora']['caixa'] / 1e6)} mi.",
+            tipo="fechamento")
+
+
 # ====================================================================== o dia
 def simular_dia(estado: dict, d: date, mercado: Mercado, politicas: dict, decisao: dict | None,
-                controle: dict | None = None) -> tuple[dict, dict]:
-    """Avança a empresa até o fechamento do dia útil `d`. Devolve (novo_estado, registro_do_dia)."""
+                controle: dict | None = None, times: bool = False) -> tuple[dict, dict]:
+    """Avança a empresa até o fechamento do dia útil `d`. Devolve (novo_estado, registro_do_dia).
+
+    Com `times`, os times de cada área decidem o dia (gestora/times.py) e `decisao` vira só a diretriz do
+    conselho, que vale por cima do que o time decidiu. Sem `times`, vale só `decisao` (ou o piloto automático)."""
     estado = copy.deepcopy(estado)
     anterior = date.fromisoformat(estado["ultima_data"])
     if d <= anterior:
         raise ValueError(f"{d} já foi simulado (último: {anterior})")
-    decisao = decisao or {}
+    intervencao = decisao or {}
     eventos: list[dict] = []
     alertas_antes = set(estado["alertas"])
+    ata = times_.Ata()
+
+    if times:
+        acoes = times_.extracao(estado, d, ata, intervencao)
+        decisao = dict(intervencao, autor="conselho + times" if intervencao else "times",
+                       extracao={"acoes": acoes | (intervencao.get("extracao") or {}).get("acoes", {})})
+        dec_dash = lambda defasados: times_.dashboards(estado, d, defasados, ata, intervencao)  # noqa: E731
+        dec_exec = lambda ctx: times_.executivos(estado, d, politicas, ctx, ata, intervencao)  # noqa: E731
+    else:
+        decisao, dec_dash, dec_exec = intervencao, None, None
 
     _passo_extracao(estado, d, mercado, controle, politicas, decisao, eventos)
-    _passo_dashboards(estado, d, mercado, politicas, decisao, eventos)
-    _passo_fundo(estado, d, anterior, mercado, politicas, decisao, eventos)
+    estrategias = _passo_dashboards(estado, d, mercado, politicas, decisao, eventos, dec_dash)
+    dex = _passo_fundo(estado, d, anterior, mercado, politicas, decisao, eventos, dec_exec)
     _alertas_de_incidentes(estado, d)
     estado["ultima_data"] = d.isoformat()
+    if times:
+        _narrar_dia(estado, ata, eventos)
 
     abertos = set(estado["alertas"]) - alertas_antes
     fechados = alertas_antes - set(estado["alertas"])
     fundo = estado["fundo"]
     registro = {
         "data": d.isoformat(),
-        "decisao": {"existe": bool(decisao), "autor": decisao.get("autor")},
+        "decisao": {"existe": bool(decisao), "autor": decisao.get("autor"), "intervencao": bool(intervencao)},
+        "decisoes": {"extracao": (decisao.get("extracao") or {}).get("acoes", {}), "dashboards": estrategias,
+                     "executivos": dex},
+        "ata": ata.ordenada(),
         "eventos": eventos,
         "incidentes_do_dia": [{"id": i["id"], "fonte": i["fonte"], "tipo": i["tipo"]}
                               for i in estado["incidentes"] if i["estado"] == "aberto"],
