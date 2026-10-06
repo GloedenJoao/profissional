@@ -1,59 +1,71 @@
 {
-  "data_ref": "2026-10-01",
+  "data_ref": "2026-10-05",
   "issues": {
-    "INC-0007": {
-      "numero": 14,
-      "url": "https://github.com/GloedenJoao/profissional/issues/14",
+    "INC-0008": {
+      "numero": 16,
+      "url": "https://github.com/GloedenJoao/profissional/issues/16",
       "estado": "open"
     },
-    "INC-0006": {
-      "numero": 15,
-      "url": "https://github.com/GloedenJoao/profissional/issues/15",
+    "INC-0009": {
+      "numero": 17,
+      "url": "https://github.com/GloedenJoao/profissional/issues/17",
       "estado": "open"
     }
   },
   "abertas": [
     {
-      "numero": 14,
-      "titulo": "INC-0007 · Yahoo Finance: o conector falhou de verdade nesta extração",
-      "url": "https://github.com/GloedenJoao/profissional/issues/14",
+      "numero": 16,
+      "titulo": "INC-0008 · BCB · SGS: o conector falhou de verdade nesta extração",
+      "url": "https://github.com/GloedenJoao/profissional/issues/16",
       "rotulos": [
         "area:extracao",
         "sev:alta",
         "simulacao"
       ],
-      "criada_em": "2026-10-02T16:36:53Z"
+      "criada_em": "2026-10-06T17:10:08Z"
+    },
+    {
+      "numero": 17,
+      "titulo": "INC-0009 · Yahoo Finance: o conector falhou de verdade nesta extração",
+      "url": "https://github.com/GloedenJoao/profissional/issues/17",
+      "rotulos": [
+        "area:extracao",
+        "sev:alta",
+        "simulacao"
+      ],
+      "criada_em": "2026-10-06T17:10:08Z"
     },
     {
       "numero": 15,
       "titulo": "INC-0006 · BCB · PTAX (Olinda): a fonte publicou atrasado",
       "url": "https://github.com/GloedenJoao/profissional/issues/15",
       "rotulos": [
+        "simulacao",
         "area:extracao",
-        "sev:media",
-        "simulacao"
+        "sev:media"
       ],
       "criada_em": "2026-10-02T16:36:54Z"
     },
     {
-      "numero": 2,
-      "titulo": "Executivos sem decisão registrada",
-      "url": "https://github.com/GloedenJoao/profissional/issues/2",
+      "numero": 14,
+      "titulo": "INC-0007 · Yahoo Finance: o conector falhou de verdade nesta extração",
+      "url": "https://github.com/GloedenJoao/profissional/issues/14",
       "rotulos": [
         "simulacao",
-        "area:executivos",
-        "sev:baixa"
+        "area:extracao",
+        "sev:alta"
       ],
-      "criada_em": "2026-10-01T23:22:32Z"
+      "criada_em": "2026-10-02T16:36:53Z"
     }
   ],
   "detalhes": {
-    "INC-0006": "dia 0, ação `aguardar`",
-    "INC-0007": "dia 0, ação `corrigir_conector`"
+    "INC-0008": "dia 1, ação `corrigir_conector`",
+    "INC-0009": "dia 0, ação `corrigir_conector`"
   },
   "log": [
-    "aberta #14 INC-0007",
-    "aberta #15 INC-0006",
-    "fechada #2 EXEC-AUSENTE"
+    "aberta #16 INC-0008",
+    "aberta #17 INC-0009",
+    "fechada #14 INC-0007",
+    "fechada #15 INC-0006"
   ]
 }

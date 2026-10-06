@@ -1,0 +1,194 @@
+{
+  "data": "2026-10-05",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {
+      "INC-0008": "corrigir_conector"
+    },
+    "dashboards": {
+      "cdi": "estimar",
+      "selic": "usar_ontem",
+      "dolar": "usar_ontem",
+      "ibov": "estimar",
+      "bova11": "estimar"
+    },
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia. Temos 1 incidente(s) aberto(s) e 3 pessoa(s) na equipe. Vamos priorizar.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:02",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0008 · BCB · SGS (o conector falhou de verdade nesta extração, aberto ontem): `corrigir_conector` — falha real no conector: só resolve mexendo no código.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0009: falha real em Yahoo Finance",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Faltam dados novos para: CDI (% a.a.), Selic meta (% a.a.), Dólar PTAX (R$), Ibovespa (pts), BOVA11 (R$). Credibilidade em 93%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:02",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "CDI (% a.a.) (2 dia(s) atrasado): `estimar` — o CDI acompanha a Selic, dá para estimar com folga.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:04",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Selic meta (% a.a.) (2 dia(s) atrasado): `usar_ontem` — número que muda devagar; repetir o último é seguro.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:06",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Dólar PTAX (R$) (2 dia(s) atrasado): `usar_ontem` — repito o último valor com aviso de defasagem.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:08",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "Ibovespa (pts) (1 dia(s) atrasado): `estimar` — só um dia de atraso; estimo pela tendência da última semana.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:10",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "BOVA11 (R$) (1 dia(s) atrasado): `estimar` — só um dia de atraso; estimo pela tendência da última semana.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo +2,89% contra o CDI em 21 dias, caixa da gestora R$ 2.032.207, credibilidade dos painéis 93%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,21 (-0,11%) [confiança 60%]; BOVA11 191,89 (+1,00%) [confiança 60%]; Tesouro Prefixado 12,74 (-7,88%); Tesouro IPCA+ 6,86 (-9,14%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Comitê de investimentos (reunião semanal).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:06",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Tesouro IPCA+ pagando 6,86% acima da inflação.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:08",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Selic em 13,75% e Focus para o fim do ano em 13,50%: Selic estável no horizonte.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:10",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Carteira coerente com os números. Mantemos o alvo.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,063501 (+2,18% no dia), PL R$ 339,9 mi, fluxo de cotistas R$ 2.234 mil. Caixa da gestora R$ 2,03 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0009: falha real em Yahoo Finance",
+      "chave": "INC-0009"
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0008",
+      "fonte": "bcb_sgs",
+      "tipo": "falha_real"
+    },
+    {
+      "id": "INC-0009",
+      "fonte": "yahoo",
+      "tipo": "falha_real"
+    }
+  ],
+  "alertas_abertos": [
+    "INC-0009"
+  ],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 1.06350092,
+    "pl": 339918089.52,
+    "bench": 1.01707422,
+    "retorno_dia": 0.021762,
+    "fluxo": 2233967.9,
+    "pesos": {
+      "caixa": 0.3956,
+      "prefixado": 0.1491,
+      "inflacao": 0.2056,
+      "dolar": 0.0928,
+      "bolsa": 0.1569
+    },
+    "divida_tecnica": 27.65,
+    "incidentes_abertos": 2,
+    "credibilidade": 0.926,
+    "confianca_media": 0.8,
+    "caixa_gestora": 2033907.49
+  }
+}

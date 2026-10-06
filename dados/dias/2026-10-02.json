@@ -1,0 +1,234 @@
+{
+  "data": "2026-10-02",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {
+      "INC-0007": "corrigir_conector",
+      "INC-0006": "aguardar"
+    },
+    "dashboards": {
+      "cdi": "estimar",
+      "selic": "usar_ontem",
+      "dolar": "estimar"
+    },
+    "executivos": {
+      "alocacao": {
+        "caixa": 0.4,
+        "prefixado": 0.15,
+        "inflacao": 0.2,
+        "dolar": 0.1,
+        "bolsa": 0.15
+      },
+      "justificativa": "Decidido: Tesouro IPCA+ +5 p.p. (juro real de 7,55%); Tesouro Prefixado -5 p.p. (Selic estável no horizonte). Caixa fica em 40%."
+    }
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia. Temos 2 incidente(s) aberto(s) e 3 pessoa(s) na equipe. Vamos priorizar.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:02",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0007 · Yahoo Finance (o conector falhou de verdade nesta extração, aberto ontem): `corrigir_conector` — falha real no conector: só resolve mexendo no código.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "08:04",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "INC-0006 · BCB · PTAX (Olinda) (a fonte publicou atrasado, aberto ontem): `aguardar` — atraso costuma se resolver sozinho.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0006 resolvido: BCB · PTAX (Olinda) voltou após 1 dia(s) (aguardar)",
+      "tipo": "evento"
+    },
+    {
+      "hora": "08:42",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0007 resolvido: Yahoo Finance voltou após 1 dia(s) (corrigir_conector)",
+      "tipo": "evento"
+    },
+    {
+      "hora": "08:44",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0008: falha real em BCB · SGS",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Faltam dados novos para: CDI (% a.a.), Selic meta (% a.a.), Dólar PTAX (R$). Credibilidade em 91%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:02",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "CDI (% a.a.) (1 dia(s) atrasado): `estimar` — o CDI acompanha a Selic, dá para estimar com folga.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:04",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Selic meta (% a.a.) (1 dia(s) atrasado): `usar_ontem` — número que muda devagar; repetir o último é seguro.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:06",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "Dólar PTAX (R$) (1 dia(s) atrasado): `estimar` — só um dia de atraso; estimo pela tendência da última semana.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo +0,78% contra o CDI em 21 dias, caixa da gestora R$ 2.030.781, credibilidade dos painéis 93%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,21 (+0,11%) [confiança 60%]; BOVA11 190,00 (+3,08%); Tesouro Prefixado 13,83 (-0,22%); Tesouro IPCA+ 7,55 (-0,13%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Comitê de investimentos (reunião semanal).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:06",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Tesouro IPCA+ pagando 7,55% acima da inflação.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:08",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Selic em 13,75% e Focus para o fim do ano em 13,50%: Selic estável no horizonte.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:10",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Decidido: Tesouro IPCA+ +5 p.p. (juro real de 7,55%); Tesouro Prefixado -5 p.p. (Selic estável no horizonte). Caixa fica em 40%.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "17:30",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Rebalanceamento: giro R$ 17,6 mi, custo R$ 8.781",
+      "tipo": "evento"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,040850 (+0,54% no dia), PL R$ 330,5 mi, fluxo de cotistas R$ -266 mil. Caixa da gestora R$ 2,03 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0006 resolvido: BCB · PTAX (Olinda) voltou após 1 dia(s) (aguardar)",
+      "chave": "INC-0006"
+    },
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0007 resolvido: Yahoo Finance voltou após 1 dia(s) (corrigir_conector)",
+      "chave": "INC-0007"
+    },
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0008: falha real em BCB · SGS",
+      "chave": "INC-0008"
+    },
+    {
+      "area": "fundo",
+      "tipo": "info",
+      "texto": "Rebalanceamento: giro R$ 17,6 mi, custo R$ 8.781",
+      "chave": null
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0008",
+      "fonte": "bcb_sgs",
+      "tipo": "falha_real"
+    }
+  ],
+  "alertas_abertos": [
+    "INC-0008"
+  ],
+  "alertas_fechados": [
+    "INC-0006",
+    "INC-0007"
+  ],
+  "resumo": {
+    "cota": 1.04085036,
+    "pl": 330492088.58,
+    "bench": 1.01655793,
+    "retorno_dia": 0.00541,
+    "fluxo": -265839.95,
+    "pesos": {
+      "caixa": 0.4,
+      "prefixado": 0.15,
+      "inflacao": 0.2,
+      "dolar": 0.1,
+      "bolsa": 0.15
+    },
+    "divida_tecnica": 27.0,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.929,
+    "confianca_media": 0.9,
+    "caixa_gestora": 2032206.79
+  }
+}
