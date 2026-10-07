@@ -1,0 +1,154 @@
+{
+  "data": "2026-10-06",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {
+      "INC-0008": "corrigir_conector",
+      "INC-0009": "fonte_alternativa"
+    },
+    "dashboards": {
+      "ibov": "usar_ontem"
+    },
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia. Temos 2 incidente(s) aberto(s) e 3 pessoa(s) na equipe. Vamos priorizar.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:02",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0008 · BCB · SGS (aberto ontem): seguimos com `corrigir_conector`.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:04",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "INC-0009 · Yahoo Finance (o conector falhou de verdade nesta extração, aberto ontem): `fonte_alternativa` — não tenho gente para corrigir agora; seguro com a alternativa.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0008 resolvido: BCB · SGS voltou após 2 dia(s) (corrigir_conector)",
+      "tipo": "evento"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Faltam dados novos para: Ibovespa (pts). Credibilidade em 93%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:02",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Ibovespa (pts) (2 dia(s) atrasado): `usar_ontem` — repito o último valor com aviso de defasagem.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:40",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "Estimativa errada de bova11 em 2026-10-05: 191.8912 vs real 204.35",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo +2,60% contra o CDI em 21 dias, caixa da gestora R$ 2.033.907, credibilidade dos painéis 91%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 4,97 (-4,57%); BOVA11 202,50 (+5,53%) [confiança 90%]; Tesouro Prefixado 12,55 (-1,49%); Tesouro IPCA+ 6,92 (+0,87%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,061577 (-0,18% no dia), PL R$ 340,9 mi, fluxo de cotistas R$ 1.556 mil. Caixa da gestora R$ 2,04 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0008 resolvido: BCB · SGS voltou após 2 dia(s) (corrigir_conector)",
+      "chave": "INC-0008"
+    },
+    {
+      "area": "dashboards",
+      "tipo": "alerta",
+      "texto": "Estimativa errada de bova11 em 2026-10-05: 191.8912 vs real 204.35",
+      "chave": null
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0009",
+      "fonte": "yahoo",
+      "tipo": "falha_real"
+    }
+  ],
+  "alertas_abertos": [
+    "ERRO-bova11-2026-10-05"
+  ],
+  "alertas_fechados": [
+    "INC-0008"
+  ],
+  "resumo": {
+    "cota": 1.06157682,
+    "pl": 340859145.02,
+    "bench": 1.01759077,
+    "retorno_dia": -0.001809,
+    "fluxo": 1556039.98,
+    "pesos": {
+      "caixa": 0.3993,
+      "prefixado": 0.1493,
+      "inflacao": 0.2042,
+      "dolar": 0.0922,
+      "bolsa": 0.155
+    },
+    "divida_tecnica": 27.6,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.906,
+    "confianca_media": 0.95,
+    "caixa_gestora": 2035672.43
+  }
+}
