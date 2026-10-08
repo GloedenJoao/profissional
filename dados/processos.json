@@ -1,5 +1,5 @@
 {
-  "data_ref": "2026-10-06",
+  "data_ref": "2026-10-07",
   "issues": {
     "INC-0009": {
       "numero": 17,
@@ -9,6 +9,21 @@
     "ERRO-bova11-2026-10-05": {
       "numero": 18,
       "url": "https://github.com/GloedenJoao/profissional/issues/18",
+      "estado": "open"
+    },
+    "INC-0010": {
+      "numero": 19,
+      "url": "https://github.com/GloedenJoao/profissional/issues/19",
+      "estado": "open"
+    },
+    "DEFAS-bova11": {
+      "numero": 20,
+      "url": "https://github.com/GloedenJoao/profissional/issues/20",
+      "estado": "open"
+    },
+    "DEFAS-ibov": {
+      "numero": 21,
+      "url": "https://github.com/GloedenJoao/profissional/issues/21",
       "estado": "open"
     }
   },
@@ -29,31 +44,57 @@
       "titulo": "Painel errou BOVA11 (R$) de 2026-10-05",
       "url": "https://github.com/GloedenJoao/profissional/issues/18",
       "rotulos": [
+        "simulacao",
         "area:dashboards",
-        "sev:media",
-        "simulacao"
+        "sev:media"
       ],
       "criada_em": "2026-10-07T17:46:57Z"
     },
     {
-      "numero": 16,
-      "titulo": "INC-0008 · BCB · SGS: o conector falhou de verdade nesta extração",
-      "url": "https://github.com/GloedenJoao/profissional/issues/16",
+      "numero": 19,
+      "titulo": "INC-0010 · BCB · SGS: o conector falhou de verdade nesta extração",
+      "url": "https://github.com/GloedenJoao/profissional/issues/19",
       "rotulos": [
-        "simulacao",
         "area:extracao",
-        "sev:alta"
+        "sev:alta",
+        "simulacao"
       ],
-      "criada_em": "2026-10-06T17:10:08Z"
+      "criada_em": "2026-10-08T17:51:35Z"
+    },
+    {
+      "numero": 20,
+      "titulo": "Painel: BOVA11 (R$) defasado",
+      "url": "https://github.com/GloedenJoao/profissional/issues/20",
+      "rotulos": [
+        "area:dashboards",
+        "sev:media",
+        "simulacao"
+      ],
+      "criada_em": "2026-10-08T17:51:36Z"
+    },
+    {
+      "numero": 21,
+      "titulo": "Painel: Ibovespa (pts) defasado",
+      "url": "https://github.com/GloedenJoao/profissional/issues/21",
+      "rotulos": [
+        "area:dashboards",
+        "sev:media",
+        "simulacao"
+      ],
+      "criada_em": "2026-10-08T17:51:36Z"
     }
   ],
   "detalhes": {
-    "INC-0009": "dia 1, ação `fonte_alternativa`",
-    "ERRO-bova11-2026-10-05": null
+    "INC-0009": "dia 2, ação `corrigir_conector`",
+    "ERRO-bova11-2026-10-05": null,
+    "DEFAS-ibov": "3 dias úteis de defasagem; estratégia `usar_ontem`",
+    "DEFAS-bova11": "3 dias úteis de defasagem; estratégia `suspender`",
+    "INC-0010": "dia 0, ação `corrigir_conector`"
   },
   "log": [
     "comentada #17 INC-0009",
-    "aberta #18 ERRO-bova11-2026-10-05",
-    "fechada #16 INC-0008"
+    "aberta #19 INC-0010",
+    "aberta #20 DEFAS-bova11",
+    "aberta #21 DEFAS-ibov"
   ]
 }

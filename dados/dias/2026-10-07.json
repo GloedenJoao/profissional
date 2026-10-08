@@ -1,0 +1,180 @@
+{
+  "data": "2026-10-07",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {
+      "INC-0009": "corrigir_conector"
+    },
+    "dashboards": {
+      "cdi": "estimar",
+      "selic": "usar_ontem",
+      "dolar": "estimar",
+      "ibov": "usar_ontem",
+      "bova11": "suspender"
+    },
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia. Temos 1 incidente(s) aberto(s) e 3 pessoa(s) na equipe. Vamos priorizar.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:02",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0009 · Yahoo Finance (o conector falhou de verdade nesta extração, aberto ontem): `corrigir_conector` — falha real no conector: só resolve mexendo no código.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0010: falha real em BCB · SGS",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Faltam dados novos para: CDI (% a.a.), Selic meta (% a.a.), Dólar PTAX (R$), Ibovespa (pts), BOVA11 (R$). Credibilidade em 91%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:02",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "CDI (% a.a.) (1 dia(s) atrasado): `estimar` — o CDI acompanha a Selic, dá para estimar com folga.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:04",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Selic meta (% a.a.) (1 dia(s) atrasado): `usar_ontem` — número que muda devagar; repetir o último é seguro.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:06",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "Dólar PTAX (R$) (1 dia(s) atrasado): `estimar` — só um dia de atraso; estimo pela tendência da última semana.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:08",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Ibovespa (pts) (3 dia(s) atrasado): `usar_ontem` — repito o último valor com aviso de defasagem.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:10",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "BOVA11 (R$) (3 dia(s) atrasado): `suspender` — 3 dias sem dado: prefiro não publicar a induzir o comitê ao erro.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo +2,21% contra o CDI em 21 dias, caixa da gestora R$ 2.035.672, credibilidade dos painéis 90%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 4,92 (-0,98%) [confiança 60%]; Tesouro Prefixado 12,55 (+0,00%); Tesouro IPCA+ 6,95 (+0,43%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Marta",
+      "papel": "Risco",
+      "texto": "Sem número confiável para Ações (BOVA11): esses ficam como estão.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:06",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,060870 (-0,07% no dia), PL R$ 341,8 mi, fluxo de cotistas R$ 1.144 mil. Caixa da gestora R$ 2,04 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0010: falha real em BCB · SGS",
+      "chave": "INC-0010"
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0009",
+      "fonte": "yahoo",
+      "tipo": "falha_real"
+    },
+    {
+      "id": "INC-0010",
+      "fonte": "bcb_sgs",
+      "tipo": "falha_real"
+    }
+  ],
+  "alertas_abertos": [
+    "DEFAS-bova11",
+    "DEFAS-ibov",
+    "INC-0010"
+  ],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 1.06086964,
+    "pl": 341775961.62,
+    "bench": 1.01810759,
+    "retorno_dia": -0.000666,
+    "fluxo": 1143882.04,
+    "pesos": {
+      "caixa": 0.4017,
+      "prefixado": 0.1489,
+      "inflacao": 0.2033,
+      "dolar": 0.0924,
+      "bolsa": 0.1536
+    },
+    "divida_tecnica": 28.25,
+    "incidentes_abertos": 2,
+    "credibilidade": 0.902,
+    "confianca_media": 0.74,
+    "caixa_gestora": 2037490.11
+  }
+}
