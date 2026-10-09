@@ -1,0 +1,208 @@
+{
+  "data": "2026-10-08",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {
+      "INC-0010": "corrigir_conector",
+      "INC-0009": "fonte_alternativa"
+    },
+    "dashboards": {
+      "cdi": "estimar",
+      "selic": "usar_ontem",
+      "dolar": "usar_ontem",
+      "ibov": "usar_ontem"
+    },
+    "executivos": {
+      "equipe_extracao": 4,
+      "justificativa": "Aprovado: +1 pessoa na Extração (4 incidentes abertos). Equipe vai para 4."
+    }
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia. Temos 2 incidente(s) aberto(s) e 3 pessoa(s) na equipe. Vamos priorizar.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:02",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0010 · BCB · SGS (o conector falhou de verdade nesta extração, aberto ontem): `corrigir_conector` — falha real no conector: só resolve mexendo no código.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "08:04",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "INC-0009 · Yahoo Finance (o conector falhou de verdade nesta extração, aberto há 2 dias): `fonte_alternativa` — não tenho gente para corrigir agora; seguro com a alternativa.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0011: falha real em BCB · PTAX (Olinda)",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "08:42",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0012: falha real em BCB · Focus (Olinda)",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Faltam dados novos para: CDI (% a.a.), Selic meta (% a.a.), Dólar PTAX (R$), Ibovespa (pts). Credibilidade em 90%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:02",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "CDI (% a.a.) (2 dia(s) atrasado): `estimar` — o CDI acompanha a Selic, dá para estimar com folga.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:04",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Selic meta (% a.a.) (2 dia(s) atrasado): `usar_ontem` — número que muda devagar; repetir o último é seguro.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:06",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Dólar PTAX (R$) (2 dia(s) atrasado): `usar_ontem` — repito o último valor com aviso de defasagem.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:08",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Ibovespa (pts) (4 dia(s) atrasado): `usar_ontem` — repito o último valor com aviso de defasagem.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo +2,70% contra o CDI em 21 dias, caixa da gestora R$ 2.037.490, credibilidade dos painéis 90%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 4,97 (+0,99%) [confiança 60%]; BOVA11 203,08 [confiança 90%]; Tesouro Prefixado 12,53 (-0,16%); Tesouro IPCA+ 6,84 (-1,58%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:06",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Aprovado: +1 pessoa na Extração (4 incidentes abertos). Equipe vai para 4.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,064673 (+0,36% no dia), PL R$ 344,5 mi, fluxo de cotistas R$ 1.497 mil. Caixa da gestora R$ 2,04 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0011: falha real em BCB · PTAX (Olinda)",
+      "chave": "INC-0011"
+    },
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0012: falha real em BCB · Focus (Olinda)",
+      "chave": "INC-0012"
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0009",
+      "fonte": "yahoo",
+      "tipo": "falha_real"
+    },
+    {
+      "id": "INC-0010",
+      "fonte": "bcb_sgs",
+      "tipo": "falha_real"
+    },
+    {
+      "id": "INC-0011",
+      "fonte": "bcb_ptax",
+      "tipo": "falha_real"
+    },
+    {
+      "id": "INC-0012",
+      "fonte": "bcb_focus",
+      "tipo": "falha_real"
+    }
+  ],
+  "alertas_abertos": [
+    "INC-0011",
+    "INC-0012"
+  ],
+  "alertas_fechados": [
+    "DEFAS-bova11"
+  ],
+  "resumo": {
+    "cota": 1.06467258,
+    "pl": 344498350.91,
+    "bench": 1.01862466,
+    "retorno_dia": 0.003585,
+    "fluxo": 1497213.33,
+    "pesos": {
+      "caixa": 0.403,
+      "prefixado": 0.1479,
+      "inflacao": 0.2035,
+      "dolar": 0.0917,
+      "bolsa": 0.1538
+    },
+    "divida_tecnica": 30.3,
+    "incidentes_abertos": 4,
+    "credibilidade": 0.899,
+    "confianca_media": 0.79,
+    "caixa_gestora": 2037901.81
+  }
+}

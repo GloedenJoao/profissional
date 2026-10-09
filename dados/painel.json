@@ -9,9 +9,9 @@
     "modo": "diario",
     "inicio": "2026-08-18"
   },
-  "data_referencia": "2026-10-07",
-  "proximo_dia_util": "2026-10-08",
-  "proximo_fechamento_em": "2026-10-09",
+  "data_referencia": "2026-10-08",
+  "proximo_dia_util": "2026-10-09",
+  "proximo_fechamento_em": "2026-10-13",
   "feriados": [
     "2026-01-01",
     "2026-02-16",
@@ -44,26 +44,26 @@
     "2027-12-25",
     "2027-12-31"
   ],
-  "gerado_em": "2026-10-08T17:50:16+00:00",
+  "gerado_em": "2026-10-09T17:25:02+00:00",
   "resumo": {
-    "cota": 1.06087,
-    "pl": 341775961.62,
-    "retorno_dia": -0.0006661562099539164,
-    "retorno_mes": 0.03291023694747075,
-    "cdi_mes": 0.010772675494829631,
-    "retorno_total": 0.06086963949459867,
-    "cdi_total": 0.018107588050984447,
-    "fluxo_dia": 1143882.04,
-    "incidentes_abertos": 2,
-    "credibilidade": 0.902,
-    "confianca_media": 0.74,
-    "divida_tecnica": 28.25,
-    "caixa_gestora": 2037490.11,
-    "alertas": 5
+    "cota": 1.064673,
+    "pl": 344498350.91,
+    "retorno_dia": 0.0035847341586192627,
+    "retorno_mes": 0.03771704946646892,
+    "cdi_mes": 0.010763868533306908,
+    "retorno_total": 0.06467257512913704,
+    "cdi_total": 0.01862466453280387,
+    "fluxo_dia": 1497213.33,
+    "incidentes_abertos": 4,
+    "credibilidade": 0.899,
+    "confianca_media": 0.79,
+    "divida_tecnica": 30.3,
+    "caixa_gestora": 2037901.81,
+    "alertas": 6
   },
   "extracao": {
-    "divida_tecnica": 28.25,
-    "equipe": 3,
+    "divida_tecnica": 30.3,
+    "equipe": 4,
     "orcamento_dia": 1200.0,
     "fontes": [
       {
@@ -92,13 +92,13 @@
         "series": [
           "dolar_ptax"
         ],
-        "real": "ok",
-        "erro_real": null,
+        "real": "erro",
+        "erro_real": "FonteIndisponivel: https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCota: HTTP Error 403: Forbidden",
         "liberado_ate": {
           "dolar_ptax": "2026-10-07"
         },
         "alternativa_ligada": false,
-        "incidente": null
+        "incidente": "INC-0011"
       },
       {
         "id": "bcb_focus",
@@ -107,14 +107,14 @@
           "focus_ipca",
           "focus_selic"
         ],
-        "real": "ok",
-        "erro_real": null,
+        "real": "erro",
+        "erro_real": "FonteIndisponivel: https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativasMercadoAnuais?%24filter=%28Indicador%2: HTTP Error 403: Forbidden",
         "liberado_ate": {
           "focus_ipca": "2026-10-02",
           "focus_selic": "2026-10-02"
         },
         "alternativa_ligada": false,
-        "incidente": null
+        "incidente": "INC-0012"
       },
       {
         "id": "tesouro",
@@ -125,7 +125,7 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "tesouro": "2026-10-07"
+          "tesouro": "2026-10-08"
         },
         "alternativa_ligada": false,
         "incidente": null
@@ -143,7 +143,7 @@
           "ibov": "2026-10-02",
           "bova11": "2026-10-02"
         },
-        "alternativa_ligada": false,
+        "alternativa_ligada": true,
         "incidente": "INC-0009"
       },
       {
@@ -155,7 +155,7 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "bova11_b3": "2026-10-07"
+          "bova11_b3": "2026-10-08"
         },
         "alternativa_ligada": false,
         "incidente": null
@@ -163,12 +163,46 @@
     ],
     "incidentes": [
       {
+        "id": "INC-0012",
+        "fonte": "bcb_focus",
+        "tipo": "falha_real",
+        "aberto_em": "2026-10-08",
+        "estado": "aberto",
+        "dias": 0,
+        "acao": "corrigir_conector",
+        "detalhe": "FonteIndisponivel: https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativasMercadoAnuais?%24filter=%28Indicador%2: HTTP Error 403: Forbidden",
+        "resolvido_em": null,
+        "historico": [],
+        "issue": {
+          "numero": 23,
+          "url": "https://github.com/GloedenJoao/profissional/issues/23",
+          "estado": "open"
+        }
+      },
+      {
+        "id": "INC-0011",
+        "fonte": "bcb_ptax",
+        "tipo": "falha_real",
+        "aberto_em": "2026-10-08",
+        "estado": "aberto",
+        "dias": 0,
+        "acao": "corrigir_conector",
+        "detalhe": "FonteIndisponivel: https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCota: HTTP Error 403: Forbidden",
+        "resolvido_em": null,
+        "historico": [],
+        "issue": {
+          "numero": 22,
+          "url": "https://github.com/GloedenJoao/profissional/issues/22",
+          "estado": "open"
+        }
+      },
+      {
         "id": "INC-0010",
         "fonte": "bcb_sgs",
         "tipo": "falha_real",
         "aberto_em": "2026-10-07",
         "estado": "aberto",
-        "dias": 0,
+        "dias": 1,
         "acao": "corrigir_conector",
         "detalhe": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
         "resolvido_em": null,
@@ -185,13 +219,14 @@
         "tipo": "falha_real",
         "aberto_em": "2026-10-05",
         "estado": "aberto",
-        "dias": 2,
-        "acao": "corrigir_conector",
+        "dias": 3,
+        "acao": "fonte_alternativa",
         "detalhe": "série bova11 parada em 2026-10-02 (esperado 2026-10-05)",
         "resolvido_em": null,
         "historico": [
           "2026-10-06: ação → fonte_alternativa",
-          "2026-10-07: ação → corrigir_conector"
+          "2026-10-07: ação → corrigir_conector",
+          "2026-10-08: ação → fonte_alternativa"
         ],
         "issue": {
           "numero": 17,
@@ -291,17 +326,6 @@
       }
     ],
     "disponibilidade": [
-      {
-        "data": "2026-09-10",
-        "fontes": {
-          "bcb_sgs": "ok",
-          "bcb_ptax": "ok",
-          "bcb_focus": "ok",
-          "tesouro": "ok",
-          "yahoo": "ok",
-          "b3": "ok"
-        }
-      },
       {
         "data": "2026-09-11",
         "fontes": {
@@ -510,18 +534,29 @@
           "yahoo": "falha_real",
           "b3": "ok"
         }
+      },
+      {
+        "data": "2026-10-08",
+        "fontes": {
+          "bcb_sgs": "falha_real",
+          "bcb_ptax": "falha_real",
+          "bcb_focus": "falha_real",
+          "tesouro": "ok",
+          "yahoo": "falha_real",
+          "b3": "ok"
+        }
       }
     ]
   },
   "dashboards": {
-    "credibilidade": 0.902,
-    "confianca_media": 0.74,
+    "credibilidade": 0.899,
+    "confianca_media": 0.79,
     "indicadores": [
       {
         "id": "cdi",
         "nome": "CDI (% a.a.)",
         "data_ref": "2026-10-06",
-        "defasagem": 1,
+        "defasagem": 2,
         "via": "principal",
         "estrategia": "estimar",
         "valor": 13.65,
@@ -532,23 +567,23 @@
         "id": "selic",
         "nome": "Selic meta (% a.a.)",
         "data_ref": "2026-10-06",
-        "defasagem": 1,
+        "defasagem": 2,
         "via": "principal",
         "estrategia": "usar_ontem",
         "valor": 13.75,
-        "confianca": 0.8,
+        "confianca": 0.6,
         "valor_anterior": 13.75
       },
       {
         "id": "dolar",
         "nome": "Dólar PTAX (R$)",
         "data_ref": "2026-10-06",
-        "defasagem": 1,
+        "defasagem": 2,
         "via": "principal",
-        "estrategia": "estimar",
-        "valor": 4.9211,
+        "estrategia": "usar_ontem",
+        "valor": 4.9698,
         "confianca": 0.6,
-        "valor_anterior": 4.9698
+        "valor_anterior": 4.9211
       },
       {
         "id": "ipca_12m",
@@ -587,45 +622,45 @@
         "id": "ibov",
         "nome": "Ibovespa (pts)",
         "data_ref": "2026-10-02",
-        "defasagem": 3,
+        "defasagem": 4,
         "via": "principal",
         "estrategia": "usar_ontem",
         "valor": 192115.0,
-        "confianca": 0.4,
+        "confianca": 0.2,
         "valor_anterior": 192115.0
       },
       {
         "id": "bova11",
         "nome": "BOVA11 (R$)",
-        "data_ref": "2026-10-02",
-        "defasagem": 3,
-        "via": "principal",
-        "estrategia": "suspender",
-        "valor": null,
-        "confianca": 0.0,
-        "valor_anterior": 202.5
+        "data_ref": "2026-10-08",
+        "defasagem": 0,
+        "via": "alternativa",
+        "estrategia": null,
+        "valor": 203.08,
+        "confianca": 0.9,
+        "valor_anterior": null
       },
       {
         "id": "taxa_pre",
         "nome": "Tesouro Prefixado (% a.a.)",
-        "data_ref": "2026-10-07",
+        "data_ref": "2026-10-08",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 12.55,
+        "valor": 12.53,
         "confianca": 1.0,
         "valor_anterior": 12.55
       },
       {
         "id": "taxa_ipca",
         "nome": "Tesouro IPCA+ (% a.a. real)",
-        "data_ref": "2026-10-07",
+        "data_ref": "2026-10-08",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 6.95,
+        "valor": 6.84,
         "confianca": 1.0,
-        "valor_anterior": 6.92
+        "valor_anterior": 6.95
       }
     ],
     "estimativas_pendentes": [
@@ -643,6 +678,11 @@
         "indicador": "dolar",
         "data": "2026-10-07",
         "valor": 4.9211
+      },
+      {
+        "indicador": "cdi",
+        "data": "2026-10-08",
+        "valor": 13.65
       }
     ],
     "estrategia_padrao": "usar_ontem"
@@ -656,11 +696,11 @@
       "bolsa": 0.15
     },
     "pesos": {
-      "caixa": 0.40171024215385026,
-      "prefixado": 0.1489467263019549,
-      "inflacao": 0.20327164776374065,
-      "dolar": 0.09243534509075384,
-      "bolsa": 0.15363603868970027
+      "caixa": 0.40304470225894196,
+      "prefixado": 0.14789663185945356,
+      "inflacao": 0.20354585662612007,
+      "dolar": 0.0917048771724742,
+      "bolsa": 0.1538079320830102
     },
     "limites": {
       "caixa": [
@@ -684,12 +724,15 @@
         0.3
       ]
     },
-    "congelados": [
-      "bolsa"
-    ],
+    "congelados": [],
     "dias_sem_decisao": 0,
-    "ultima_decisao": "2026-10-02",
+    "ultima_decisao": "2026-10-08",
     "decisoes_recentes": [
+      {
+        "data": "2026-10-08",
+        "autor": "times",
+        "resumo": "Aprovado: +1 pessoa na Extração (4 incidentes abertos). Equipe vai para 4."
+      },
       {
         "data": "2026-10-02",
         "autor": "times",
@@ -702,32 +745,19 @@
       }
     ],
     "gestora": {
-      "caixa": 2037490.11,
-      "receita_dia": 13517.68,
-      "custo_dia": 11700.0
+      "caixa": 2037901.81,
+      "receita_dia": 13611.7,
+      "custo_dia": 13200.0
     }
   },
   "alertas": [
-    {
-      "chave": "DEFAS-bova11",
-      "titulo": "Painel: BOVA11 (R$) defasado",
-      "area": "dashboards",
-      "sev": "media",
-      "aberto_em": "2026-10-07",
-      "detalhe": "3 dias úteis de defasagem; estratégia `suspender`",
-      "issue": {
-        "numero": 20,
-        "url": "https://github.com/GloedenJoao/profissional/issues/20",
-        "estado": "open"
-      }
-    },
     {
       "chave": "DEFAS-ibov",
       "titulo": "Painel: Ibovespa (pts) defasado",
       "area": "dashboards",
       "sev": "media",
       "aberto_em": "2026-10-07",
-      "detalhe": "3 dias úteis de defasagem; estratégia `usar_ontem`",
+      "detalhe": "4 dias úteis de defasagem; estratégia `usar_ontem`",
       "issue": {
         "numero": 21,
         "url": "https://github.com/GloedenJoao/profissional/issues/21",
@@ -753,7 +783,7 @@
       "area": "extracao",
       "sev": "alta",
       "aberto_em": "2026-10-05",
-      "detalhe": "dia 2, ação `corrigir_conector`",
+      "detalhe": "dia 3, ação `fonte_alternativa`",
       "issue": {
         "numero": 17,
         "url": "https://github.com/GloedenJoao/profissional/issues/17",
@@ -766,15 +796,63 @@
       "area": "extracao",
       "sev": "alta",
       "aberto_em": "2026-10-07",
-      "detalhe": "dia 0, ação `corrigir_conector`",
+      "detalhe": "dia 1, ação `corrigir_conector`",
       "issue": {
         "numero": 19,
         "url": "https://github.com/GloedenJoao/profissional/issues/19",
         "estado": "open"
       }
+    },
+    {
+      "chave": "INC-0011",
+      "titulo": "INC-0011 · BCB · PTAX (Olinda): o conector falhou de verdade nesta extração",
+      "area": "extracao",
+      "sev": "alta",
+      "aberto_em": "2026-10-08",
+      "detalhe": "dia 0, ação `corrigir_conector`",
+      "issue": {
+        "numero": 22,
+        "url": "https://github.com/GloedenJoao/profissional/issues/22",
+        "estado": "open"
+      }
+    },
+    {
+      "chave": "INC-0012",
+      "titulo": "INC-0012 · BCB · Focus (Olinda): o conector falhou de verdade nesta extração",
+      "area": "extracao",
+      "sev": "alta",
+      "aberto_em": "2026-10-08",
+      "detalhe": "dia 0, ação `corrigir_conector`",
+      "issue": {
+        "numero": 23,
+        "url": "https://github.com/GloedenJoao/profissional/issues/23",
+        "estado": "open"
+      }
     }
   ],
   "dias": [
+    {
+      "data": "2026-10-08",
+      "eventos": [
+        {
+          "area": "extracao",
+          "tipo": "aberto",
+          "texto": "INC-0011: falha real em BCB · PTAX (Olinda)",
+          "chave": "INC-0011"
+        },
+        {
+          "area": "extracao",
+          "tipo": "aberto",
+          "texto": "INC-0012: falha real em BCB · Focus (Olinda)",
+          "chave": "INC-0012"
+        }
+      ],
+      "decisao": {
+        "existe": true,
+        "autor": "times",
+        "intervencao": false
+      }
+    },
     {
       "data": "2026-10-07",
       "eventos": [
@@ -989,14 +1067,6 @@
         "existe": false,
         "autor": null
       }
-    },
-    {
-      "data": "2026-09-17",
-      "eventos": [],
-      "decisao": {
-        "existe": false,
-        "autor": null
-      }
     }
   ],
   "ata": [
@@ -1005,7 +1075,7 @@
       "area": "extracao",
       "quem": "Bia",
       "papel": "líder de Extração",
-      "texto": "Bom dia. Temos 1 incidente(s) aberto(s) e 3 pessoa(s) na equipe. Vamos priorizar.",
+      "texto": "Bom dia. Temos 2 incidente(s) aberto(s) e 3 pessoa(s) na equipe. Vamos priorizar.",
       "tipo": "fala"
     },
     {
@@ -1013,7 +1083,15 @@
       "area": "extracao",
       "quem": "Téo",
       "papel": "engenheiro de plantão",
-      "texto": "INC-0009 · Yahoo Finance (o conector falhou de verdade nesta extração, aberto ontem): `corrigir_conector` — falha real no conector: só resolve mexendo no código.",
+      "texto": "INC-0010 · BCB · SGS (o conector falhou de verdade nesta extração, aberto ontem): `corrigir_conector` — falha real no conector: só resolve mexendo no código.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "08:04",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "INC-0009 · Yahoo Finance (o conector falhou de verdade nesta extração, aberto há 2 dias): `fonte_alternativa` — não tenho gente para corrigir agora; seguro com a alternativa.",
       "tipo": "decisao"
     },
     {
@@ -1021,7 +1099,15 @@
       "area": "extracao",
       "quem": "Téo",
       "papel": "engenheiro de plantão",
-      "texto": "INC-0010: falha real em BCB · SGS",
+      "texto": "INC-0011: falha real em BCB · PTAX (Olinda)",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "08:42",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0012: falha real em BCB · Focus (Olinda)",
       "tipo": "alerta"
     },
     {
@@ -1029,7 +1115,7 @@
       "area": "dashboards",
       "quem": "Caio",
       "papel": "líder de Dashboards",
-      "texto": "Faltam dados novos para: CDI (% a.a.), Selic meta (% a.a.), Dólar PTAX (R$), Ibovespa (pts), BOVA11 (R$). Credibilidade em 91%.",
+      "texto": "Faltam dados novos para: CDI (% a.a.), Selic meta (% a.a.), Dólar PTAX (R$), Ibovespa (pts). Credibilidade em 90%.",
       "tipo": "fala"
     },
     {
@@ -1037,7 +1123,7 @@
       "area": "dashboards",
       "quem": "Lia",
       "papel": "analista de dados",
-      "texto": "CDI (% a.a.) (1 dia(s) atrasado): `estimar` — o CDI acompanha a Selic, dá para estimar com folga.",
+      "texto": "CDI (% a.a.) (2 dia(s) atrasado): `estimar` — o CDI acompanha a Selic, dá para estimar com folga.",
       "tipo": "decisao"
     },
     {
@@ -1045,15 +1131,15 @@
       "area": "dashboards",
       "quem": "Caio",
       "papel": "líder de Dashboards",
-      "texto": "Selic meta (% a.a.) (1 dia(s) atrasado): `usar_ontem` — número que muda devagar; repetir o último é seguro.",
+      "texto": "Selic meta (% a.a.) (2 dia(s) atrasado): `usar_ontem` — número que muda devagar; repetir o último é seguro.",
       "tipo": "decisao"
     },
     {
       "hora": "09:06",
       "area": "dashboards",
-      "quem": "Lia",
-      "papel": "analista de dados",
-      "texto": "Dólar PTAX (R$) (1 dia(s) atrasado): `estimar` — só um dia de atraso; estimo pela tendência da última semana.",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Dólar PTAX (R$) (2 dia(s) atrasado): `usar_ontem` — repito o último valor com aviso de defasagem.",
       "tipo": "decisao"
     },
     {
@@ -1061,15 +1147,7 @@
       "area": "dashboards",
       "quem": "Caio",
       "papel": "líder de Dashboards",
-      "texto": "Ibovespa (pts) (3 dia(s) atrasado): `usar_ontem` — repito o último valor com aviso de defasagem.",
-      "tipo": "decisao"
-    },
-    {
-      "hora": "09:10",
-      "area": "dashboards",
-      "quem": "Caio",
-      "papel": "líder de Dashboards",
-      "texto": "BOVA11 (R$) (3 dia(s) atrasado): `suspender` — 3 dias sem dado: prefiro não publicar a induzir o comitê ao erro.",
+      "texto": "Ibovespa (pts) (4 dia(s) atrasado): `usar_ontem` — repito o último valor com aviso de defasagem.",
       "tipo": "decisao"
     },
     {
@@ -1077,7 +1155,7 @@
       "area": "executivos",
       "quem": "Helena",
       "papel": "CEO",
-      "texto": "Bom dia. Fundo +2,21% contra o CDI em 21 dias, caixa da gestora R$ 2.035.672, credibilidade dos painéis 90%.",
+      "texto": "Bom dia. Fundo +2,70% contra o CDI em 21 dias, caixa da gestora R$ 2.037.490, credibilidade dos painéis 90%.",
       "tipo": "fala"
     },
     {
@@ -1085,19 +1163,11 @@
       "area": "executivos",
       "quem": "Rafael",
       "papel": "CIO",
-      "texto": "No painel de hoje: Dólar PTAX 4,92 (-0,98%) [confiança 60%]; Tesouro Prefixado 12,55 (+0,00%); Tesouro IPCA+ 6,95 (+0,43%).",
+      "texto": "No painel de hoje: Dólar PTAX 4,97 (+0,99%) [confiança 60%]; BOVA11 203,08 [confiança 90%]; Tesouro Prefixado 12,53 (-0,16%); Tesouro IPCA+ 6,84 (-1,58%).",
       "tipo": "fala"
     },
     {
       "hora": "10:04",
-      "area": "executivos",
-      "quem": "Marta",
-      "papel": "Risco",
-      "texto": "Sem número confiável para Ações (BOVA11): esses ficam como estão.",
-      "tipo": "fala"
-    },
-    {
-      "hora": "10:06",
       "area": "executivos",
       "quem": "Rafael",
       "papel": "CIO",
@@ -1105,11 +1175,19 @@
       "tipo": "fala"
     },
     {
+      "hora": "10:06",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Aprovado: +1 pessoa na Extração (4 incidentes abertos). Equipe vai para 4.",
+      "tipo": "decisao"
+    },
+    {
       "hora": "18:00",
       "area": "fundo",
       "quem": "Administrador",
       "papel": "fechamento do fundo",
-      "texto": "Fechamento: cota 1,060870 (-0,07% no dia), PL R$ 341,8 mi, fluxo de cotistas R$ 1.144 mil. Caixa da gestora R$ 2,04 mi.",
+      "texto": "Fechamento: cota 1,064673 (+0,36% no dia), PL R$ 344,5 mi, fluxo de cotistas R$ 1.497 mil. Caixa da gestora R$ 2,04 mi.",
       "tipo": "fechamento"
     }
   ],
@@ -1148,7 +1226,8 @@
     "2026-10-02",
     "2026-10-05",
     "2026-10-06",
-    "2026-10-07"
+    "2026-10-07",
+    "2026-10-08"
   ],
   "historico": [
     {
@@ -1815,6 +1894,25 @@
         "dolar": 0.0924,
         "bolsa": 0.1536
       }
+    },
+    {
+      "data": "2026-10-08",
+      "cota": 1.06467258,
+      "bench": 1.01862466,
+      "pl": 344498350.91,
+      "fluxo": 1497213.33,
+      "divida_tecnica": 30.3,
+      "credibilidade": 0.899,
+      "confianca_media": 0.79,
+      "incidentes_abertos": 4.0,
+      "caixa_gestora": 2037901.81,
+      "pesos": {
+        "caixa": 0.403,
+        "prefixado": 0.1479,
+        "inflacao": 0.2035,
+        "dolar": 0.0917,
+        "bolsa": 0.1538
+      }
     }
   ],
   "nomes": {
@@ -1872,31 +1970,53 @@
         "titulo": "INC-0010 · BCB · SGS: o conector falhou de verdade nesta extração",
         "url": "https://github.com/GloedenJoao/profissional/issues/19",
         "rotulos": [
+          "simulacao",
           "area:extracao",
-          "sev:alta",
-          "simulacao"
+          "sev:alta"
         ],
         "criada_em": "2026-10-08T17:51:35Z"
-      },
-      {
-        "numero": 20,
-        "titulo": "Painel: BOVA11 (R$) defasado",
-        "url": "https://github.com/GloedenJoao/profissional/issues/20",
-        "rotulos": [
-          "area:dashboards",
-          "sev:media",
-          "simulacao"
-        ],
-        "criada_em": "2026-10-08T17:51:36Z"
       },
       {
         "numero": 21,
         "titulo": "Painel: Ibovespa (pts) defasado",
         "url": "https://github.com/GloedenJoao/profissional/issues/21",
         "rotulos": [
+          "simulacao",
           "area:dashboards",
-          "sev:media",
+          "sev:media"
+        ],
+        "criada_em": "2026-10-08T17:51:36Z"
+      },
+      {
+        "numero": 22,
+        "titulo": "INC-0011 · BCB · PTAX (Olinda): o conector falhou de verdade nesta extração",
+        "url": "https://github.com/GloedenJoao/profissional/issues/22",
+        "rotulos": [
+          "area:extracao",
+          "sev:alta",
           "simulacao"
+        ],
+        "criada_em": "2026-10-09T17:26:18Z"
+      },
+      {
+        "numero": 23,
+        "titulo": "INC-0012 · BCB · Focus (Olinda): o conector falhou de verdade nesta extração",
+        "url": "https://github.com/GloedenJoao/profissional/issues/23",
+        "rotulos": [
+          "area:extracao",
+          "sev:alta",
+          "simulacao"
+        ],
+        "criada_em": "2026-10-09T17:26:19Z"
+      },
+      {
+        "numero": 20,
+        "titulo": "Painel: BOVA11 (R$) defasado",
+        "url": "https://github.com/GloedenJoao/profissional/issues/20",
+        "rotulos": [
+          "simulacao",
+          "area:dashboards",
+          "sev:media"
         ],
         "criada_em": "2026-10-08T17:51:36Z"
       }
@@ -1907,41 +2027,42 @@
   "status_areas": {
     "extracao": {
       "nivel": "ruim",
-      "texto": "2 incidente(s) aberto(s), 2 grave(s)"
+      "texto": "4 incidente(s) aberto(s), 4 grave(s)"
     },
     "dashboards": {
-      "nivel": "ruim",
-      "texto": "credibilidade 90% · sem número: bova11"
+      "nivel": "aviso",
+      "texto": "credibilidade 90% · defasados: cdi, selic, dolar, ibov"
     },
     "executivos": {
-      "nivel": "aviso",
-      "texto": "congelados: bolsa"
+      "nivel": "ok",
+      "texto": "último ajuste do comitê em 08/10/2026"
     },
     "fundo": {
       "nivel": "ok",
-      "texto": "21d +3,29% vs CDI +1,08%"
+      "texto": "21d +3,77% vs CDI +1,08%"
     }
   },
   "decisao_proxima": {
-    "data": "2026-10-08",
-    "caminho": "empresa/decisoes/2026-10-08.json",
+    "data": "2026-10-09",
+    "caminho": "empresa/decisoes/2026-10-09.json",
     "existe": false,
     "modelo": {
-      "data": "2026-10-08",
+      "data": "2026-10-09",
       "autor": "conselho",
       "extracao": {
         "acoes": {
+          "INC-0012": "corrigir_conector",
+          "INC-0011": "corrigir_conector",
           "INC-0010": "corrigir_conector",
-          "INC-0009": "corrigir_conector"
+          "INC-0009": "fonte_alternativa"
         }
       },
       "dashboards": {
         "estrategias": {
           "cdi": "estimar",
           "selic": "usar_ontem",
-          "dolar": "estimar",
-          "ibov": "usar_ontem",
-          "bova11": "suspender"
+          "dolar": "usar_ontem",
+          "ibov": "usar_ontem"
         }
       },
       "executivos": {
@@ -1952,14 +2073,14 @@
           "dolar": 0.1,
           "bolsa": 0.15
         },
-        "equipe_extracao": 3,
+        "equipe_extracao": 4,
         "orcamento_extracao_dia": 1200.0,
         "justificativa": ""
       },
       "observacoes": ""
     },
-    "link_criar": "https://github.com/GloedenJoao/profissional/new/main/empresa/decisoes?filename=2026-10-08.json&value=%7B%0A%20%20%22data%22%3A%20%222026-10-08%22%2C%0A%20%20%22autor%22%3A%20%22conselho%22%2C%0A%20%20%22extracao%22%3A%20%7B%0A%20%20%20%20%22acoes%22%3A%20%7B%0A%20%20%20%20%20%20%22INC-0010%22%3A%20%22corrigir_conector%22%2C%0A%20%20%20%20%20%20%22INC-0009%22%3A%20%22corrigir_conector%22%0A%20%20%20%20%7D%0A%20%20%7D%2C%0A%20%20%22dashboards%22%3A%20%7B%0A%20%20%20%20%22estrategias%22%3A%20%7B%0A%20%20%20%20%20%20%22cdi%22%3A%20%22estimar%22%2C%0A%20%20%20%20%20%20%22selic%22%3A%20%22usar_ontem%22%2C%0A%20%20%20%20%20%20%22dolar%22%3A%20%22estimar%22%2C%0A%20%20%20%20%20%20%22ibov%22%3A%20%22usar_ontem%22%2C%0A%20%20%20%20%20%20%22bova11%22%3A%20%22suspender%22%0A%20%20%20%20%7D%0A%20%20%7D%2C%0A%20%20%22executivos%22%3A%20%7B%0A%20%20%20%20%22alocacao%22%3A%20%7B%0A%20%20%20%20%20%20%22caixa%22%3A%200.4%2C%0A%20%20%20%20%20%20%22prefixado%22%3A%200.15%2C%0A%20%20%20%20%20%20%22inflacao%22%3A%200.2%2C%0A%20%20%20%20%20%20%22dolar%22%3A%200.1%2C%0A%20%20%20%20%20%20%22bolsa%22%3A%200.15%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22equipe_extracao%22%3A%203%2C%0A%20%20%20%20%22orcamento_extracao_dia%22%3A%201200.0%2C%0A%20%20%20%20%22justificativa%22%3A%20%22%22%0A%20%20%7D%2C%0A%20%20%22observacoes%22%3A%20%22%22%0A%7D%0A",
-    "link_ver": "https://github.com/GloedenJoao/profissional/blob/main/empresa/decisoes/2026-10-08.json",
+    "link_criar": "https://github.com/GloedenJoao/profissional/new/main/empresa/decisoes?filename=2026-10-09.json&value=%7B%0A%20%20%22data%22%3A%20%222026-10-09%22%2C%0A%20%20%22autor%22%3A%20%22conselho%22%2C%0A%20%20%22extracao%22%3A%20%7B%0A%20%20%20%20%22acoes%22%3A%20%7B%0A%20%20%20%20%20%20%22INC-0012%22%3A%20%22corrigir_conector%22%2C%0A%20%20%20%20%20%20%22INC-0011%22%3A%20%22corrigir_conector%22%2C%0A%20%20%20%20%20%20%22INC-0010%22%3A%20%22corrigir_conector%22%2C%0A%20%20%20%20%20%20%22INC-0009%22%3A%20%22fonte_alternativa%22%0A%20%20%20%20%7D%0A%20%20%7D%2C%0A%20%20%22dashboards%22%3A%20%7B%0A%20%20%20%20%22estrategias%22%3A%20%7B%0A%20%20%20%20%20%20%22cdi%22%3A%20%22estimar%22%2C%0A%20%20%20%20%20%20%22selic%22%3A%20%22usar_ontem%22%2C%0A%20%20%20%20%20%20%22dolar%22%3A%20%22usar_ontem%22%2C%0A%20%20%20%20%20%20%22ibov%22%3A%20%22usar_ontem%22%0A%20%20%20%20%7D%0A%20%20%7D%2C%0A%20%20%22executivos%22%3A%20%7B%0A%20%20%20%20%22alocacao%22%3A%20%7B%0A%20%20%20%20%20%20%22caixa%22%3A%200.4%2C%0A%20%20%20%20%20%20%22prefixado%22%3A%200.15%2C%0A%20%20%20%20%20%20%22inflacao%22%3A%200.2%2C%0A%20%20%20%20%20%20%22dolar%22%3A%200.1%2C%0A%20%20%20%20%20%20%22bolsa%22%3A%200.15%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22equipe_extracao%22%3A%204%2C%0A%20%20%20%20%22orcamento_extracao_dia%22%3A%201200.0%2C%0A%20%20%20%20%22justificativa%22%3A%20%22%22%0A%20%20%7D%2C%0A%20%20%22observacoes%22%3A%20%22%22%0A%7D%0A",
+    "link_ver": "https://github.com/GloedenJoao/profissional/blob/main/empresa/decisoes/2026-10-09.json",
     "link_pasta": "https://github.com/GloedenJoao/profissional/tree/main/empresa/decisoes"
   },
   "tarefas": [
@@ -1973,11 +2094,29 @@
       "acao": "Corrigir conector"
     },
     {
+      "id": "CONECTOR-bcb_ptax",
+      "area": "extracao",
+      "nivel": "ruim",
+      "titulo": "Conector BCB · PTAX (Olinda) falhou de verdade",
+      "detalhe": "FonteIndisponivel: https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCota: HTTP Error 403: Forbidden",
+      "link": "https://github.com/GloedenJoao/profissional/blob/main/gestora/fontes.py",
+      "acao": "Corrigir conector"
+    },
+    {
+      "id": "CONECTOR-bcb_focus",
+      "area": "extracao",
+      "nivel": "ruim",
+      "titulo": "Conector BCB · Focus (Olinda) falhou de verdade",
+      "detalhe": "FonteIndisponivel: https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativasMercadoAnuais?%24filter=%28Indicador%2: HTTP Error 403: Forbidden",
+      "link": "https://github.com/GloedenJoao/profissional/blob/main/gestora/fontes.py",
+      "acao": "Corrigir conector"
+    },
+    {
       "id": "INC-0009",
       "area": "extracao",
       "nivel": "ruim",
       "titulo": "INC-0009 · Yahoo Finance: o conector falhou de verdade nesta extração",
-      "detalhe": "dia 2, ação `corrigir_conector`",
+      "detalhe": "dia 3, ação `fonte_alternativa`",
       "link": "https://github.com/GloedenJoao/profissional/issues/17",
       "acao": "Ver alerta",
       "issue": {
@@ -1991,7 +2130,7 @@
       "area": "extracao",
       "nivel": "ruim",
       "titulo": "INC-0010 · BCB · SGS: o conector falhou de verdade nesta extração",
-      "detalhe": "dia 0, ação `corrigir_conector`",
+      "detalhe": "dia 1, ação `corrigir_conector`",
       "link": "https://github.com/GloedenJoao/profissional/issues/19",
       "acao": "Ver alerta",
       "issue": {
@@ -2001,16 +2140,30 @@
       }
     },
     {
-      "id": "DEFAS-bova11",
-      "area": "dashboards",
-      "nivel": "aviso",
-      "titulo": "Painel: BOVA11 (R$) defasado",
-      "detalhe": "3 dias úteis de defasagem; estratégia `suspender`",
-      "link": "https://github.com/GloedenJoao/profissional/issues/20",
+      "id": "INC-0011",
+      "area": "extracao",
+      "nivel": "ruim",
+      "titulo": "INC-0011 · BCB · PTAX (Olinda): o conector falhou de verdade nesta extração",
+      "detalhe": "dia 0, ação `corrigir_conector`",
+      "link": "https://github.com/GloedenJoao/profissional/issues/22",
       "acao": "Ver alerta",
       "issue": {
-        "numero": 20,
-        "url": "https://github.com/GloedenJoao/profissional/issues/20",
+        "numero": 22,
+        "url": "https://github.com/GloedenJoao/profissional/issues/22",
+        "estado": "open"
+      }
+    },
+    {
+      "id": "INC-0012",
+      "area": "extracao",
+      "nivel": "ruim",
+      "titulo": "INC-0012 · BCB · Focus (Olinda): o conector falhou de verdade nesta extração",
+      "detalhe": "dia 0, ação `corrigir_conector`",
+      "link": "https://github.com/GloedenJoao/profissional/issues/23",
+      "acao": "Ver alerta",
+      "issue": {
+        "numero": 23,
+        "url": "https://github.com/GloedenJoao/profissional/issues/23",
         "estado": "open"
       }
     },
@@ -2019,7 +2172,7 @@
       "area": "dashboards",
       "nivel": "aviso",
       "titulo": "Painel: Ibovespa (pts) defasado",
-      "detalhe": "3 dias úteis de defasagem; estratégia `usar_ontem`",
+      "detalhe": "4 dias úteis de defasagem; estratégia `usar_ontem`",
       "link": "https://github.com/GloedenJoao/profissional/issues/21",
       "acao": "Ver alerta",
       "issue": {

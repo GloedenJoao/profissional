@@ -59,3 +59,9 @@ executado_em,fonte,status,linhas_novas,ultima_data,erro
 2026-10-08T17:50:16+00:00,tesouro,ok,11,2026-10-07,
 2026-10-08T17:50:16+00:00,yahoo,ok,2,2026-10-06,
 2026-10-08T17:50:16+00:00,b3,ok,1,2026-10-07,
+2026-10-09T17:25:02+00:00,bcb_sgs,erro,0,2026-08-01,JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2026-10-09T17:25:02+00:00,bcb_ptax,erro,0,2026-10-07,"FonteIndisponivel: https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCota: HTTP Error 403: Forbidden"
+2026-10-09T17:25:02+00:00,bcb_focus,erro,0,2026-10-02,FonteIndisponivel: https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativasMercadoAnuais?%24filter=%28Indicador%2: HTTP Error 403: Forbidden
+2026-10-09T17:25:02+00:00,tesouro,ok,11,2026-10-08,
+2026-10-09T17:25:02+00:00,yahoo,ok,2,2026-10-07,
+2026-10-09T17:25:02+00:00,b3,ok,1,2026-10-08,

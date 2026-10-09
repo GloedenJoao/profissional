@@ -1,5 +1,5 @@
 {
-  "data_ref": "2026-10-07",
+  "data_ref": "2026-10-08",
   "issues": {
     "INC-0009": {
       "numero": 17,
@@ -16,14 +16,19 @@
       "url": "https://github.com/GloedenJoao/profissional/issues/19",
       "estado": "open"
     },
-    "DEFAS-bova11": {
-      "numero": 20,
-      "url": "https://github.com/GloedenJoao/profissional/issues/20",
-      "estado": "open"
-    },
     "DEFAS-ibov": {
       "numero": 21,
       "url": "https://github.com/GloedenJoao/profissional/issues/21",
+      "estado": "open"
+    },
+    "INC-0011": {
+      "numero": 22,
+      "url": "https://github.com/GloedenJoao/profissional/issues/22",
+      "estado": "open"
+    },
+    "INC-0012": {
+      "numero": 23,
+      "url": "https://github.com/GloedenJoao/profissional/issues/23",
       "estado": "open"
     }
   },
@@ -55,46 +60,71 @@
       "titulo": "INC-0010 · BCB · SGS: o conector falhou de verdade nesta extração",
       "url": "https://github.com/GloedenJoao/profissional/issues/19",
       "rotulos": [
+        "simulacao",
         "area:extracao",
-        "sev:alta",
-        "simulacao"
+        "sev:alta"
       ],
       "criada_em": "2026-10-08T17:51:35Z"
-    },
-    {
-      "numero": 20,
-      "titulo": "Painel: BOVA11 (R$) defasado",
-      "url": "https://github.com/GloedenJoao/profissional/issues/20",
-      "rotulos": [
-        "area:dashboards",
-        "sev:media",
-        "simulacao"
-      ],
-      "criada_em": "2026-10-08T17:51:36Z"
     },
     {
       "numero": 21,
       "titulo": "Painel: Ibovespa (pts) defasado",
       "url": "https://github.com/GloedenJoao/profissional/issues/21",
       "rotulos": [
+        "simulacao",
         "area:dashboards",
-        "sev:media",
+        "sev:media"
+      ],
+      "criada_em": "2026-10-08T17:51:36Z"
+    },
+    {
+      "numero": 22,
+      "titulo": "INC-0011 · BCB · PTAX (Olinda): o conector falhou de verdade nesta extração",
+      "url": "https://github.com/GloedenJoao/profissional/issues/22",
+      "rotulos": [
+        "area:extracao",
+        "sev:alta",
         "simulacao"
+      ],
+      "criada_em": "2026-10-09T17:26:18Z"
+    },
+    {
+      "numero": 23,
+      "titulo": "INC-0012 · BCB · Focus (Olinda): o conector falhou de verdade nesta extração",
+      "url": "https://github.com/GloedenJoao/profissional/issues/23",
+      "rotulos": [
+        "area:extracao",
+        "sev:alta",
+        "simulacao"
+      ],
+      "criada_em": "2026-10-09T17:26:19Z"
+    },
+    {
+      "numero": 20,
+      "titulo": "Painel: BOVA11 (R$) defasado",
+      "url": "https://github.com/GloedenJoao/profissional/issues/20",
+      "rotulos": [
+        "simulacao",
+        "area:dashboards",
+        "sev:media"
       ],
       "criada_em": "2026-10-08T17:51:36Z"
     }
   ],
   "detalhes": {
-    "INC-0009": "dia 2, ação `corrigir_conector`",
+    "INC-0009": "dia 3, ação `fonte_alternativa`",
     "ERRO-bova11-2026-10-05": null,
-    "DEFAS-ibov": "3 dias úteis de defasagem; estratégia `usar_ontem`",
-    "DEFAS-bova11": "3 dias úteis de defasagem; estratégia `suspender`",
-    "INC-0010": "dia 0, ação `corrigir_conector`"
+    "DEFAS-ibov": "4 dias úteis de defasagem; estratégia `usar_ontem`",
+    "INC-0010": "dia 1, ação `corrigir_conector`",
+    "INC-0011": "dia 0, ação `corrigir_conector`",
+    "INC-0012": "dia 0, ação `corrigir_conector`"
   },
   "log": [
     "comentada #17 INC-0009",
-    "aberta #19 INC-0010",
-    "aberta #20 DEFAS-bova11",
-    "aberta #21 DEFAS-ibov"
+    "comentada #19 INC-0010",
+    "aberta #22 INC-0011",
+    "aberta #23 INC-0012",
+    "comentada #21 DEFAS-ibov",
+    "fechada #20 DEFAS-bova11"
   ]
 }

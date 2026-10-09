@@ -1,11 +1,11 @@
 {
   "versao": 1,
   "inicio": "2026-08-18",
-  "ultima_data": "2026-10-07",
-  "seq_incidente": 10,
+  "ultima_data": "2026-10-08",
+  "seq_incidente": 12,
   "extracao": {
-    "divida_tecnica": 28.25,
-    "equipe": 3,
+    "divida_tecnica": 30.3,
+    "equipe": 4,
     "orcamento_dia": 1200.0,
     "fontes": {
       "bcb_sgs": {
@@ -32,7 +32,7 @@
       },
       "tesouro": {
         "liberado_ate": {
-          "tesouro": "2026-10-07"
+          "tesouro": "2026-10-08"
         },
         "alternativa_ligada": false
       },
@@ -41,11 +41,11 @@
           "ibov": "2026-10-02",
           "bova11": "2026-10-02"
         },
-        "alternativa_ligada": false
+        "alternativa_ligada": true
       },
       "b3": {
         "liberado_ate": {
-          "bova11_b3": "2026-10-07"
+          "bova11_b3": "2026-10-08"
         },
         "alternativa_ligada": false
       }
@@ -151,16 +151,17 @@
       "tipo": "falha_real",
       "aberto_em": "2026-10-05",
       "estado": "aberto",
-      "dias": 2,
+      "dias": 3,
       "esforco": 1,
-      "acao": "corrigir_conector",
+      "acao": "fonte_alternativa",
       "detalhe": "série bova11 parada em 2026-10-02 (esperado 2026-10-05)",
       "resolvido_em": null,
       "historico": [
         "2026-10-06: ação → fonte_alternativa",
-        "2026-10-07: ação → corrigir_conector"
+        "2026-10-07: ação → corrigir_conector",
+        "2026-10-08: ação → fonte_alternativa"
       ],
-      "acao_escolhida": "corrigir_conector"
+      "acao_escolhida": "fonte_alternativa"
     },
     {
       "id": "INC-0010",
@@ -168,10 +169,37 @@
       "tipo": "falha_real",
       "aberto_em": "2026-10-07",
       "estado": "aberto",
+      "dias": 1,
+      "esforco": 1,
+      "acao": "corrigir_conector",
+      "detalhe": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+      "resolvido_em": null,
+      "historico": [],
+      "acao_escolhida": "corrigir_conector"
+    },
+    {
+      "id": "INC-0011",
+      "fonte": "bcb_ptax",
+      "tipo": "falha_real",
+      "aberto_em": "2026-10-08",
+      "estado": "aberto",
       "dias": 0,
       "esforco": 0,
       "acao": "corrigir_conector",
-      "detalhe": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+      "detalhe": "FonteIndisponivel: https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCota: HTTP Error 403: Forbidden",
+      "resolvido_em": null,
+      "historico": []
+    },
+    {
+      "id": "INC-0012",
+      "fonte": "bcb_focus",
+      "tipo": "falha_real",
+      "aberto_em": "2026-10-08",
+      "estado": "aberto",
+      "dias": 0,
+      "esforco": 0,
+      "acao": "corrigir_conector",
+      "detalhe": "FonteIndisponivel: https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativasMercadoAnuais?%24filter=%28Indicador%2: HTTP Error 403: Forbidden",
       "resolvido_em": null,
       "historico": []
     }
@@ -182,8 +210,8 @@
       "area": "extracao",
       "sev": "alta",
       "aberto_em": "2026-10-05",
-      "corpo": "**Fonte:** Yahoo Finance\n**Tipo:** `falha_real` — série bova11 parada em 2026-10-02 (esperado 2026-10-05)\n**Ação atual:** `corrigir_conector` · **dias aberto:** 2\n\nAções possíveis: `aguardar`, `fonte_alternativa`, `corrigir_conector`, `escalar`",
-      "detalhe": "dia 2, ação `corrigir_conector`"
+      "corpo": "**Fonte:** Yahoo Finance\n**Tipo:** `falha_real` — série bova11 parada em 2026-10-02 (esperado 2026-10-05)\n**Ação atual:** `fonte_alternativa` · **dias aberto:** 3\n\nAções possíveis: `aguardar`, `fonte_alternativa`, `corrigir_conector`, `escalar`",
+      "detalhe": "dia 3, ação `fonte_alternativa`"
     },
     "ERRO-bova11-2026-10-05": {
       "titulo": "Painel errou BOVA11 (R$) de 2026-10-05",
@@ -199,32 +227,40 @@
       "sev": "media",
       "aberto_em": "2026-10-07",
       "corpo": "O indicador está 3 dias úteis atrás. Estratégia atual: `usar_ontem`. Avaliar trocar a estratégia ou pedir prioridade à Extração.",
-      "detalhe": "3 dias úteis de defasagem; estratégia `usar_ontem`"
-    },
-    "DEFAS-bova11": {
-      "titulo": "Painel: BOVA11 (R$) defasado",
-      "area": "dashboards",
-      "sev": "media",
-      "aberto_em": "2026-10-07",
-      "corpo": "O indicador está 3 dias úteis atrás. Estratégia atual: `suspender`. Avaliar trocar a estratégia ou pedir prioridade à Extração.",
-      "detalhe": "3 dias úteis de defasagem; estratégia `suspender`"
+      "detalhe": "4 dias úteis de defasagem; estratégia `usar_ontem`"
     },
     "INC-0010": {
       "titulo": "INC-0010 · BCB · SGS: o conector falhou de verdade nesta extração",
       "area": "extracao",
       "sev": "alta",
       "aberto_em": "2026-10-07",
-      "corpo": "**Fonte:** BCB · SGS\n**Tipo:** `falha_real` — JSONDecodeError: Expecting value: line 1 column 1 (char 0)\n**Ação atual:** `corrigir_conector` · **dias aberto:** 0\n\nAções possíveis: `aguardar`, `fonte_alternativa`, `corrigir_conector`, `escalar`",
+      "corpo": "**Fonte:** BCB · SGS\n**Tipo:** `falha_real` — JSONDecodeError: Expecting value: line 1 column 1 (char 0)\n**Ação atual:** `corrigir_conector` · **dias aberto:** 1\n\nAções possíveis: `aguardar`, `fonte_alternativa`, `corrigir_conector`, `escalar`",
+      "detalhe": "dia 1, ação `corrigir_conector`"
+    },
+    "INC-0011": {
+      "titulo": "INC-0011 · BCB · PTAX (Olinda): o conector falhou de verdade nesta extração",
+      "area": "extracao",
+      "sev": "alta",
+      "aberto_em": "2026-10-08",
+      "corpo": "**Fonte:** BCB · PTAX (Olinda)\n**Tipo:** `falha_real` — FonteIndisponivel: https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCota: HTTP Error 403: Forbidden\n**Ação atual:** `corrigir_conector` · **dias aberto:** 0\n\nAções possíveis: `aguardar`, `fonte_alternativa`, `corrigir_conector`, `escalar`",
+      "detalhe": "dia 0, ação `corrigir_conector`"
+    },
+    "INC-0012": {
+      "titulo": "INC-0012 · BCB · Focus (Olinda): o conector falhou de verdade nesta extração",
+      "area": "extracao",
+      "sev": "alta",
+      "aberto_em": "2026-10-08",
+      "corpo": "**Fonte:** BCB · Focus (Olinda)\n**Tipo:** `falha_real` — FonteIndisponivel: https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativasMercadoAnuais?%24filter=%28Indicador%2: HTTP Error 403: Forbidden\n**Ação atual:** `corrigir_conector` · **dias aberto:** 0\n\nAções possíveis: `aguardar`, `fonte_alternativa`, `corrigir_conector`, `escalar`",
       "detalhe": "dia 0, ação `corrigir_conector`"
     }
   },
   "dashboards": {
-    "credibilidade": 0.902,
+    "credibilidade": 0.899,
     "indicadores": {
       "cdi": {
         "nome": "CDI (% a.a.)",
         "data_ref": "2026-10-06",
-        "defasagem": 1,
+        "defasagem": 2,
         "via": "principal",
         "estrategia": "estimar",
         "valor": 13.65,
@@ -234,22 +270,22 @@
       "selic": {
         "nome": "Selic meta (% a.a.)",
         "data_ref": "2026-10-06",
-        "defasagem": 1,
+        "defasagem": 2,
         "via": "principal",
         "estrategia": "usar_ontem",
         "valor": 13.75,
-        "confianca": 0.8,
+        "confianca": 0.6,
         "valor_anterior": 13.75
       },
       "dolar": {
         "nome": "Dólar PTAX (R$)",
         "data_ref": "2026-10-06",
-        "defasagem": 1,
+        "defasagem": 2,
         "via": "principal",
-        "estrategia": "estimar",
-        "valor": 4.9211,
+        "estrategia": "usar_ontem",
+        "valor": 4.9698,
         "confianca": 0.6,
-        "valor_anterior": 4.9698
+        "valor_anterior": 4.9211
       },
       "ipca_12m": {
         "nome": "IPCA 12 meses (%)",
@@ -284,42 +320,42 @@
       "ibov": {
         "nome": "Ibovespa (pts)",
         "data_ref": "2026-10-02",
-        "defasagem": 3,
+        "defasagem": 4,
         "via": "principal",
         "estrategia": "usar_ontem",
         "valor": 192115.0,
-        "confianca": 0.4,
+        "confianca": 0.2,
         "valor_anterior": 192115.0
       },
       "bova11": {
         "nome": "BOVA11 (R$)",
-        "data_ref": "2026-10-02",
-        "defasagem": 3,
-        "via": "principal",
-        "estrategia": "suspender",
-        "valor": null,
-        "confianca": 0.0,
-        "valor_anterior": 202.5
+        "data_ref": "2026-10-08",
+        "defasagem": 0,
+        "via": "alternativa",
+        "estrategia": null,
+        "valor": 203.08,
+        "confianca": 0.9,
+        "valor_anterior": null
       },
       "taxa_pre": {
         "nome": "Tesouro Prefixado (% a.a.)",
-        "data_ref": "2026-10-07",
+        "data_ref": "2026-10-08",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 12.55,
+        "valor": 12.53,
         "confianca": 1.0,
         "valor_anterior": 12.55
       },
       "taxa_ipca": {
         "nome": "Tesouro IPCA+ (% a.a. real)",
-        "data_ref": "2026-10-07",
+        "data_ref": "2026-10-08",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 6.95,
+        "valor": 6.84,
         "confianca": 1.0,
-        "valor_anterior": 6.92
+        "valor_anterior": 6.95
       }
     },
     "estimativas": [
@@ -337,9 +373,14 @@
         "indicador": "dolar",
         "data": "2026-10-07",
         "valor": 4.9211
+      },
+      {
+        "indicador": "cdi",
+        "data": "2026-10-08",
+        "valor": 13.65
       }
     ],
-    "confianca_media": 0.74
+    "confianca_media": 0.79
   },
   "executivos": {
     "alvo": {
@@ -349,7 +390,7 @@
       "dolar": 0.1,
       "bolsa": 0.15
     },
-    "ultima_decisao": "2026-10-02",
+    "ultima_decisao": "2026-10-08",
     "dias_sem_decisao": 0,
     "decisoes_recentes": [
       {
@@ -361,31 +402,34 @@
         "data": "2026-10-02",
         "autor": "times",
         "resumo": "Decidido: Tesouro IPCA+ +5 p.p. (juro real de 7,55%); Tesouro Prefixado -5 p.p. (Selic estável no horizonte). Caixa fica em 40%."
+      },
+      {
+        "data": "2026-10-08",
+        "autor": "times",
+        "resumo": "Aprovado: +1 pessoa na Extração (4 incidentes abertos). Equipe vai para 4."
       }
     ],
-    "congelados": [
-      "bolsa"
-    ]
+    "congelados": []
   },
   "fundo": {
-    "cota": 1.0608696394945987,
-    "cotas": 322165842.9049049,
-    "pl": 341775961.62,
-    "bench": 1.0181075880509844,
+    "cota": 1.064672575129137,
+    "cotas": 323572109.35786045,
+    "pl": 344498350.91,
+    "bench": 1.0186246645328039,
     "posicoes": {
       "caixa": {
-        "valor": 137294904.30409038,
+        "valor": 138848235.26945543,
         "preco": 1.0,
         "titulo": null
       },
       "prefixado": {
-        "valor": 50906410.61176249,
-        "preco": 768.22,
+        "valor": 50950145.780078545,
+        "preco": 768.88,
         "titulo": "2029-01-01"
       },
       "inflacao": {
-        "valor": 69473362.88420808,
-        "preco": 2651.97,
+        "valor": 70121211.9413718,
+        "preco": 2676.7,
         "titulo": "2035-05-15"
       },
       "dolar": {
@@ -394,18 +438,13 @@
         "titulo": null
       },
       "bolsa": {
-        "valor": 52509104.86241321,
-        "preco": 201.25,
+        "valor": 52986578.95880187,
+        "preco": 203.08,
         "titulo": null
       }
     },
-    "fluxo_dia": 1143882.04,
+    "fluxo_dia": 1497213.33,
     "hist_cota": [
-      [
-        "2026-09-08",
-        1.0270685705621614,
-        1.0072567359312494
-      ],
       [
         "2026-09-09",
         1.0259757972951562,
@@ -510,14 +549,19 @@
         "2026-10-07",
         1.060869639489616,
         1.0181075880509844
+      ],
+      [
+        "2026-10-08",
+        1.0646725751156256,
+        1.0186246645328039
       ]
     ],
-    "retorno_dia": -0.0006661562099539164
+    "retorno_dia": 0.0035847341586192627
   },
   "gestora": {
-    "caixa": 2037490.11,
-    "receita_dia": 13517.68,
-    "custo_dia": 11700.0
+    "caixa": 2037901.81,
+    "receita_dia": 13611.7,
+    "custo_dia": 13200.0
   },
   "times": {
     "serie": {
@@ -597,6 +641,10 @@
         [
           "2026-10-07",
           12.55
+        ],
+        [
+          "2026-10-08",
+          12.53
         ]
       ],
       "taxa_ipca": [
@@ -619,6 +667,10 @@
         [
           "2026-10-07",
           6.95
+        ],
+        [
+          "2026-10-08",
+          6.84
         ]
       ],
       "ibov": [
@@ -635,6 +687,10 @@
         [
           "2026-10-06",
           202.5
+        ],
+        [
+          "2026-10-08",
+          203.08
         ]
       ]
     },
@@ -642,7 +698,8 @@
       "bova11": "2026-10-06"
     },
     "comite": {
-      "ultimo": "2026-10-05"
+      "ultimo": "2026-10-05",
+      "contratou": "2026-10-08"
     }
   }
 }
