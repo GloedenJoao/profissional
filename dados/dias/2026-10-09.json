@@ -1,0 +1,248 @@
+{
+  "data": "2026-10-09",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {
+      "INC-0010": "corrigir_conector",
+      "INC-0009": "corrigir_conector",
+      "INC-0011": "escalar",
+      "INC-0012": "escalar"
+    },
+    "dashboards": {
+      "cdi": "estimar",
+      "selic": "usar_ontem",
+      "dolar": "suspender"
+    },
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia. Temos 4 incidente(s) aberto(s) e 4 pessoa(s) na equipe. Vamos priorizar.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:02",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0010 · BCB · SGS (aberto ontem): seguimos com `corrigir_conector`.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:04",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0009 · Yahoo Finance (o conector falhou de verdade nesta extração, aberto há 3 dias): `corrigir_conector` — falha real no conector: só resolve mexendo no código.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "08:06",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "INC-0011 (BCB · PTAX (Olinda)) precisava de `corrigir_conector`, mas não sobrou gente. Vou escalar para o comitê.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:08",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "INC-0011 · BCB · PTAX (Olinda) (o conector falhou de verdade nesta extração, aberto ontem): `escalar` — falta equipe.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "08:10",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "INC-0012 (BCB · Focus (Olinda)) precisava de `corrigir_conector`, mas não sobrou gente. Vou escalar para o comitê.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:12",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "INC-0012 · BCB · Focus (Olinda) (o conector falhou de verdade nesta extração, aberto ontem): `escalar` — falta equipe.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0009 resolvido: Yahoo Finance voltou após 4 dia(s) (corrigir_conector)",
+      "tipo": "evento"
+    },
+    {
+      "hora": "08:42",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0011 resolvido: BCB · PTAX (Olinda) voltou após 1 dia(s) (escalar)",
+      "tipo": "evento"
+    },
+    {
+      "hora": "08:44",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0012 resolvido: BCB · Focus (Olinda) voltou após 1 dia(s) (escalar)",
+      "tipo": "evento"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Faltam dados novos para: CDI (% a.a.), Selic meta (% a.a.), Dólar PTAX (R$). Credibilidade em 90%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:02",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "CDI (% a.a.) (3 dia(s) atrasado): `estimar` — o CDI acompanha a Selic, dá para estimar com folga.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:04",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Selic meta (% a.a.) (3 dia(s) atrasado): `usar_ontem` — número que muda devagar; repetir o último é seguro.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:06",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Dólar PTAX (R$) (3 dia(s) atrasado): `suspender` — 3 dias sem dado: prefiro não publicar a induzir o comitê ao erro.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:40",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "Estimativa errada de ibov em 2026-10-05: 193890.8007 vs real 206912.0",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo +3,12% contra o CDI em 21 dias, caixa da gestora R$ 2.037.902, credibilidade dos painéis 85%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: BOVA11 205,55 (+1,22%); Tesouro Prefixado 12,30 (-1,84%); Tesouro IPCA+ 6,66 (-2,63%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Marta",
+      "papel": "Risco",
+      "texto": "Sem número confiável para Dólar: esses ficam como estão.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:06",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,070965 (+0,59% no dia), PL R$ 348,2 mi, fluxo de cotistas R$ 1.643 mil. Caixa da gestora R$ 2,04 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0009 resolvido: Yahoo Finance voltou após 4 dia(s) (corrigir_conector)",
+      "chave": "INC-0009"
+    },
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0011 resolvido: BCB · PTAX (Olinda) voltou após 1 dia(s) (escalar)",
+      "chave": "INC-0011"
+    },
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0012 resolvido: BCB · Focus (Olinda) voltou após 1 dia(s) (escalar)",
+      "chave": "INC-0012"
+    },
+    {
+      "area": "dashboards",
+      "tipo": "alerta",
+      "texto": "Estimativa errada de ibov em 2026-10-05: 193890.8007 vs real 206912.0",
+      "chave": null
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0010",
+      "fonte": "bcb_sgs",
+      "tipo": "falha_real"
+    }
+  ],
+  "alertas_abertos": [
+    "DEFAS-cdi",
+    "DEFAS-dolar",
+    "DEFAS-selic",
+    "ERRO-ibov-2026-10-05"
+  ],
+  "alertas_fechados": [
+    "DEFAS-ibov",
+    "INC-0009",
+    "INC-0011",
+    "INC-0012"
+  ],
+  "resumo": {
+    "cota": 1.0709651,
+    "pl": 348177539.3,
+    "bench": 1.019142,
+    "retorno_dia": 0.00591,
+    "fluxo": 1643103.52,
+    "pesos": {
+      "caixa": 0.4037,
+      "prefixado": 0.1471,
+      "inflacao": 0.2046,
+      "dolar": 0.0907,
+      "bolsa": 0.154
+    },
+    "divida_tecnica": 30.25,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.846,
+    "confianca_media": 0.8,
+    "caixa_gestora": 2038453.72
+  }
+}

@@ -1,8 +1,8 @@
 {
-  "executado_em": "2026-10-09T17:25:02+00:00",
+  "executado_em": "2026-10-12T20:14:14+00:00",
   "janela": [
-    "2026-09-25",
-    "2026-10-08"
+    "2026-09-26",
+    "2026-10-09"
   ],
   "fontes": {
     "bcb_sgs": {
@@ -17,16 +17,16 @@
       }
     },
     "bcb_ptax": {
-      "status": "erro",
-      "erro": "FonteIndisponivel: https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCota: HTTP Error 403: Forbidden",
-      "linhas_novas": 0,
+      "status": "ok",
+      "erro": null,
+      "linhas_novas": 2,
       "ultima_data": {
-        "dolar_ptax": "2026-10-07"
+        "dolar_ptax": "2026-10-09"
       }
     },
     "bcb_focus": {
-      "status": "erro",
-      "erro": "FonteIndisponivel: https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativasMercadoAnuais?%24filter=%28Indicador%2: HTTP Error 403: Forbidden",
+      "status": "ok",
+      "erro": null,
       "linhas_novas": 0,
       "ultima_data": {
         "focus_ipca": "2026-10-02",
@@ -38,16 +38,16 @@
       "erro": null,
       "linhas_novas": 11,
       "ultima_data": {
-        "tesouro": "2026-10-08"
+        "tesouro": "2026-10-09"
       }
     },
     "yahoo": {
       "status": "ok",
       "erro": null,
-      "linhas_novas": 2,
+      "linhas_novas": 3,
       "ultima_data": {
-        "ibov": "2026-10-08",
-        "bova11": "2026-10-07"
+        "ibov": "2026-10-09",
+        "bova11": "2026-10-09"
       }
     },
     "b3": {
@@ -55,7 +55,7 @@
       "erro": null,
       "linhas_novas": 1,
       "ultima_data": {
-        "bova11_b3": "2026-10-08"
+        "bova11_b3": "2026-10-09"
       }
     }
   }
