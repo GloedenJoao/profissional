@@ -44,7 +44,7 @@
     "2027-12-25",
     "2027-12-31"
   ],
-  "gerado_em": "2026-10-12T20:14:14+00:00",
+  "gerado_em": "2026-10-13T18:09:15+00:00",
   "resumo": {
     "cota": 1.070965,
     "pl": 348177539.3,
@@ -75,8 +75,8 @@
           "dolar",
           "ipca"
         ],
-        "real": "erro",
-        "erro_real": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+        "real": "ok",
+        "erro_real": null,
         "liberado_ate": {
           "cdi": "2026-10-06",
           "selic": "2026-10-06",
@@ -2039,9 +2039,9 @@
         "titulo": "Painel: CDI (% a.a.) defasado",
         "url": "https://github.com/GloedenJoao/profissional/issues/24",
         "rotulos": [
+          "simulacao",
           "area:dashboards",
-          "sev:media",
-          "simulacao"
+          "sev:media"
         ],
         "criada_em": "2026-10-12T20:15:32Z"
       },
@@ -2050,9 +2050,9 @@
         "titulo": "Painel: Dólar PTAX (R$) defasado",
         "url": "https://github.com/GloedenJoao/profissional/issues/25",
         "rotulos": [
+          "simulacao",
           "area:dashboards",
-          "sev:media",
-          "simulacao"
+          "sev:media"
         ],
         "criada_em": "2026-10-12T20:15:32Z"
       },
@@ -2061,9 +2061,9 @@
         "titulo": "Painel: Selic meta (% a.a.) defasado",
         "url": "https://github.com/GloedenJoao/profissional/issues/26",
         "rotulos": [
+          "simulacao",
           "area:dashboards",
-          "sev:media",
-          "simulacao"
+          "sev:media"
         ],
         "criada_em": "2026-10-12T20:15:33Z"
       },
@@ -2072,55 +2072,11 @@
         "titulo": "Painel errou Ibovespa (pts) de 2026-10-05",
         "url": "https://github.com/GloedenJoao/profissional/issues/27",
         "rotulos": [
-          "area:dashboards",
-          "sev:media",
-          "simulacao"
-        ],
-        "criada_em": "2026-10-12T20:15:33Z"
-      },
-      {
-        "numero": 23,
-        "titulo": "INC-0012 · BCB · Focus (Olinda): o conector falhou de verdade nesta extração",
-        "url": "https://github.com/GloedenJoao/profissional/issues/23",
-        "rotulos": [
-          "simulacao",
-          "area:extracao",
-          "sev:alta"
-        ],
-        "criada_em": "2026-10-09T17:26:19Z"
-      },
-      {
-        "numero": 22,
-        "titulo": "INC-0011 · BCB · PTAX (Olinda): o conector falhou de verdade nesta extração",
-        "url": "https://github.com/GloedenJoao/profissional/issues/22",
-        "rotulos": [
-          "simulacao",
-          "area:extracao",
-          "sev:alta"
-        ],
-        "criada_em": "2026-10-09T17:26:18Z"
-      },
-      {
-        "numero": 21,
-        "titulo": "Painel: Ibovespa (pts) defasado",
-        "url": "https://github.com/GloedenJoao/profissional/issues/21",
-        "rotulos": [
           "simulacao",
           "area:dashboards",
           "sev:media"
         ],
-        "criada_em": "2026-10-08T17:51:36Z"
-      },
-      {
-        "numero": 17,
-        "titulo": "INC-0009 · Yahoo Finance: o conector falhou de verdade nesta extração",
-        "url": "https://github.com/GloedenJoao/profissional/issues/17",
-        "rotulos": [
-          "simulacao",
-          "area:extracao",
-          "sev:alta"
-        ],
-        "criada_em": "2026-10-06T17:10:08Z"
+        "criada_em": "2026-10-12T20:15:33Z"
       }
     ],
     "controle": null,
@@ -2182,15 +2138,6 @@
     "link_pasta": "https://github.com/GloedenJoao/profissional/tree/main/empresa/decisoes"
   },
   "tarefas": [
-    {
-      "id": "CONECTOR-bcb_sgs",
-      "area": "extracao",
-      "nivel": "ruim",
-      "titulo": "Conector BCB · SGS falhou de verdade",
-      "detalhe": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
-      "link": "https://github.com/GloedenJoao/profissional/blob/main/gestora/fontes.py",
-      "acao": "Corrigir conector"
-    },
     {
       "id": "INC-0010",
       "area": "extracao",

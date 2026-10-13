@@ -12,7 +12,6 @@ Os times decidem sozinhos. Diretriz do conselho (opcional): `empresa/decisoes/20
 ## Extração
 - Dívida técnica 30.2/100 · equipe 4 · orçamento R$ 1,200/dia
 - **INC-0010** bcb_sgs `falha_real` há 2 dia(s), ação `corrigir_conector` — JSONDecodeError: Expecting value: line 1 column 1 (char 0)
-- ⚠️ Falha REAL no conector `bcb_sgs`: JSONDecodeError: Expecting value: line 1 column 1 (char 0) (corrigir em `gestora/fontes.py`)
 
 ## Dashboards
 - Credibilidade 85% · confiança média 80%
