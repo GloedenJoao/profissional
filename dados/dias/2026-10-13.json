@@ -1,0 +1,196 @@
+{
+  "data": "2026-10-13",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {
+      "INC-0010": "corrigir_conector"
+    },
+    "dashboards": {
+      "ibov": "usar_ontem",
+      "bova11": "usar_ontem"
+    },
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia. Temos 1 incidente(s) aberto(s) e 4 pessoa(s) na equipe. Vamos priorizar.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:02",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0010 · BCB · SGS (aberto há 2 dias): seguimos com `corrigir_conector`.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0010 resolvido: BCB · SGS voltou após 3 dia(s) (corrigir_conector)",
+      "tipo": "evento"
+    },
+    {
+      "hora": "08:42",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0013: falha real em Yahoo Finance",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Faltam dados novos para: Ibovespa (pts), BOVA11 (R$). Credibilidade em 85%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:02",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Ibovespa (pts) (1 dia(s) atrasado): `usar_ontem` — errei a estimativa disso há pouco, vou de último valor.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:04",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "BOVA11 (R$) (1 dia(s) atrasado): `usar_ontem` — errei a estimativa disso há pouco, vou de último valor.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:40",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "Estimativa errada de dolar em 2026-10-07: 4.9211 vs real 4.9935",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo +2,87% contra o CDI em 21 dias, caixa da gestora R$ 2.038.454, credibilidade dos painéis 83%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,01; BOVA11 205,55 (+0,00%) [confiança 80%]; Tesouro Prefixado 12,40 (+0,81%); Tesouro IPCA+ 6,69 (+0,45%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Comitê de investimentos (reunião semanal).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:06",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Tesouro IPCA+ pagando 6,69% acima da inflação.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:08",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Selic em 13,75% e Focus para o fim do ano em 13,25%: Selic estável no horizonte.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:10",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Carteira coerente com os números. Mantemos o alvo.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,069510 (-0,14% no dia), PL R$ 349,6 mi, fluxo de cotistas R$ 1.923 mil. Caixa da gestora R$ 2,04 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0010 resolvido: BCB · SGS voltou após 3 dia(s) (corrigir_conector)",
+      "chave": "INC-0010"
+    },
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0013: falha real em Yahoo Finance",
+      "chave": "INC-0013"
+    },
+    {
+      "area": "dashboards",
+      "tipo": "alerta",
+      "texto": "Estimativa errada de dolar em 2026-10-07: 4.9211 vs real 4.9935",
+      "chave": null
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0013",
+      "fonte": "yahoo",
+      "tipo": "falha_real"
+    }
+  ],
+  "alertas_abertos": [
+    "ERRO-dolar-2026-10-07",
+    "INC-0013"
+  ],
+  "alertas_fechados": [
+    "DEFAS-cdi",
+    "DEFAS-dolar",
+    "DEFAS-selic",
+    "INC-0010"
+  ],
+  "resumo": {
+    "cota": 1.06951018,
+    "pl": 349627667.27,
+    "bench": 1.01965961,
+    "retorno_dia": -0.001359,
+    "fluxo": 1923131.09,
+    "pesos": {
+      "caixa": 0.4077,
+      "prefixado": 0.1462,
+      "inflacao": 0.2035,
+      "dolar": 0.0907,
+      "bolsa": 0.1519
+    },
+    "divida_tecnica": 30.2,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.826,
+    "confianca_media": 0.96,
+    "caixa_gestora": 2039052.07
+  }
+}
