@@ -1,0 +1,123 @@
+{
+  "data": "2026-10-14",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {
+      "INC-0013": "corrigir_conector"
+    },
+    "dashboards": {
+      "ibov": "usar_ontem",
+      "bova11": "usar_ontem"
+    },
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia. Temos 1 incidente(s) aberto(s) e 4 pessoa(s) na equipe. Vamos priorizar.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:02",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0013 · Yahoo Finance (o conector falhou de verdade nesta extração, aberto ontem): `corrigir_conector` — falha real no conector: só resolve mexendo no código.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Faltam dados novos para: Ibovespa (pts), BOVA11 (R$). Credibilidade em 83%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:02",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Ibovespa (pts) (2 dia(s) atrasado): `usar_ontem` — errei a estimativa disso há pouco, vou de último valor.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:04",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "BOVA11 (R$) (2 dia(s) atrasado): `usar_ontem` — errei a estimativa disso há pouco, vou de último valor.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo +2,98% contra o CDI em 21 dias, caixa da gestora R$ 2.039.052, credibilidade dos painéis 82%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,04 (+0,69%); BOVA11 205,55 (+0,00%) [confiança 60%]; Tesouro Prefixado 12,54 (+1,13%); Tesouro IPCA+ 6,74 (+0,75%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,069291 (-0,02% no dia), PL R$ 350,4 mi, fluxo de cotistas R$ 871 mil. Caixa da gestora R$ 2,04 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0013",
+      "fonte": "yahoo",
+      "tipo": "falha_real"
+    }
+  ],
+  "alertas_abertos": [],
+  "alertas_fechados": [
+    "ERRO-bova11-2026-10-05"
+  ],
+  "resumo": {
+    "cota": 1.06929116,
+    "pl": 350426926.7,
+    "bench": 1.02017747,
+    "retorno_dia": -0.000205,
+    "fluxo": 870857.5,
+    "pesos": {
+      "caixa": 0.4094,
+      "prefixado": 0.1456,
+      "inflacao": 0.2023,
+      "dolar": 0.0911,
+      "bolsa": 0.1516
+    },
+    "divida_tecnica": 30.15,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.825,
+    "confianca_media": 0.92,
+    "caixa_gestora": 2039723.89
+  }
+}
