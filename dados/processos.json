@@ -1,6 +1,16 @@
 {
-  "data_ref": "2026-10-14",
+  "data_ref": "2026-10-15",
   "issues": {
+    "DEFAS-bova11": {
+      "numero": 20,
+      "url": "https://github.com/GloedenJoao/profissional/issues/20",
+      "estado": "open"
+    },
+    "DEFAS-ibov": {
+      "numero": 21,
+      "url": "https://github.com/GloedenJoao/profissional/issues/21",
+      "estado": "open"
+    },
     "ERRO-ibov-2026-10-05": {
       "numero": 27,
       "url": "https://github.com/GloedenJoao/profissional/issues/27",
@@ -18,6 +28,28 @@
     }
   },
   "abertas": [
+    {
+      "numero": 20,
+      "titulo": "Painel: BOVA11 (R$) defasado",
+      "url": "https://github.com/GloedenJoao/profissional/issues/20",
+      "rotulos": [
+        "simulacao",
+        "area:dashboards",
+        "sev:media"
+      ],
+      "criada_em": "2026-10-08T17:51:36Z"
+    },
+    {
+      "numero": 21,
+      "titulo": "Painel: Ibovespa (pts) defasado",
+      "url": "https://github.com/GloedenJoao/profissional/issues/21",
+      "rotulos": [
+        "simulacao",
+        "area:dashboards",
+        "sev:media"
+      ],
+      "criada_em": "2026-10-08T17:51:36Z"
+    },
     {
       "numero": 27,
       "titulo": "Painel errou Ibovespa (pts) de 2026-10-05",
@@ -50,26 +82,18 @@
         "sev:media"
       ],
       "criada_em": "2026-10-14T15:48:54Z"
-    },
-    {
-      "numero": 18,
-      "titulo": "Painel errou BOVA11 (R$) de 2026-10-05",
-      "url": "https://github.com/GloedenJoao/profissional/issues/18",
-      "rotulos": [
-        "simulacao",
-        "area:dashboards",
-        "sev:media"
-      ],
-      "criada_em": "2026-10-07T17:46:57Z"
     }
   ],
   "detalhes": {
     "ERRO-ibov-2026-10-05": null,
     "ERRO-dolar-2026-10-07": null,
-    "INC-0013": "dia 1, ação `corrigir_conector`"
+    "INC-0013": "dia 2, ação `corrigir_conector`",
+    "DEFAS-ibov": "3 dias úteis de defasagem; estratégia `usar_ontem`",
+    "DEFAS-bova11": "3 dias úteis de defasagem; estratégia `suspender`"
   },
   "log": [
     "comentada #28 INC-0013",
-    "fechada #18 ERRO-bova11-2026-10-05"
+    "reaberta #20 DEFAS-bova11",
+    "reaberta #21 DEFAS-ibov"
   ]
 }
