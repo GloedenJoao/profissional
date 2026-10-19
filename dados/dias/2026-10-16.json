@@ -1,0 +1,115 @@
+{
+  "data": "2026-10-16",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {
+      "INC-0013": "corrigir_conector"
+    },
+    "dashboards": {},
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia. Temos 1 incidente(s) aberto(s) e 4 pessoa(s) na equipe. Vamos priorizar.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:02",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0013 · Yahoo Finance (aberto há 2 dias): seguimos com `corrigir_conector`.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0013 resolvido: Yahoo Finance voltou após 3 dia(s) (corrigir_conector)",
+      "tipo": "evento"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Todos os números chegaram em dia. Credibilidade dos painéis em 82%. Publicando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo +2,76% contra o CDI em 21 dias, caixa da gestora R$ 2.040.387, credibilidade dos painéis 82%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,08 (+0,60%); BOVA11 202,30; Tesouro Prefixado 12,64 (+0,00%); Tesouro IPCA+ 6,84 (+0,00%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,067485 (+0,14% no dia), PL R$ 352,2 mi, fluxo de cotistas R$ 894 mil. Caixa da gestora R$ 2,04 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0013 resolvido: Yahoo Finance voltou após 3 dia(s) (corrigir_conector)",
+      "chave": "INC-0013"
+    }
+  ],
+  "incidentes_do_dia": [],
+  "alertas_abertos": [],
+  "alertas_fechados": [
+    "DEFAS-bova11",
+    "DEFAS-ibov",
+    "INC-0013"
+  ],
+  "resumo": {
+    "cota": 1.0674852,
+    "pl": 352158501.1,
+    "bench": 1.02121399,
+    "retorno_dia": 0.001397,
+    "fluxo": 894316.38,
+    "pesos": {
+      "caixa": 0.4143,
+      "prefixado": 0.1446,
+      "inflacao": 0.1999,
+      "dolar": 0.0913,
+      "bolsa": 0.1499
+    },
+    "divida_tecnica": 29.35,
+    "incidentes_abertos": 0,
+    "credibilidade": 0.824,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2041127.03
+  }
+}
