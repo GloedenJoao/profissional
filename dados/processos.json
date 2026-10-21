@@ -1,18 +1,40 @@
 {
-  "data_ref": "2026-10-19",
+  "data_ref": "2026-10-20",
   "issues": {
-    "ERRO-dolar-2026-10-07": {
-      "numero": 29,
-      "url": "https://github.com/GloedenJoao/profissional/issues/29",
-      "estado": "open"
-    },
     "INC-0014": {
       "numero": 30,
       "url": "https://github.com/GloedenJoao/profissional/issues/30",
       "estado": "open"
+    },
+    "INC-0015": {
+      "numero": 31,
+      "url": "https://github.com/GloedenJoao/profissional/issues/31",
+      "estado": "open"
     }
   },
   "abertas": [
+    {
+      "numero": 30,
+      "titulo": "INC-0014 · Tesouro Direto (CSV): o conector falhou de verdade nesta extração",
+      "url": "https://github.com/GloedenJoao/profissional/issues/30",
+      "rotulos": [
+        "simulacao",
+        "area:extracao",
+        "sev:alta"
+      ],
+      "criada_em": "2026-10-20T15:38:09Z"
+    },
+    {
+      "numero": 31,
+      "titulo": "INC-0015 · BCB · SGS: o conector falhou de verdade nesta extração",
+      "url": "https://github.com/GloedenJoao/profissional/issues/31",
+      "rotulos": [
+        "area:extracao",
+        "sev:alta",
+        "simulacao"
+      ],
+      "criada_em": "2026-10-21T15:56:12Z"
+    },
     {
       "numero": 29,
       "titulo": "Painel errou Dólar PTAX (R$) de 2026-10-07",
@@ -23,36 +45,15 @@
         "sev:media"
       ],
       "criada_em": "2026-10-14T15:48:54Z"
-    },
-    {
-      "numero": 30,
-      "titulo": "INC-0014 · Tesouro Direto (CSV): o conector falhou de verdade nesta extração",
-      "url": "https://github.com/GloedenJoao/profissional/issues/30",
-      "rotulos": [
-        "area:extracao",
-        "sev:alta",
-        "simulacao"
-      ],
-      "criada_em": "2026-10-20T15:38:09Z"
-    },
-    {
-      "numero": 27,
-      "titulo": "Painel errou Ibovespa (pts) de 2026-10-05",
-      "url": "https://github.com/GloedenJoao/profissional/issues/27",
-      "rotulos": [
-        "simulacao",
-        "area:dashboards",
-        "sev:media"
-      ],
-      "criada_em": "2026-10-12T20:15:33Z"
     }
   ],
   "detalhes": {
-    "ERRO-dolar-2026-10-07": null,
-    "INC-0014": "dia 0, ação `corrigir_conector`"
+    "INC-0014": "dia 1, ação `corrigir_conector`",
+    "INC-0015": "dia 0, ação `corrigir_conector`"
   },
   "log": [
-    "aberta #30 INC-0014",
-    "fechada #27 ERRO-ibov-2026-10-05"
+    "comentada #30 INC-0014",
+    "aberta #31 INC-0015",
+    "fechada #29 ERRO-dolar-2026-10-07"
   ]
 }
