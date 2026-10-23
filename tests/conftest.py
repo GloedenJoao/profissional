@@ -25,7 +25,7 @@ def fake_conectores(falhar=()):
         dias = _dias(inicio, fim)
         ipca = []
         m = date(inicio.year - 2, inicio.month, 1)
-        while m <= date(fim.year, fim.month, 1) - timedelta(days=40):
+        while m < date(fim.year, fim.month, 1):  # o IPCA do mês anterior já saiu (no dia 10, mais ou menos)
             ipca.append({"data": m.isoformat(), "valor": 0.35})
             m = date(m.year + (m.month == 12), m.month % 12 + 1, 1)
         return {"cdi": [{"data": d.isoformat(), "valor": 0.050788} for d in dias],

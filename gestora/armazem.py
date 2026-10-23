@@ -14,9 +14,12 @@ def ler_json(caminho: Path, padrao=None):
     return json.loads(caminho.read_text(encoding="utf-8"))
 
 
-def gravar_json(caminho: Path, dados) -> None:
+def gravar_json(caminho: Path, dados, compacto: bool = False) -> None:
+    """`compacto`: sem indentação (os arquivos de cada dia, com o rastro inteiro, ficam com metade do tamanho)."""
     caminho.parent.mkdir(parents=True, exist_ok=True)
-    caminho.write_text(json.dumps(dados, ensure_ascii=False, indent=2, sort_keys=False) + "\n", encoding="utf-8")
+    texto = (json.dumps(dados, ensure_ascii=False, separators=(",", ":")) if compacto
+             else json.dumps(dados, ensure_ascii=False, indent=2, sort_keys=False))
+    caminho.write_text(texto + "\n", encoding="utf-8")
 
 
 def _chave(serie: str, linha: dict) -> tuple:

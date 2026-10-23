@@ -26,42 +26,36 @@ FUNDO = "Capivara Multimercado FIC FIM"
 AVISO = "Empresa e fundo fictícios. Dados de mercado reais; nada aqui é recomendação de investimento."
 
 # Fontes (conectores). `series` são os arquivos em dados/series que cada uma alimenta.
-# `defasagem` é quantos dias úteis de atraso são normais na publicação.
+# `prob_base` é a chance diária de falha no teste de estresse da Extração (antes da dívida técnica).
 FONTES = {
     "bcb_sgs": {
         "nome": "BCB · SGS",
         "series": ["cdi", "selic", "dolar", "ipca"],
-        "defasagem": 0,
         "prob_base": 0.020,
     },
     "bcb_ptax": {
         "nome": "BCB · PTAX (Olinda)",
         "series": ["dolar_ptax"],
-        "defasagem": 0,
         "prob_base": 0.015,
     },
     "bcb_focus": {
         "nome": "BCB · Focus (Olinda)",
         "series": ["focus_ipca", "focus_selic"],
-        "defasagem": 5,
         "prob_base": 0.015,
     },
     "tesouro": {
         "nome": "Tesouro Direto (CSV)",
         "series": ["tesouro"],
-        "defasagem": 1,
         "prob_base": 0.030,
     },
     "yahoo": {
         "nome": "Yahoo Finance",
         "series": ["ibov", "bova11"],
-        "defasagem": 0,
         "prob_base": 0.035,
     },
     "b3": {
         "nome": "B3 · COTAHIST",
         "series": ["bova11_b3"],
-        "defasagem": 0,
         "prob_base": 0.020,
     },
 }
@@ -69,17 +63,68 @@ FONTES = {
 # Indicadores que a área de Dashboards publica para os executivos.
 # fonte/serie primária e, quando existe, a alternativa que a Extração pode ligar.
 INDICADORES = {
-    "cdi": {"nome": "CDI (% a.a.)", "fonte": "bcb_sgs", "serie": "cdi", "alt": None, "ativo": "caixa"},
-    "selic": {"nome": "Selic meta (% a.a.)", "fonte": "bcb_sgs", "serie": "selic", "alt": None, "ativo": None},
-    "dolar": {"nome": "Dólar PTAX (R$)", "fonte": "bcb_sgs", "serie": "dolar", "alt": ("bcb_ptax", "dolar_ptax"), "ativo": "dolar"},
-    "ipca_12m": {"nome": "IPCA 12 meses (%)", "fonte": "bcb_sgs", "serie": "ipca", "alt": None, "ativo": None, "mensal": True},
-    "focus_ipca": {"nome": "Focus IPCA do ano (%)", "fonte": "bcb_focus", "serie": "focus_ipca", "alt": None, "ativo": None},
-    "focus_selic": {"nome": "Focus Selic fim do ano (%)", "fonte": "bcb_focus", "serie": "focus_selic", "alt": None, "ativo": None},
-    "ibov": {"nome": "Ibovespa (pts)", "fonte": "yahoo", "serie": "ibov", "alt": None, "ativo": None},
-    "bova11": {"nome": "BOVA11 (R$)", "fonte": "yahoo", "serie": "bova11", "alt": ("b3", "bova11_b3"), "ativo": "bolsa"},
-    "taxa_pre": {"nome": "Tesouro Prefixado (% a.a.)", "fonte": "tesouro", "serie": "tesouro", "alt": None, "ativo": "prefixado"},
-    "taxa_ipca": {"nome": "Tesouro IPCA+ (% a.a. real)", "fonte": "tesouro", "serie": "tesouro", "alt": None, "ativo": "inflacao"},
+    "cdi": {"nome": "CDI (% a.a.)", "fonte": "bcb_sgs", "serie": "cdi", "alt": None, "ativo": "caixa",
+            "unidade": "% a.a.", "casas": 2},
+    "selic": {"nome": "Selic meta (% a.a.)", "fonte": "bcb_sgs", "serie": "selic", "alt": None, "ativo": None,
+              "unidade": "% a.a.", "casas": 2},
+    "dolar": {"nome": "Dólar PTAX (R$)", "fonte": "bcb_sgs", "serie": "dolar", "alt": ("bcb_ptax", "dolar_ptax"),
+              "ativo": "dolar", "unidade": "R$", "casas": 4},
+    "ipca_12m": {"nome": "IPCA 12 meses (%)", "fonte": "bcb_sgs", "serie": "ipca", "alt": None, "ativo": None,
+                 "mensal": True, "unidade": "%", "casas": 2},
+    "focus_ipca": {"nome": "Focus IPCA do ano (%)", "fonte": "bcb_focus", "serie": "focus_ipca", "alt": None,
+                   "ativo": None, "unidade": "%", "casas": 2},
+    "focus_selic": {"nome": "Focus Selic fim do ano (%)", "fonte": "bcb_focus", "serie": "focus_selic", "alt": None,
+                    "ativo": None, "unidade": "% a.a.", "casas": 2},
+    "ibov": {"nome": "Ibovespa (pts)", "fonte": "yahoo", "serie": "ibov", "alt": None, "ativo": None,
+             "unidade": "pts", "casas": 0},
+    "bova11": {"nome": "BOVA11 (R$)", "fonte": "yahoo", "serie": "bova11", "alt": ("b3", "bova11_b3"), "ativo": "bolsa",
+               "unidade": "R$", "casas": 2},
+    "taxa_pre": {"nome": "Tesouro Prefixado (% a.a.)", "fonte": "tesouro", "serie": "tesouro", "alt": None,
+                 "ativo": "prefixado", "unidade": "% a.a.", "casas": 2},
+    "taxa_ipca": {"nome": "Tesouro IPCA+ (% a.a. real)", "fonte": "tesouro", "serie": "tesouro", "alt": None,
+                  "ativo": "inflacao", "unidade": "% real", "casas": 2},
 }
+
+# Séries brutas: nome, unidade e nome curto (para as falas).
+SERIES_INFO = {
+    "cdi": ("CDI diário (SGS 12)", "% ao dia", "CDI"), "selic": ("Selic meta (SGS 432)", "% a.a.", "Selic"),
+    "dolar": ("Dólar PTAX venda (SGS 1)", "R$", "dólar"), "ipca": ("IPCA mensal (SGS 433)", "% no mês", "IPCA"),
+    "dolar_ptax": ("Dólar PTAX venda (Olinda)", "R$", "PTAX"),
+    "focus_ipca": ("Focus · IPCA do ano (mediana)", "%", "Focus IPCA"),
+    "focus_selic": ("Focus · Selic fim do ano (mediana)", "% a.a.", "Focus Selic"),
+    "tesouro": ("Tesouro Direto · taxas e PUs", "% / R$", "Tesouro"), "ibov": ("Ibovespa (^BVSP)", "pts", "Ibovespa"),
+    "bova11": ("BOVA11 (Yahoo)", "R$", "BOVA11"), "bova11_b3": ("BOVA11 (B3 COTAHIST)", "R$", "BOVA11 B3"),
+}
+
+# Quando cada série fica disponível: o que a empresa pode saber às 08h do dia D (nunca olhar o futuro).
+# "d-1": fechamento do dia útil anterior (preços, CDI e PTAX de D saem só depois do horário das reuniões);
+# "d": vale para o próprio dia (a Selic meta é definida antes pelo Copom);
+# "semanal": Focus, publicado às segundas com a pesquisa até a sexta anterior;
+# "mensal": IPCA do mês M, publicado pelo IBGE por volta do dia 10 de M+1 (usamos o dia 15, com folga).
+PUBLICACAO = {"cdi": "d-1", "selic": "d", "dolar": "d-1", "ipca": "mensal", "dolar_ptax": "d-1",
+              "focus_ipca": "semanal", "focus_selic": "semanal", "tesouro": "d-1", "ibov": "d-1", "bova11": "d-1",
+              "bova11_b3": "d-1"}
+REGRA_PUBLICACAO = {
+    "d-1": "fechamento do dia útil anterior",
+    "d": "vale para o próprio dia",
+    "semanal": "sai às segundas, com a pesquisa até a sexta anterior",
+    "mensal": "mês M sai até o dia 15 de M+1",
+}
+
+
+def formatar(ind: str, v: float | None) -> str:
+    """Valor de um indicador com a unidade dele, em pt-BR."""
+    if v is None:
+        return "—"
+    meta = INDICADORES[ind]
+    s = f"{v:,.{meta['casas']}f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    u = meta["unidade"]
+    if u == "R$":
+        return f"R$ {s}"
+    if u == "pts":
+        return f"{s} pts"
+    return f"{s}{u}"  # "%", "% a.a.", "% real"
+
 
 ATIVOS = {
     "caixa": "Caixa (CDI)",
@@ -113,16 +158,16 @@ TIPOS_INCIDENTE = {
     "atraso": "a fonte publicou atrasado",
     "fora_do_ar": "a fonte saiu do ar",
     "mudanca_formato": "a fonte mudou o formato e o conector quebrou",
-    "falha_real": "o conector falhou de verdade nesta extração",
+    "falha_real": "problema real: a fonte não entregou o dado esperado",
 }
 
 
 # ====================================================================== cenários
 AO_VIVO = {
     "id": CENARIO_PADRAO,
-    "nome": "Dia a dia",
-    "descricao": "A empresa do dia a dia: fecha sozinha de segunda a sexta, com os times decidindo sobre os dados "
-                 "reais do dia anterior.",
+    "nome": "Experimento",
+    "descricao": "A empresa funcionando no presente: fecha sozinha de segunda a sexta às 08h, com os dados reais do "
+                 "dia útil anterior.",
     "modo": "diario",
     "dados": "dados",
     "empresa": "empresa",

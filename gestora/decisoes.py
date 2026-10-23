@@ -29,6 +29,22 @@ def validar_politicas(p: dict) -> list[str]:
         if not 0 <= mn <= mx <= 1:
             erros.append(f"politicas.fundo.limites.{ativo}: faixa inválida {mn}..{mx}")
     erros += _validar_alocacao(p["fundo"]["alocacao_inicial"], lim, "politicas.fundo.alocacao_inicial")
+    est = p["extracao"].get("estresse", {})
+    if not isinstance(est.get("ativo", True), bool) or not 0 <= est.get("multiplicador", 1) <= 10:
+        erros.append("politicas.extracao.estresse: `ativo` é true/false e `multiplicador` fica entre 0 e 10")
+    mod = p["executivos"].get("modelo", {})
+    for ativo in mod.get("sensibilidade", {}):
+        if ativo not in config.ATIVOS or ativo == "caixa":
+            erros.append(f"politicas.executivos.modelo.sensibilidade: ativo desconhecido {ativo}")
+    for k, v in mod.items():
+        if k != "sensibilidade" and (not isinstance(v, (int, float)) or v < 0):
+            erros.append(f"politicas.executivos.modelo.{k}: precisa ser um número ≥ 0")
+    for k in ("escala_premio_prefixado", "escala_juro_real", "escala_tendencia_bolsa", "escala_tendencia_dolar"):
+        if k in mod and mod[k] == 0:
+            erros.append(f"politicas.executivos.modelo.{k}: não pode ser zero (divide o sinal)")
+    cot = p["fundo"].get("cotistas", {})
+    if cot and not 0 < cot.get("limite", 0.03) <= 0.2:
+        erros.append("politicas.fundo.cotistas.limite: fica entre 0 e 0,2")
     return erros
 
 

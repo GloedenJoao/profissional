@@ -1,11 +1,15 @@
 {
-  "versao": 1,
+  "versao": 2,
   "extracao": {
     "acao_padrao": {
       "atraso": "aguardar",
       "fora_do_ar": "fonte_alternativa",
       "mudanca_formato": "corrigir_conector",
       "falha_real": "corrigir_conector"
+    },
+    "estresse": {
+      "ativo": true,
+      "multiplicador": 1.0
     }
   },
   "dashboards": {
@@ -28,18 +32,52 @@
   },
   "executivos": {
     "max_defasagem_para_operar": 2,
-    "rebalancear_se_desvio_maior_que": 0.05
+    "rebalancear_se_desvio_maior_que": 0.05,
+    "modelo": {
+      "sensibilidade": {
+        "prefixado": 0.1,
+        "inflacao": 0.1,
+        "dolar": 0.05,
+        "bolsa": 0.1
+      },
+      "escala_premio_prefixado": 2.0,
+      "juro_real_neutro": 5.5,
+      "escala_juro_real": 2.0,
+      "escala_tendencia_bolsa": 0.08,
+      "escala_tendencia_dolar": 0.05,
+      "janela_tendencia": 20,
+      "passo_max": 0.05,
+      "zona_morta": 0.02,
+      "confianca_minima": 0.5,
+      "gatilho_variacao_dia": 0.03,
+      "gatilho_resgate": 0.01
+    }
   },
   "fundo": {
     "pl_inicial": 300000000,
     "taxa_adm": 0.01,
     "custo_transacao": 0.0005,
     "limites": {
-      "caixa": [0.1, 1.0],
-      "prefixado": [0.0, 0.4],
-      "inflacao": [0.0, 0.4],
-      "dolar": [0.0, 0.2],
-      "bolsa": [0.0, 0.3]
+      "caixa": [
+        0.1,
+        1.0
+      ],
+      "prefixado": [
+        0.0,
+        0.4
+      ],
+      "inflacao": [
+        0.0,
+        0.4
+      ],
+      "dolar": [
+        0.0,
+        0.2
+      ],
+      "bolsa": [
+        0.0,
+        0.3
+      ]
     },
     "alocacao_inicial": {
       "caixa": 0.45,
@@ -47,6 +85,14 @@
       "inflacao": 0.15,
       "dolar": 0.1,
       "bolsa": 0.15
+    },
+    "cotistas": {
+      "captacao_base": 0.0001,
+      "sens_desempenho": 0.15,
+      "sens_credibilidade": 0.002,
+      "credibilidade_neutra": 0.75,
+      "limite": 0.03,
+      "janela": 21
     }
   },
   "gestora": {

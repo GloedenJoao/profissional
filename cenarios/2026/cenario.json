@@ -1,6 +1,6 @@
 {
   "nome": "Simulação 2026",
-  "descricao": "A mesma Capivara Asset fundada do zero em 1º de janeiro de 2026, sobre os dados reais do ano. Os times decidem sozinhos; ela só anda quando você manda simular o próximo dia (pelo app ou pelo site) e você assiste às reuniões no Ao vivo.",
+  "descricao": "A mesma empresa do experimento refazendo 2026 desde 1º de janeiro, com os dados reais de cada dia. Só anda quando você manda simular o próximo dia (site ou app) e serve para testar o experimento: cada etapa com as contas à vista, verificações diárias e comparação com a carteira que não decide nada.",
   "inicio": "2026-01-01",
   "modo": "simulacao",
   "issues": false

@@ -4,6 +4,8 @@ from __future__ import annotations
 from datetime import date, timedelta
 from functools import lru_cache
 
+DIAS_SEMANA = ["segunda", "terça", "quarta", "quinta", "sexta", "sábado", "domingo"]
+
 
 def pascoa(ano: int) -> date:
     """Domingo de Páscoa (algoritmo de Meeus/Jones/Butcher)."""
@@ -66,3 +68,23 @@ def defasagem(ultima: date | None, esperada: date) -> int:
     if ultima >= esperada:
         return 0
     return len(dias_uteis_entre(ultima, esperada))
+
+
+def corte_publicacao(regra: str, d: date) -> tuple[date, date]:
+    """(até que data de referência uma série com esta regra pode ser vista às 08h de `d`, data esperada).
+
+    A primeira serve para cortar a série (nada depois dela existe para a empresa); a segunda é o que uma fonte em
+    dia já teria publicado. Regras em config.PUBLICACAO."""
+    if regra == "d":
+        return d, d
+    if regra == "d-1":
+        return d - timedelta(days=1), dia_util_anterior(d)
+    if regra == "semanal":
+        segunda = d - timedelta(days=d.weekday())
+        return segunda - timedelta(days=1), dia_util_anterior(segunda)
+    if regra == "mensal":
+        recuo = 1 if d.day >= 15 else 2
+        mes = d.month - recuo
+        ref = date(d.year + (mes - 1) // 12, (mes - 1) % 12 + 1, 1)
+        return ref, ref
+    raise ValueError(f"regra de publicação desconhecida: {regra}")
