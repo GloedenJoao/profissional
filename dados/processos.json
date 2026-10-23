@@ -1,5 +1,5 @@
 {
-  "data_ref": "2026-10-21",
+  "data_ref": "2026-10-22",
   "issues": {
     "INC-0014": {
       "numero": 30,
@@ -34,9 +34,9 @@
       "titulo": "Painel: Tesouro IPCA+ (% a.a. real) defasado",
       "url": "https://github.com/GloedenJoao/profissional/issues/32",
       "rotulos": [
+        "simulacao",
         "area:dashboards",
-        "sev:media",
-        "simulacao"
+        "sev:media"
       ],
       "criada_em": "2026-10-22T15:52:13Z"
     },
@@ -45,33 +45,21 @@
       "titulo": "Painel: Tesouro Prefixado (% a.a.) defasado",
       "url": "https://github.com/GloedenJoao/profissional/issues/33",
       "rotulos": [
+        "simulacao",
         "area:dashboards",
-        "sev:media",
-        "simulacao"
+        "sev:media"
       ],
       "criada_em": "2026-10-22T15:52:14Z"
-    },
-    {
-      "numero": 31,
-      "titulo": "INC-0015 · BCB · SGS: o conector falhou de verdade nesta extração",
-      "url": "https://github.com/GloedenJoao/profissional/issues/31",
-      "rotulos": [
-        "simulacao",
-        "area:extracao",
-        "sev:alta"
-      ],
-      "criada_em": "2026-10-21T15:56:12Z"
     }
   ],
   "detalhes": {
-    "INC-0014": "dia 2, ação `corrigir_conector`",
-    "DEFAS-taxa_pre": "3 dias úteis de defasagem; estratégia `suspender`",
-    "DEFAS-taxa_ipca": "3 dias úteis de defasagem; estratégia `suspender`"
+    "INC-0014": "dia 3, ação `corrigir_conector`",
+    "DEFAS-taxa_pre": "4 dias úteis de defasagem; estratégia `suspender`",
+    "DEFAS-taxa_ipca": "4 dias úteis de defasagem; estratégia `suspender`"
   },
   "log": [
     "comentada #30 INC-0014",
-    "aberta #32 DEFAS-taxa_ipca",
-    "aberta #33 DEFAS-taxa_pre",
-    "fechada #31 INC-0015"
+    "comentada #32 DEFAS-taxa_ipca",
+    "comentada #33 DEFAS-taxa_pre"
   ]
 }

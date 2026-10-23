@@ -1,0 +1,129 @@
+{
+  "data": "2026-10-22",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {
+      "INC-0014": "corrigir_conector"
+    },
+    "dashboards": {
+      "taxa_pre": "suspender",
+      "taxa_ipca": "suspender"
+    },
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia. Temos 1 incidente(s) aberto(s) e 4 pessoa(s) na equipe. Vamos priorizar.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:02",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0014 · Tesouro Direto (CSV) (aberto há 2 dias): seguimos com `corrigir_conector`.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Faltam dados novos para: Tesouro Prefixado (% a.a.), Tesouro IPCA+ (% a.a. real). Credibilidade em 83%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:02",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Tesouro Prefixado (% a.a.) (4 dia(s) atrasado): `suspender` — 4 dias sem dado: prefiro não publicar a induzir o comitê ao erro.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:04",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Tesouro IPCA+ (% a.a. real) (4 dia(s) atrasado): `suspender` — 4 dias sem dado: prefiro não publicar a induzir o comitê ao erro.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo +2,42% contra o CDI em 21 dias, caixa da gestora R$ 2.043.660, credibilidade dos painéis 83%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,04 (+0,21%); BOVA11 200,96 (-1,25%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Marta",
+      "papel": "Risco",
+      "texto": "Sem número confiável para Tesouro IPCA+, Tesouro Prefixado: esses ficam como estão.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:06",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,066340 (-0,15% no dia), PL R$ 358,6 mi, fluxo de cotistas R$ 2.090 mil. Caixa da gestora R$ 2,04 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0014",
+      "fonte": "tesouro",
+      "tipo": "falha_real"
+    }
+  ],
+  "alertas_abertos": [],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 1.06633951,
+    "pl": 358561719.45,
+    "bench": 1.02329019,
+    "retorno_dia": -0.001494,
+    "fluxo": 2089708.95,
+    "pesos": {
+      "caixa": 0.4265,
+      "prefixado": 0.1421,
+      "inflacao": 0.1963,
+      "dolar": 0.0889,
+      "bolsa": 0.1462
+    },
+    "divida_tecnica": 29.85,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.826,
+    "confianca_media": 0.8,
+    "caixa_gestora": 2044606.02
+  }
+}
