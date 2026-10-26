@@ -9,9 +9,9 @@
     "modo": "diario",
     "inicio": "2026-08-18"
   },
-  "data_referencia": "2026-10-22",
-  "proximo_dia_util": "2026-10-23",
-  "proximo_fechamento_em": "2026-10-26",
+  "data_referencia": "2026-10-23",
+  "proximo_dia_util": "2026-10-26",
+  "proximo_fechamento_em": "2026-10-27",
   "feriados": [
     "2026-01-01",
     "2026-02-16",
@@ -44,25 +44,25 @@
     "2027-12-25",
     "2027-12-31"
   ],
-  "gerado_em": "2026-10-23T15:42:46+00:00",
+  "gerado_em": "2026-10-26T17:17:12+00:00",
   "resumo": {
-    "cota": 1.06634,
-    "pl": 358561719.45,
-    "retorno_dia": -0.0014936181812866822,
-    "retorno_mes": 0.034875567204928126,
-    "cdi_mes": 0.010719827081790756,
-    "retorno_total": 0.06633951029009055,
-    "cdi_total": 0.023290186464668405,
-    "fluxo_dia": 2089708.95,
-    "incidentes_abertos": 1,
-    "credibilidade": 0.826,
-    "confianca_media": 0.8,
-    "divida_tecnica": 29.85,
-    "caixa_gestora": 2044606.02,
-    "alertas": 3
+    "cota": 1.068958,
+    "pl": 360377827.34,
+    "retorno_dia": 0.002455170475317958,
+    "retorno_mes": 0.03771692591074882,
+    "cdi_mes": 0.0107198249740037,
+    "retorno_total": 0.06895755557241978,
+    "cdi_total": 0.023809895084569987,
+    "fluxo_dia": 935777.74,
+    "incidentes_abertos": 0,
+    "credibilidade": 0.827,
+    "confianca_media": 1.0,
+    "divida_tecnica": 29.1,
+    "caixa_gestora": 2045670.16,
+    "alertas": 0
   },
   "extracao": {
-    "divida_tecnica": 29.85,
+    "divida_tecnica": 29.1,
     "equipe": 4,
     "orcamento_dia": 1200.0,
     "fontes": [
@@ -78,9 +78,9 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "cdi": "2026-10-22",
-          "selic": "2026-10-22",
-          "dolar": "2026-10-22",
+          "cdi": "2026-10-23",
+          "selic": "2026-10-23",
+          "dolar": "2026-10-23",
           "ipca": "2026-09-01"
         },
         "alternativa_ligada": false,
@@ -95,7 +95,7 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "dolar_ptax": "2026-10-22"
+          "dolar_ptax": "2026-10-23"
         },
         "alternativa_ligada": false,
         "incidente": null
@@ -110,8 +110,8 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "focus_ipca": "2026-10-16",
-          "focus_selic": "2026-10-16"
+          "focus_ipca": "2026-10-23",
+          "focus_selic": "2026-10-23"
         },
         "alternativa_ligada": false,
         "incidente": null
@@ -125,10 +125,10 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "tesouro": "2026-10-15"
+          "tesouro": "2026-10-23"
         },
         "alternativa_ligada": false,
-        "incidente": "INC-0014"
+        "incidente": null
       },
       {
         "id": "yahoo",
@@ -140,8 +140,8 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "ibov": "2026-10-22",
-          "bova11": "2026-10-22"
+          "ibov": "2026-10-23",
+          "bova11": "2026-10-23"
         },
         "alternativa_ligada": false,
         "incidente": null
@@ -155,7 +155,7 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "bova11_b3": "2026-10-22"
+          "bova11_b3": "2026-10-23"
         },
         "alternativa_ligada": false,
         "incidente": null
@@ -182,17 +182,15 @@
         "fonte": "tesouro",
         "tipo": "falha_real",
         "aberto_em": "2026-10-19",
-        "estado": "aberto",
-        "dias": 3,
+        "estado": "resolvido",
+        "dias": 4,
         "acao": "corrigir_conector",
         "detalhe": "série tesouro parada em 2026-10-15 (esperado 2026-10-16)",
-        "resolvido_em": null,
-        "historico": [],
-        "issue": {
-          "numero": 30,
-          "url": "https://github.com/GloedenJoao/profissional/issues/30",
-          "estado": "open"
-        }
+        "resolvido_em": "2026-10-23",
+        "historico": [
+          "2026-10-23: resolvido (corrigir_conector)"
+        ],
+        "issue": null
       },
       {
         "id": "INC-0013",
@@ -352,17 +350,6 @@
       }
     ],
     "disponibilidade": [
-      {
-        "data": "2026-09-24",
-        "fontes": {
-          "bcb_sgs": "ok",
-          "bcb_ptax": "ok",
-          "bcb_focus": "ok",
-          "tesouro": "ok",
-          "yahoo": "ok",
-          "b3": "ok"
-        }
-      },
       {
         "data": "2026-09-25",
         "fontes": {
@@ -571,17 +558,28 @@
           "yahoo": "ok",
           "b3": "ok"
         }
+      },
+      {
+        "data": "2026-10-23",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "ok",
+          "yahoo": "ok",
+          "b3": "ok"
+        }
       }
     ]
   },
   "dashboards": {
-    "credibilidade": 0.826,
-    "confianca_media": 0.8,
+    "credibilidade": 0.827,
+    "confianca_media": 1.0,
     "indicadores": [
       {
         "id": "cdi",
         "nome": "CDI (% a.a.)",
-        "data_ref": "2026-10-22",
+        "data_ref": "2026-10-23",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
@@ -592,7 +590,7 @@
       {
         "id": "selic",
         "nome": "Selic meta (% a.a.)",
-        "data_ref": "2026-10-22",
+        "data_ref": "2026-10-23",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
@@ -603,13 +601,13 @@
       {
         "id": "dolar",
         "nome": "Dólar PTAX (R$)",
-        "data_ref": "2026-10-22",
+        "data_ref": "2026-10-23",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 5.0383,
+        "valor": 5.0377,
         "confianca": 1.0,
-        "valor_anterior": 5.0277
+        "valor_anterior": 5.0383
       },
       {
         "id": "ipca_12m",
@@ -625,18 +623,18 @@
       {
         "id": "focus_ipca",
         "nome": "Focus IPCA do ano (%)",
-        "data_ref": "2026-10-16",
+        "data_ref": "2026-10-23",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 5.219,
+        "valor": 5.1891,
         "confianca": 1.0,
         "valor_anterior": 5.219
       },
       {
         "id": "focus_selic",
         "nome": "Focus Selic fim do ano (%)",
-        "data_ref": "2026-10-16",
+        "data_ref": "2026-10-23",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
@@ -647,45 +645,45 @@
       {
         "id": "ibov",
         "nome": "Ibovespa (pts)",
-        "data_ref": "2026-10-22",
+        "data_ref": "2026-10-23",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 204120.0,
+        "valor": 205083.0,
         "confianca": 1.0,
-        "valor_anterior": 206495.0
+        "valor_anterior": 204120.0
       },
       {
         "id": "bova11",
         "nome": "BOVA11 (R$)",
-        "data_ref": "2026-10-22",
+        "data_ref": "2026-10-23",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 200.96,
+        "valor": 201.69,
         "confianca": 1.0,
-        "valor_anterior": 203.5
+        "valor_anterior": 200.96
       },
       {
         "id": "taxa_pre",
         "nome": "Tesouro Prefixado (% a.a.)",
-        "data_ref": "2026-10-15",
-        "defasagem": 4,
+        "data_ref": "2026-10-23",
+        "defasagem": 0,
         "via": "principal",
-        "estrategia": "suspender",
-        "valor": null,
-        "confianca": 0.0,
+        "estrategia": null,
+        "valor": 12.77,
+        "confianca": 1.0,
         "valor_anterior": null
       },
       {
         "id": "taxa_ipca",
         "nome": "Tesouro IPCA+ (% a.a. real)",
-        "data_ref": "2026-10-15",
-        "defasagem": 4,
+        "data_ref": "2026-10-23",
+        "defasagem": 0,
         "via": "principal",
-        "estrategia": "suspender",
-        "valor": null,
-        "confianca": 0.0,
+        "estrategia": null,
+        "valor": 6.76,
+        "confianca": 1.0,
         "valor_anterior": null
       }
     ],
@@ -701,11 +699,11 @@
       "bolsa": 0.15
     },
     "pesos": {
-      "caixa": 0.4265134790589809,
-      "prefixado": 0.14206077389030486,
-      "inflacao": 0.19629453158996998,
-      "dolar": 0.0888985399577999,
-      "bolsa": 0.1462326755029443
+      "caixa": 0.4271366858640674,
+      "prefixado": 0.14139635072277193,
+      "inflacao": 0.19700269198481324,
+      "dolar": 0.08844000637728558,
+      "bolsa": 0.14602426505106186
     },
     "limites": {
       "caixa": [
@@ -729,10 +727,7 @@
         0.3
       ]
     },
-    "congelados": [
-      "inflacao",
-      "prefixado"
-    ],
+    "congelados": [],
     "dias_sem_decisao": 0,
     "ultima_decisao": "2026-10-08",
     "decisoes_recentes": [
@@ -753,53 +748,29 @@
       }
     ],
     "gestora": {
-      "caixa": 2044606.02,
-      "receita_dia": 14146.28,
+      "caixa": 2045670.16,
+      "receita_dia": 14264.14,
       "custo_dia": 13200.0
     }
   },
-  "alertas": [
-    {
-      "chave": "DEFAS-taxa_ipca",
-      "titulo": "Painel: Tesouro IPCA+ (% a.a. real) defasado",
-      "area": "dashboards",
-      "sev": "media",
-      "aberto_em": "2026-10-21",
-      "detalhe": "4 dias úteis de defasagem; estratégia `suspender`",
-      "issue": {
-        "numero": 32,
-        "url": "https://github.com/GloedenJoao/profissional/issues/32",
-        "estado": "open"
-      }
-    },
-    {
-      "chave": "DEFAS-taxa_pre",
-      "titulo": "Painel: Tesouro Prefixado (% a.a.) defasado",
-      "area": "dashboards",
-      "sev": "media",
-      "aberto_em": "2026-10-21",
-      "detalhe": "4 dias úteis de defasagem; estratégia `suspender`",
-      "issue": {
-        "numero": 33,
-        "url": "https://github.com/GloedenJoao/profissional/issues/33",
-        "estado": "open"
-      }
-    },
-    {
-      "chave": "INC-0014",
-      "titulo": "INC-0014 · Tesouro Direto (CSV): o conector falhou de verdade nesta extração",
-      "area": "extracao",
-      "sev": "alta",
-      "aberto_em": "2026-10-19",
-      "detalhe": "dia 3, ação `corrigir_conector`",
-      "issue": {
-        "numero": 30,
-        "url": "https://github.com/GloedenJoao/profissional/issues/30",
-        "estado": "open"
-      }
-    }
-  ],
+  "alertas": [],
   "dias": [
+    {
+      "data": "2026-10-23",
+      "eventos": [
+        {
+          "area": "extracao",
+          "tipo": "resolvido",
+          "texto": "INC-0014 resolvido: Tesouro Direto (CSV) voltou após 4 dia(s) (corrigir_conector)",
+          "chave": "INC-0014"
+        }
+      ],
+      "decisao": {
+        "existe": true,
+        "autor": "times",
+        "intervencao": false
+      }
+    },
     {
       "data": "2026-10-22",
       "eventos": [],
@@ -1062,34 +1033,6 @@
         "autor": "times",
         "intervencao": false
       }
-    },
-    {
-      "data": "2026-10-01",
-      "eventos": [
-        {
-          "area": "extracao",
-          "tipo": "aberto",
-          "texto": "INC-0006: BCB · PTAX (Olinda) — a fonte publicou atrasado",
-          "chave": "INC-0006"
-        },
-        {
-          "area": "extracao",
-          "tipo": "aberto",
-          "texto": "INC-0007: falha real em Yahoo Finance",
-          "chave": "INC-0007"
-        },
-        {
-          "area": "fundo",
-          "tipo": "info",
-          "texto": "Rebalanceamento: giro R$ 24,9 mi, custo R$ 12.458",
-          "chave": null
-        }
-      ],
-      "decisao": {
-        "existe": true,
-        "autor": "conselho + times",
-        "intervencao": true
-      }
     }
   ],
   "ata": [
@@ -1106,39 +1049,31 @@
       "area": "extracao",
       "quem": "Téo",
       "papel": "engenheiro de plantão",
-      "texto": "INC-0014 · Tesouro Direto (CSV) (aberto há 2 dias): seguimos com `corrigir_conector`.",
+      "texto": "INC-0014 · Tesouro Direto (CSV) (aberto há 3 dias): seguimos com `corrigir_conector`.",
       "tipo": "fala"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0014 resolvido: Tesouro Direto (CSV) voltou após 4 dia(s) (corrigir_conector)",
+      "tipo": "evento"
     },
     {
       "hora": "09:00",
       "area": "dashboards",
       "quem": "Caio",
       "papel": "líder de Dashboards",
-      "texto": "Faltam dados novos para: Tesouro Prefixado (% a.a.), Tesouro IPCA+ (% a.a. real). Credibilidade em 83%.",
+      "texto": "Todos os números chegaram em dia. Credibilidade dos painéis em 83%. Publicando.",
       "tipo": "fala"
-    },
-    {
-      "hora": "09:02",
-      "area": "dashboards",
-      "quem": "Caio",
-      "papel": "líder de Dashboards",
-      "texto": "Tesouro Prefixado (% a.a.) (4 dia(s) atrasado): `suspender` — 4 dias sem dado: prefiro não publicar a induzir o comitê ao erro.",
-      "tipo": "decisao"
-    },
-    {
-      "hora": "09:04",
-      "area": "dashboards",
-      "quem": "Caio",
-      "papel": "líder de Dashboards",
-      "texto": "Tesouro IPCA+ (% a.a. real) (4 dia(s) atrasado): `suspender` — 4 dias sem dado: prefiro não publicar a induzir o comitê ao erro.",
-      "tipo": "decisao"
     },
     {
       "hora": "10:00",
       "area": "executivos",
       "quem": "Helena",
       "papel": "CEO",
-      "texto": "Bom dia. Fundo +2,42% contra o CDI em 21 dias, caixa da gestora R$ 2.043.660, credibilidade dos painéis 83%.",
+      "texto": "Bom dia. Fundo +2,70% contra o CDI em 21 dias, caixa da gestora R$ 2.044.606, credibilidade dos painéis 83%.",
       "tipo": "fala"
     },
     {
@@ -1146,19 +1081,11 @@
       "area": "executivos",
       "quem": "Rafael",
       "papel": "CIO",
-      "texto": "No painel de hoje: Dólar PTAX 5,04 (+0,21%); BOVA11 200,96 (-1,25%).",
+      "texto": "No painel de hoje: Dólar PTAX 5,04 (-0,01%); BOVA11 201,69 (+0,36%); Tesouro Prefixado 12,77; Tesouro IPCA+ 6,76.",
       "tipo": "fala"
     },
     {
       "hora": "10:04",
-      "area": "executivos",
-      "quem": "Marta",
-      "papel": "Risco",
-      "texto": "Sem número confiável para Tesouro IPCA+, Tesouro Prefixado: esses ficam como estão.",
-      "tipo": "fala"
-    },
-    {
-      "hora": "10:06",
       "area": "executivos",
       "quem": "Rafael",
       "papel": "CIO",
@@ -1170,7 +1097,7 @@
       "area": "fundo",
       "quem": "Administrador",
       "papel": "fechamento do fundo",
-      "texto": "Fechamento: cota 1,066340 (-0,15% no dia), PL R$ 358,6 mi, fluxo de cotistas R$ 2.090 mil. Caixa da gestora R$ 2,04 mi.",
+      "texto": "Fechamento: cota 1,068958 (+0,25% no dia), PL R$ 360,4 mi, fluxo de cotistas R$ 936 mil. Caixa da gestora R$ 2,05 mi.",
       "tipo": "fechamento"
     }
   ],
@@ -1219,7 +1146,8 @@
     "2026-10-19",
     "2026-10-20",
     "2026-10-21",
-    "2026-10-22"
+    "2026-10-22",
+    "2026-10-23"
   ],
   "historico": [
     {
@@ -2076,6 +2004,25 @@
         "dolar": 0.0889,
         "bolsa": 0.1462
       }
+    },
+    {
+      "data": "2026-10-23",
+      "cota": 1.06895756,
+      "bench": 1.0238099,
+      "pl": 360377827.34,
+      "fluxo": 935777.74,
+      "divida_tecnica": 29.1,
+      "credibilidade": 0.827,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 0.0,
+      "caixa_gestora": 2045670.16,
+      "pesos": {
+        "caixa": 0.4271,
+        "prefixado": 0.1414,
+        "inflacao": 0.197,
+        "dolar": 0.0884,
+        "bolsa": 0.146
+      }
     }
   ],
   "nomes": {
@@ -2107,15 +2054,15 @@
   "processos": {
     "issues_abertas": [
       {
-        "numero": 30,
-        "titulo": "INC-0014 · Tesouro Direto (CSV): o conector falhou de verdade nesta extração",
-        "url": "https://github.com/GloedenJoao/profissional/issues/30",
+        "numero": 33,
+        "titulo": "Painel: Tesouro Prefixado (% a.a.) defasado",
+        "url": "https://github.com/GloedenJoao/profissional/issues/33",
         "rotulos": [
           "simulacao",
-          "area:extracao",
-          "sev:alta"
+          "area:dashboards",
+          "sev:media"
         ],
-        "criada_em": "2026-10-20T15:38:09Z"
+        "criada_em": "2026-10-22T15:52:14Z"
       },
       {
         "numero": 32,
@@ -2127,17 +2074,6 @@
           "sev:media"
         ],
         "criada_em": "2026-10-22T15:52:13Z"
-      },
-      {
-        "numero": 33,
-        "titulo": "Painel: Tesouro Prefixado (% a.a.) defasado",
-        "url": "https://github.com/GloedenJoao/profissional/issues/33",
-        "rotulos": [
-          "simulacao",
-          "area:dashboards",
-          "sev:media"
-        ],
-        "criada_em": "2026-10-22T15:52:14Z"
       }
     ],
     "controle": null,
@@ -2145,40 +2081,29 @@
   },
   "status_areas": {
     "extracao": {
-      "nivel": "ruim",
-      "texto": "1 incidente(s) aberto(s), 1 grave(s)"
+      "nivel": "ok",
+      "texto": "todas as fontes no ar · dívida técnica 29/100"
     },
     "dashboards": {
-      "nivel": "ruim",
-      "texto": "credibilidade 83% · sem número: taxa_pre, taxa_ipca"
+      "nivel": "ok",
+      "texto": "todos os números em dia · credibilidade 83%"
     },
     "executivos": {
-      "nivel": "aviso",
-      "texto": "congelados: inflacao, prefixado"
+      "nivel": "ok",
+      "texto": "último ajuste do comitê em 08/10/2026"
     },
     "fundo": {
       "nivel": "ok",
-      "texto": "21d +3,49% vs CDI +1,07%"
+      "texto": "21d +3,77% vs CDI +1,07%"
     }
   },
   "decisao_proxima": {
-    "data": "2026-10-23",
-    "caminho": "empresa/decisoes/2026-10-23.json",
+    "data": "2026-10-26",
+    "caminho": "empresa/decisoes/2026-10-26.json",
     "existe": false,
     "modelo": {
-      "data": "2026-10-23",
+      "data": "2026-10-26",
       "autor": "conselho",
-      "extracao": {
-        "acoes": {
-          "INC-0014": "corrigir_conector"
-        }
-      },
-      "dashboards": {
-        "estrategias": {
-          "taxa_pre": "suspender",
-          "taxa_ipca": "suspender"
-        }
-      },
       "executivos": {
         "alocacao": {
           "caixa": 0.4,
@@ -2193,52 +2118,9 @@
       },
       "observacoes": ""
     },
-    "link_criar": "https://github.com/GloedenJoao/profissional/new/main/empresa/decisoes?filename=2026-10-23.json&value=%7B%0A%20%20%22data%22%3A%20%222026-10-23%22%2C%0A%20%20%22autor%22%3A%20%22conselho%22%2C%0A%20%20%22extracao%22%3A%20%7B%0A%20%20%20%20%22acoes%22%3A%20%7B%0A%20%20%20%20%20%20%22INC-0014%22%3A%20%22corrigir_conector%22%0A%20%20%20%20%7D%0A%20%20%7D%2C%0A%20%20%22dashboards%22%3A%20%7B%0A%20%20%20%20%22estrategias%22%3A%20%7B%0A%20%20%20%20%20%20%22taxa_pre%22%3A%20%22suspender%22%2C%0A%20%20%20%20%20%20%22taxa_ipca%22%3A%20%22suspender%22%0A%20%20%20%20%7D%0A%20%20%7D%2C%0A%20%20%22executivos%22%3A%20%7B%0A%20%20%20%20%22alocacao%22%3A%20%7B%0A%20%20%20%20%20%20%22caixa%22%3A%200.4%2C%0A%20%20%20%20%20%20%22prefixado%22%3A%200.15%2C%0A%20%20%20%20%20%20%22inflacao%22%3A%200.2%2C%0A%20%20%20%20%20%20%22dolar%22%3A%200.1%2C%0A%20%20%20%20%20%20%22bolsa%22%3A%200.15%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22equipe_extracao%22%3A%204%2C%0A%20%20%20%20%22orcamento_extracao_dia%22%3A%201200.0%2C%0A%20%20%20%20%22justificativa%22%3A%20%22%22%0A%20%20%7D%2C%0A%20%20%22observacoes%22%3A%20%22%22%0A%7D%0A",
-    "link_ver": "https://github.com/GloedenJoao/profissional/blob/main/empresa/decisoes/2026-10-23.json",
+    "link_criar": "https://github.com/GloedenJoao/profissional/new/main/empresa/decisoes?filename=2026-10-26.json&value=%7B%0A%20%20%22data%22%3A%20%222026-10-26%22%2C%0A%20%20%22autor%22%3A%20%22conselho%22%2C%0A%20%20%22executivos%22%3A%20%7B%0A%20%20%20%20%22alocacao%22%3A%20%7B%0A%20%20%20%20%20%20%22caixa%22%3A%200.4%2C%0A%20%20%20%20%20%20%22prefixado%22%3A%200.15%2C%0A%20%20%20%20%20%20%22inflacao%22%3A%200.2%2C%0A%20%20%20%20%20%20%22dolar%22%3A%200.1%2C%0A%20%20%20%20%20%20%22bolsa%22%3A%200.15%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22equipe_extracao%22%3A%204%2C%0A%20%20%20%20%22orcamento_extracao_dia%22%3A%201200.0%2C%0A%20%20%20%20%22justificativa%22%3A%20%22%22%0A%20%20%7D%2C%0A%20%20%22observacoes%22%3A%20%22%22%0A%7D%0A",
+    "link_ver": "https://github.com/GloedenJoao/profissional/blob/main/empresa/decisoes/2026-10-26.json",
     "link_pasta": "https://github.com/GloedenJoao/profissional/tree/main/empresa/decisoes"
   },
-  "tarefas": [
-    {
-      "id": "INC-0014",
-      "area": "extracao",
-      "nivel": "ruim",
-      "titulo": "INC-0014 · Tesouro Direto (CSV): o conector falhou de verdade nesta extração",
-      "detalhe": "dia 3, ação `corrigir_conector`",
-      "link": "https://github.com/GloedenJoao/profissional/issues/30",
-      "acao": "Ver alerta",
-      "issue": {
-        "numero": 30,
-        "url": "https://github.com/GloedenJoao/profissional/issues/30",
-        "estado": "open"
-      }
-    },
-    {
-      "id": "DEFAS-taxa_ipca",
-      "area": "dashboards",
-      "nivel": "aviso",
-      "titulo": "Painel: Tesouro IPCA+ (% a.a. real) defasado",
-      "detalhe": "4 dias úteis de defasagem; estratégia `suspender`",
-      "link": "https://github.com/GloedenJoao/profissional/issues/32",
-      "acao": "Ver alerta",
-      "issue": {
-        "numero": 32,
-        "url": "https://github.com/GloedenJoao/profissional/issues/32",
-        "estado": "open"
-      }
-    },
-    {
-      "id": "DEFAS-taxa_pre",
-      "area": "dashboards",
-      "nivel": "aviso",
-      "titulo": "Painel: Tesouro Prefixado (% a.a.) defasado",
-      "detalhe": "4 dias úteis de defasagem; estratégia `suspender`",
-      "link": "https://github.com/GloedenJoao/profissional/issues/33",
-      "acao": "Ver alerta",
-      "issue": {
-        "numero": 33,
-        "url": "https://github.com/GloedenJoao/profissional/issues/33",
-        "estado": "open"
-      }
-    }
-  ]
+  "tarefas": []
 }

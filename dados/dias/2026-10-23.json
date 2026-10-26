@@ -1,0 +1,115 @@
+{
+  "data": "2026-10-23",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {
+      "INC-0014": "corrigir_conector"
+    },
+    "dashboards": {},
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia. Temos 1 incidente(s) aberto(s) e 4 pessoa(s) na equipe. Vamos priorizar.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:02",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0014 · Tesouro Direto (CSV) (aberto há 3 dias): seguimos com `corrigir_conector`.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0014 resolvido: Tesouro Direto (CSV) voltou após 4 dia(s) (corrigir_conector)",
+      "tipo": "evento"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Todos os números chegaram em dia. Credibilidade dos painéis em 83%. Publicando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo +2,70% contra o CDI em 21 dias, caixa da gestora R$ 2.044.606, credibilidade dos painéis 83%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,04 (-0,01%); BOVA11 201,69 (+0,36%); Tesouro Prefixado 12,77; Tesouro IPCA+ 6,76.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,068958 (+0,25% no dia), PL R$ 360,4 mi, fluxo de cotistas R$ 936 mil. Caixa da gestora R$ 2,05 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0014 resolvido: Tesouro Direto (CSV) voltou após 4 dia(s) (corrigir_conector)",
+      "chave": "INC-0014"
+    }
+  ],
+  "incidentes_do_dia": [],
+  "alertas_abertos": [],
+  "alertas_fechados": [
+    "DEFAS-taxa_ipca",
+    "DEFAS-taxa_pre",
+    "INC-0014"
+  ],
+  "resumo": {
+    "cota": 1.06895756,
+    "pl": 360377827.34,
+    "bench": 1.0238099,
+    "retorno_dia": 0.002455,
+    "fluxo": 935777.74,
+    "pesos": {
+      "caixa": 0.4271,
+      "prefixado": 0.1414,
+      "inflacao": 0.197,
+      "dolar": 0.0884,
+      "bolsa": 0.146
+    },
+    "divida_tecnica": 29.1,
+    "incidentes_abertos": 0,
+    "credibilidade": 0.827,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2045670.16
+  }
+}

@@ -1,33 +1,17 @@
 {
-  "data_ref": "2026-10-22",
-  "issues": {
-    "INC-0014": {
-      "numero": 30,
-      "url": "https://github.com/GloedenJoao/profissional/issues/30",
-      "estado": "open"
-    },
-    "DEFAS-taxa_ipca": {
-      "numero": 32,
-      "url": "https://github.com/GloedenJoao/profissional/issues/32",
-      "estado": "open"
-    },
-    "DEFAS-taxa_pre": {
-      "numero": 33,
-      "url": "https://github.com/GloedenJoao/profissional/issues/33",
-      "estado": "open"
-    }
-  },
+  "data_ref": "2026-10-23",
+  "issues": {},
   "abertas": [
     {
-      "numero": 30,
-      "titulo": "INC-0014 · Tesouro Direto (CSV): o conector falhou de verdade nesta extração",
-      "url": "https://github.com/GloedenJoao/profissional/issues/30",
+      "numero": 33,
+      "titulo": "Painel: Tesouro Prefixado (% a.a.) defasado",
+      "url": "https://github.com/GloedenJoao/profissional/issues/33",
       "rotulos": [
         "simulacao",
-        "area:extracao",
-        "sev:alta"
+        "area:dashboards",
+        "sev:media"
       ],
-      "criada_em": "2026-10-20T15:38:09Z"
+      "criada_em": "2026-10-22T15:52:14Z"
     },
     {
       "numero": 32,
@@ -39,27 +23,12 @@
         "sev:media"
       ],
       "criada_em": "2026-10-22T15:52:13Z"
-    },
-    {
-      "numero": 33,
-      "titulo": "Painel: Tesouro Prefixado (% a.a.) defasado",
-      "url": "https://github.com/GloedenJoao/profissional/issues/33",
-      "rotulos": [
-        "simulacao",
-        "area:dashboards",
-        "sev:media"
-      ],
-      "criada_em": "2026-10-22T15:52:14Z"
     }
   ],
-  "detalhes": {
-    "INC-0014": "dia 3, ação `corrigir_conector`",
-    "DEFAS-taxa_pre": "4 dias úteis de defasagem; estratégia `suspender`",
-    "DEFAS-taxa_ipca": "4 dias úteis de defasagem; estratégia `suspender`"
-  },
+  "detalhes": {},
   "log": [
-    "comentada #30 INC-0014",
-    "comentada #32 DEFAS-taxa_ipca",
-    "comentada #33 DEFAS-taxa_pre"
+    "fechada #30 INC-0014",
+    "fechada #32 DEFAS-taxa_ipca",
+    "fechada #33 DEFAS-taxa_pre"
   ]
 }
