@@ -1,0 +1,150 @@
+{
+  "data": "2026-10-26",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {},
+    "dashboards": {},
+    "executivos": {
+      "alocacao": {
+        "caixa": 0.35,
+        "prefixado": 0.15,
+        "inflacao": 0.25,
+        "dolar": 0.15,
+        "bolsa": 0.1
+      },
+      "justificativa": "Decidido: Tesouro IPCA+ +5 p.p. (juro real de 8,02%); Ações (BOVA11) -5 p.p. (tendência de -9,3% em 20 pregões); Dólar +5 p.p. (dólar +5,6% em 20 pregões). Caixa fica em 35%."
+    }
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia! Nenhum incidente aberto. Dívida técnica 29/100, equipe de 4. Seguimos monitorando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Todos os números chegaram em dia. Credibilidade dos painéis em 83%. Publicando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo -1,19% contra o CDI em 21 dias, caixa da gestora R$ 2.045.670, credibilidade dos painéis 83%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,50 (+9,19%); BOVA11 172,42 (-14,51%); Tesouro Prefixado 15,40 (+20,60%); Tesouro IPCA+ 8,02 (+18,64%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Comitê de investimentos (pauta: BOVA11 (R$) -14,5% no dia; Dólar PTAX (R$) +9,2% no dia).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:06",
+      "area": "executivos",
+      "quem": "Marta",
+      "papel": "Risco",
+      "texto": "Postura defensiva: estamos perdendo do CDI. Não aumentamos risco hoje.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:08",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Tesouro IPCA+ pagando 8,02% acima da inflação.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:10",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Selic em 13,75% e Focus para o fim do ano em 13,25%: Selic estável no horizonte.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:12",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Bolsa (BOVA11) -9,3% em 20 pregões.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:14",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Decidido: Tesouro IPCA+ +5 p.p. (juro real de 8,02%); Ações (BOVA11) -5 p.p. (tendência de -9,3% em 20 pregões); Dólar +5 p.p. (dólar +5,6% em 20 pregões). Caixa fica em 35%.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "17:30",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Rebalanceamento: giro R$ 42,2 mi, custo R$ 21.113",
+      "tipo": "evento"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,027957 (-3,84% no dia), PL R$ 345,1 mi, fluxo de cotistas R$ -1.449 mil. Caixa da gestora R$ 2,05 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "fundo",
+      "tipo": "info",
+      "texto": "Rebalanceamento: giro R$ 42,2 mi, custo R$ 21.113",
+      "chave": null
+    }
+  ],
+  "incidentes_do_dia": [],
+  "alertas_abertos": [],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 1.02795675,
+    "pl": 345106238.47,
+    "bench": 1.02432987,
+    "retorno_dia": -0.038356,
+    "fluxo": -1449067.87,
+    "pesos": {
+      "caixa": 0.35,
+      "prefixado": 0.15,
+      "inflacao": 0.25,
+      "dolar": 0.15,
+      "bolsa": 0.1
+    },
+    "divida_tecnica": 28.35,
+    "incidentes_abertos": 0,
+    "credibilidade": 0.828,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2046223.74
+  }
+}

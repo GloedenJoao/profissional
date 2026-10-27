@@ -1,34 +1,7 @@
 {
-  "data_ref": "2026-10-23",
+  "data_ref": "2026-10-26",
   "issues": {},
-  "abertas": [
-    {
-      "numero": 33,
-      "titulo": "Painel: Tesouro Prefixado (% a.a.) defasado",
-      "url": "https://github.com/GloedenJoao/profissional/issues/33",
-      "rotulos": [
-        "simulacao",
-        "area:dashboards",
-        "sev:media"
-      ],
-      "criada_em": "2026-10-22T15:52:14Z"
-    },
-    {
-      "numero": 32,
-      "titulo": "Painel: Tesouro IPCA+ (% a.a. real) defasado",
-      "url": "https://github.com/GloedenJoao/profissional/issues/32",
-      "rotulos": [
-        "simulacao",
-        "area:dashboards",
-        "sev:media"
-      ],
-      "criada_em": "2026-10-22T15:52:13Z"
-    }
-  ],
+  "abertas": [],
   "detalhes": {},
-  "log": [
-    "fechada #30 INC-0014",
-    "fechada #32 DEFAS-taxa_ipca",
-    "fechada #33 DEFAS-taxa_pre"
-  ]
+  "log": []
 }
