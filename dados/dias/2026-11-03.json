@@ -1,0 +1,126 @@
+{
+  "data": "2026-11-03",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {},
+    "dashboards": {},
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia! Nenhum incidente aberto. Dívida técnica 25/100, equipe de 4. Seguimos monitorando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Todos os números chegaram em dia. Credibilidade dos painéis em 83%. Publicando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo -1,79% contra o CDI em 21 dias, caixa da gestora R$ 2.048.028, credibilidade dos painéis 83%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,49 (+1,33%); BOVA11 163,01 (-1,44%); Tesouro Prefixado 14,89 (+0,00%); Tesouro IPCA+ 7,88 (+0,00%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Comitê de investimentos (reunião semanal).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:06",
+      "area": "executivos",
+      "quem": "Marta",
+      "papel": "Risco",
+      "texto": "Postura defensiva: estamos perdendo do CDI. Não aumentamos risco hoje.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:08",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Tesouro IPCA+ pagando 7,88% acima da inflação.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:10",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Selic em 13,75% e Focus para o fim do ano em 13,50%: Selic estável no horizonte.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:12",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Bolsa (BOVA11) -14,2% em 20 pregões.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:14",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Carteira coerente com os números. Mantemos o alvo.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,027905 (+0,07% no dia), PL R$ 340,6 mi, fluxo de cotistas R$ -1.259 mil. Caixa da gestora R$ 2,05 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [],
+  "incidentes_do_dia": [],
+  "alertas_abertos": [],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 1.02790509,
+    "pl": 340648330.76,
+    "bench": 1.02693369,
+    "retorno_dia": 0.000727,
+    "fluxo": -1259108.09,
+    "pesos": {
+      "caixa": 0.3422,
+      "prefixado": 0.1538,
+      "inflacao": 0.2565,
+      "dolar": 0.1518,
+      "bolsa": 0.0958
+    },
+    "divida_tecnica": 24.6,
+    "incidentes_abertos": 0,
+    "credibilidade": 0.833,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2048395.92
+  }
+}
