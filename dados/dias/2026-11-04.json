@@ -1,0 +1,175 @@
+{
+  "data": "2026-11-04",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {},
+    "dashboards": {
+      "cdi": "estimar",
+      "selic": "usar_ontem",
+      "dolar": "estimar",
+      "taxa_pre": "usar_ontem",
+      "taxa_ipca": "usar_ontem"
+    },
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia! Nenhum incidente aberto. Dívida técnica 25/100, equipe de 4. Seguimos monitorando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0016: falha real em BCB · SGS",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "08:42",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0017: falha real em Tesouro Direto (CSV)",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Faltam dados novos para: CDI (% a.a.), Selic meta (% a.a.), Dólar PTAX (R$), Tesouro Prefixado (% a.a.), Tesouro IPCA+ (% a.a. real). Credibilidade em 83%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:02",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "CDI (% a.a.) (1 dia(s) atrasado): `estimar` — o CDI acompanha a Selic, dá para estimar com folga.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:04",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Selic meta (% a.a.) (1 dia(s) atrasado): `usar_ontem` — número que muda devagar; repetir o último é seguro.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:06",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "Dólar PTAX (R$) (1 dia(s) atrasado): `estimar` — só um dia de atraso; estimo pela tendência da última semana.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:08",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Tesouro Prefixado (% a.a.) (1 dia(s) atrasado): `usar_ontem` — repito o último valor com aviso de defasagem.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:10",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Tesouro IPCA+ (% a.a. real) (1 dia(s) atrasado): `usar_ontem` — repito o último valor com aviso de defasagem.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo -2,24% contra o CDI em 21 dias, caixa da gestora R$ 2.048.396, credibilidade dos painéis 83%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,49 (-0,03%) [confiança 60%]; BOVA11 164,82 (+1,11%); Tesouro Prefixado 14,89 (+0,00%) [confiança 80%]; Tesouro IPCA+ 7,88 (+0,00%) [confiança 80%].",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,028690 (+0,08% no dia), PL R$ 339,8 mi, fluxo de cotistas R$ -1.116 mil. Caixa da gestora R$ 2,05 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0016: falha real em BCB · SGS",
+      "chave": "INC-0016"
+    },
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0017: falha real em Tesouro Direto (CSV)",
+      "chave": "INC-0017"
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0016",
+      "fonte": "bcb_sgs",
+      "tipo": "falha_real"
+    },
+    {
+      "id": "INC-0017",
+      "fonte": "tesouro",
+      "tipo": "falha_real"
+    }
+  ],
+  "alertas_abertos": [
+    "INC-0016",
+    "INC-0017"
+  ],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 1.02869027,
+    "pl": 339792898.9,
+    "bench": 1.02745525,
+    "retorno_dia": 0.000764,
+    "fluxo": -1115642.97,
+    "pesos": {
+      "caixa": 0.3399,
+      "prefixado": 0.1542,
+      "inflacao": 0.2571,
+      "dolar": 0.1517,
+      "bolsa": 0.0971
+    },
+    "divida_tecnica": 25.25,
+    "incidentes_abertos": 2,
+    "credibilidade": 0.831,
+    "confianca_media": 0.86,
+    "caixa_gestora": 2048724.57
+  }
+}

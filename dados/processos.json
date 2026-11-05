@@ -1,7 +1,47 @@
 {
-  "data_ref": "2026-11-03",
-  "issues": {},
-  "abertas": [],
-  "detalhes": {},
-  "log": []
+  "data_ref": "2026-11-04",
+  "issues": {
+    "INC-0016": {
+      "numero": 34,
+      "url": "https://github.com/GloedenJoao/profissional/issues/34",
+      "estado": "open"
+    },
+    "INC-0017": {
+      "numero": 35,
+      "url": "https://github.com/GloedenJoao/profissional/issues/35",
+      "estado": "open"
+    }
+  },
+  "abertas": [
+    {
+      "numero": 34,
+      "titulo": "INC-0016 · BCB · SGS: o conector falhou de verdade nesta extração",
+      "url": "https://github.com/GloedenJoao/profissional/issues/34",
+      "rotulos": [
+        "area:extracao",
+        "sev:alta",
+        "simulacao"
+      ],
+      "criada_em": "2026-11-05T18:41:22Z"
+    },
+    {
+      "numero": 35,
+      "titulo": "INC-0017 · Tesouro Direto (CSV): o conector falhou de verdade nesta extração",
+      "url": "https://github.com/GloedenJoao/profissional/issues/35",
+      "rotulos": [
+        "area:extracao",
+        "sev:alta",
+        "simulacao"
+      ],
+      "criada_em": "2026-11-05T18:41:22Z"
+    }
+  ],
+  "detalhes": {
+    "INC-0016": "dia 0, ação `corrigir_conector`",
+    "INC-0017": "dia 0, ação `corrigir_conector`"
+  },
+  "log": [
+    "aberta #34 INC-0016",
+    "aberta #35 INC-0017"
+  ]
 }
