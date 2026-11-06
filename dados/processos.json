@@ -1,47 +1,53 @@
 {
-  "data_ref": "2026-11-04",
+  "data_ref": "2026-11-05",
   "issues": {
-    "INC-0016": {
-      "numero": 34,
-      "url": "https://github.com/GloedenJoao/profissional/issues/34",
-      "estado": "open"
-    },
-    "INC-0017": {
-      "numero": 35,
-      "url": "https://github.com/GloedenJoao/profissional/issues/35",
+    "INC-0018": {
+      "numero": 36,
+      "url": "https://github.com/GloedenJoao/profissional/issues/36",
       "estado": "open"
     }
   },
   "abertas": [
     {
-      "numero": 34,
-      "titulo": "INC-0016 · BCB · SGS: o conector falhou de verdade nesta extração",
-      "url": "https://github.com/GloedenJoao/profissional/issues/34",
+      "numero": 36,
+      "titulo": "INC-0018 · BCB · SGS: a fonte publicou atrasado",
+      "url": "https://github.com/GloedenJoao/profissional/issues/36",
       "rotulos": [
         "area:extracao",
-        "sev:alta",
+        "sev:media",
         "simulacao"
       ],
-      "criada_em": "2026-11-05T18:41:22Z"
+      "criada_em": "2026-11-06T17:54:11Z"
     },
     {
       "numero": 35,
       "titulo": "INC-0017 · Tesouro Direto (CSV): o conector falhou de verdade nesta extração",
       "url": "https://github.com/GloedenJoao/profissional/issues/35",
       "rotulos": [
+        "simulacao",
         "area:extracao",
-        "sev:alta",
-        "simulacao"
+        "sev:alta"
+      ],
+      "criada_em": "2026-11-05T18:41:22Z"
+    },
+    {
+      "numero": 34,
+      "titulo": "INC-0016 · BCB · SGS: o conector falhou de verdade nesta extração",
+      "url": "https://github.com/GloedenJoao/profissional/issues/34",
+      "rotulos": [
+        "simulacao",
+        "area:extracao",
+        "sev:alta"
       ],
       "criada_em": "2026-11-05T18:41:22Z"
     }
   ],
   "detalhes": {
-    "INC-0016": "dia 0, ação `corrigir_conector`",
-    "INC-0017": "dia 0, ação `corrigir_conector`"
+    "INC-0018": "dia 0, ação `aguardar`"
   },
   "log": [
-    "aberta #34 INC-0016",
-    "aberta #35 INC-0017"
+    "aberta #36 INC-0018",
+    "fechada #34 INC-0016",
+    "fechada #35 INC-0017"
   ]
 }

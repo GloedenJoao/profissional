@@ -1,10 +1,10 @@
 {
   "versao": 1,
   "inicio": "2026-08-18",
-  "ultima_data": "2026-11-04",
-  "seq_incidente": 17,
+  "ultima_data": "2026-11-05",
+  "seq_incidente": 18,
   "extracao": {
-    "divida_tecnica": 25.25,
+    "divida_tecnica": 25.2,
     "equipe": 4,
     "orcamento_dia": 1200.0,
     "fontes": {
@@ -19,7 +19,7 @@
       },
       "bcb_ptax": {
         "liberado_ate": {
-          "dolar_ptax": "2026-11-04"
+          "dolar_ptax": "2026-11-05"
         },
         "alternativa_ligada": false
       },
@@ -32,20 +32,20 @@
       },
       "tesouro": {
         "liberado_ate": {
-          "tesouro": "2026-10-30"
+          "tesouro": "2026-11-05"
         },
         "alternativa_ligada": false
       },
       "yahoo": {
         "liberado_ate": {
-          "ibov": "2026-11-04",
-          "bova11": "2026-11-04"
+          "ibov": "2026-11-05",
+          "bova11": "2026-11-05"
         },
         "alternativa_ligada": false
       },
       "b3": {
         "liberado_ate": {
-          "bova11_b3": "2026-11-04"
+          "bova11_b3": "2026-11-05"
         },
         "alternativa_ligada": false
       }
@@ -191,53 +191,64 @@
       "fonte": "bcb_sgs",
       "tipo": "falha_real",
       "aberto_em": "2026-11-04",
-      "estado": "aberto",
-      "dias": 0,
-      "esforco": 0,
+      "estado": "resolvido",
+      "dias": 1,
+      "esforco": 1,
       "acao": "corrigir_conector",
       "detalhe": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
-      "resolvido_em": null,
-      "historico": []
+      "resolvido_em": "2026-11-05",
+      "historico": [
+        "2026-11-05: resolvido (corrigir_conector)"
+      ],
+      "acao_escolhida": "corrigir_conector"
     },
     {
       "id": "INC-0017",
       "fonte": "tesouro",
       "tipo": "falha_real",
       "aberto_em": "2026-11-04",
+      "estado": "resolvido",
+      "dias": 1,
+      "esforco": 1,
+      "acao": "corrigir_conector",
+      "detalhe": "série tesouro parada em 2026-10-30 (esperado 2026-11-03)",
+      "resolvido_em": "2026-11-05",
+      "historico": [
+        "2026-11-05: resolvido (corrigir_conector)"
+      ],
+      "acao_escolhida": "corrigir_conector"
+    },
+    {
+      "id": "INC-0018",
+      "fonte": "bcb_sgs",
+      "tipo": "atraso",
+      "aberto_em": "2026-11-05",
       "estado": "aberto",
       "dias": 0,
       "esforco": 0,
-      "acao": "corrigir_conector",
-      "detalhe": "série tesouro parada em 2026-10-30 (esperado 2026-11-03)",
+      "acao": "aguardar",
+      "detalhe": "a fonte publicou atrasado",
       "resolvido_em": null,
       "historico": []
     }
   ],
   "alertas": {
-    "INC-0016": {
-      "titulo": "INC-0016 · BCB · SGS: o conector falhou de verdade nesta extração",
+    "INC-0018": {
+      "titulo": "INC-0018 · BCB · SGS: a fonte publicou atrasado",
       "area": "extracao",
-      "sev": "alta",
-      "aberto_em": "2026-11-04",
-      "corpo": "**Fonte:** BCB · SGS\n**Tipo:** `falha_real` — JSONDecodeError: Expecting value: line 1 column 1 (char 0)\n**Ação atual:** `corrigir_conector` · **dias aberto:** 0\n\nAções possíveis: `aguardar`, `fonte_alternativa`, `corrigir_conector`, `escalar`",
-      "detalhe": "dia 0, ação `corrigir_conector`"
-    },
-    "INC-0017": {
-      "titulo": "INC-0017 · Tesouro Direto (CSV): o conector falhou de verdade nesta extração",
-      "area": "extracao",
-      "sev": "alta",
-      "aberto_em": "2026-11-04",
-      "corpo": "**Fonte:** Tesouro Direto (CSV)\n**Tipo:** `falha_real` — série tesouro parada em 2026-10-30 (esperado 2026-11-03)\n**Ação atual:** `corrigir_conector` · **dias aberto:** 0\n\nAções possíveis: `aguardar`, `fonte_alternativa`, `corrigir_conector`, `escalar`",
-      "detalhe": "dia 0, ação `corrigir_conector`"
+      "sev": "media",
+      "aberto_em": "2026-11-05",
+      "corpo": "**Fonte:** BCB · SGS\n**Tipo:** `atraso` — a fonte publicou atrasado\n**Ação atual:** `aguardar` · **dias aberto:** 0\n\nAções possíveis: `aguardar`, `fonte_alternativa`, `corrigir_conector`, `escalar`",
+      "detalhe": "dia 0, ação `aguardar`"
     }
   },
   "dashboards": {
-    "credibilidade": 0.831,
+    "credibilidade": 0.83,
     "indicadores": {
       "cdi": {
         "nome": "CDI (% a.a.)",
         "data_ref": "2026-11-03",
-        "defasagem": 1,
+        "defasagem": 2,
         "via": "principal",
         "estrategia": "estimar",
         "valor": 13.65,
@@ -247,22 +258,22 @@
       "selic": {
         "nome": "Selic meta (% a.a.)",
         "data_ref": "2026-11-03",
-        "defasagem": 1,
+        "defasagem": 2,
         "via": "principal",
         "estrategia": "usar_ontem",
         "valor": 13.75,
-        "confianca": 0.8,
+        "confianca": 0.6,
         "valor_anterior": 13.75
       },
       "dolar": {
         "nome": "Dólar PTAX (R$)",
         "data_ref": "2026-11-03",
-        "defasagem": 1,
+        "defasagem": 2,
         "via": "principal",
-        "estrategia": "estimar",
-        "valor": 5.4921,
+        "estrategia": "usar_ontem",
+        "valor": 5.4935,
         "confianca": 0.6,
-        "valor_anterior": 5.4935
+        "valor_anterior": 5.4921
       },
       "ipca_12m": {
         "nome": "IPCA 12 meses (%)",
@@ -296,42 +307,42 @@
       },
       "ibov": {
         "nome": "Ibovespa (pts)",
-        "data_ref": "2026-11-04",
+        "data_ref": "2026-11-05",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 167564.0,
+        "valor": 166192.0,
         "confianca": 1.0,
-        "valor_anterior": 165529.0
+        "valor_anterior": 167564.0
       },
       "bova11": {
         "nome": "BOVA11 (R$)",
-        "data_ref": "2026-11-04",
+        "data_ref": "2026-11-05",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 164.82,
+        "valor": 163.03,
         "confianca": 1.0,
-        "valor_anterior": 163.01
+        "valor_anterior": 164.82
       },
       "taxa_pre": {
         "nome": "Tesouro Prefixado (% a.a.)",
-        "data_ref": "2026-10-30",
-        "defasagem": 1,
+        "data_ref": "2026-11-05",
+        "defasagem": 0,
         "via": "principal",
-        "estrategia": "usar_ontem",
-        "valor": 14.89,
-        "confianca": 0.8,
+        "estrategia": null,
+        "valor": 14.94,
+        "confianca": 1.0,
         "valor_anterior": 14.89
       },
       "taxa_ipca": {
         "nome": "Tesouro IPCA+ (% a.a. real)",
-        "data_ref": "2026-10-30",
-        "defasagem": 1,
+        "data_ref": "2026-11-05",
+        "defasagem": 0,
         "via": "principal",
-        "estrategia": "usar_ontem",
-        "valor": 7.88,
-        "confianca": 0.8,
+        "estrategia": null,
+        "valor": 7.94,
+        "confianca": 1.0,
         "valor_anterior": 7.88
       }
     },
@@ -345,9 +356,14 @@
         "indicador": "dolar",
         "data": "2026-11-04",
         "valor": 5.4921
+      },
+      {
+        "indicador": "cdi",
+        "data": "2026-11-05",
+        "valor": 13.65
       }
     ],
-    "confianca_media": 0.86
+    "confianca_media": 0.88
   },
   "executivos": {
     "alvo": {
@@ -384,44 +400,39 @@
     "congelados": []
   },
   "fundo": {
-    "cota": 1.028690273965569,
-    "cotas": 330316041.18323094,
-    "pl": 339792898.9,
-    "bench": 1.027455253524903,
+    "cota": 1.0265210598786254,
+    "cotas": 328280875.29918283,
+    "pl": 336987232.05,
+    "bench": 1.0279770774990633,
     "posicoes": {
       "caixa": {
-        "valor": 115512089.12131701,
+        "valor": 113468158.81523415,
         "preco": 1.0,
         "titulo": null
       },
       "prefixado": {
-        "valor": 52379805.82163,
-        "preco": 740.64,
+        "valor": 52418703.1174848,
+        "preco": 741.19,
         "titulo": "2029-01-01"
       },
       "inflacao": {
-        "valor": 87361124.98360853,
-        "preco": 2484.95,
+        "valor": 87066516.95231509,
+        "preco": 2476.57,
         "titulo": "2035-05-15"
       },
       "dolar": {
-        "valor": 51550428.66628966,
-        "preco": 5.4778,
+        "valor": 51402679.2541058,
+        "preco": 5.4621,
         "titulo": null
       },
       "bolsa": {
-        "valor": 32989450.310189605,
-        "preco": 164.82,
+        "valor": 32631173.911359128,
+        "preco": 163.03,
         "titulo": null
       }
     },
-    "fluxo_dia": -1115642.97,
+    "fluxo_dia": -2089140.64,
     "hist_cota": [
-      [
-        "2026-10-02",
-        1.040878011442018,
-        1.0165579329496053
-      ],
       [
         "2026-10-05",
         1.0635009159678614,
@@ -526,13 +537,18 @@
         "2026-11-04",
         1.0286902739747565,
         1.027455253524903
+      ],
+      [
+        "2026-11-05",
+        1.0265210598801453,
+        1.0279770774990633
       ]
     ],
-    "retorno_dia": 0.0007638702075627446
+    "retorno_dia": -0.0021087144904960997
   },
   "gestora": {
-    "caixa": 2048724.57,
-    "receita_dia": 13528.65,
+    "caixa": 2048980.52,
+    "receita_dia": 13455.95,
     "custo_dia": 13200.0
   },
   "times": {
@@ -861,6 +877,10 @@
         [
           "2026-10-30",
           14.89
+        ],
+        [
+          "2026-11-05",
+          14.94
         ]
       ],
       "taxa_ipca": [
@@ -927,6 +947,10 @@
         [
           "2026-10-30",
           7.88
+        ],
+        [
+          "2026-11-05",
+          7.94
         ]
       ],
       "ibov": [
@@ -989,6 +1013,10 @@
         [
           "2026-11-04",
           167564.0
+        ],
+        [
+          "2026-11-05",
+          166192.0
         ]
       ],
       "bova11": [
@@ -1059,6 +1087,10 @@
         [
           "2026-11-04",
           164.82
+        ],
+        [
+          "2026-11-05",
+          163.03
         ]
       ]
     },

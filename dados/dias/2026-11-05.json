@@ -1,0 +1,187 @@
+{
+  "data": "2026-11-05",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {
+      "INC-0016": "corrigir_conector",
+      "INC-0017": "corrigir_conector"
+    },
+    "dashboards": {
+      "cdi": "estimar",
+      "selic": "usar_ontem",
+      "dolar": "usar_ontem"
+    },
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia. Temos 2 incidente(s) aberto(s) e 4 pessoa(s) na equipe. Vamos priorizar.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:02",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0016 · BCB · SGS (o conector falhou de verdade nesta extração, aberto ontem): `corrigir_conector` — falha real no conector: só resolve mexendo no código.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "08:04",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0017 · Tesouro Direto (CSV) (o conector falhou de verdade nesta extração, aberto ontem): `corrigir_conector` — falha real no conector: só resolve mexendo no código.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0016 resolvido: BCB · SGS voltou após 1 dia(s) (corrigir_conector)",
+      "tipo": "evento"
+    },
+    {
+      "hora": "08:42",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0017 resolvido: Tesouro Direto (CSV) voltou após 1 dia(s) (corrigir_conector)",
+      "tipo": "evento"
+    },
+    {
+      "hora": "08:44",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0018: BCB · SGS — a fonte publicou atrasado",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Faltam dados novos para: CDI (% a.a.), Selic meta (% a.a.), Dólar PTAX (R$). Credibilidade em 83%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:02",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "CDI (% a.a.) (2 dia(s) atrasado): `estimar` — o CDI acompanha a Selic, dá para estimar com folga.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:04",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Selic meta (% a.a.) (2 dia(s) atrasado): `usar_ontem` — número que muda devagar; repetir o último é seguro.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:06",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Dólar PTAX (R$) (2 dia(s) atrasado): `usar_ontem` — repito o último valor com aviso de defasagem.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo -4,55% contra o CDI em 21 dias, caixa da gestora R$ 2.048.725, credibilidade dos painéis 83%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,49 (+0,03%) [confiança 60%]; BOVA11 163,03 (-1,09%); Tesouro Prefixado 14,94 (+0,34%); Tesouro IPCA+ 7,94 (+0,76%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,026521 (-0,21% no dia), PL R$ 337,0 mi, fluxo de cotistas R$ -2.089 mil. Caixa da gestora R$ 2,05 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0016 resolvido: BCB · SGS voltou após 1 dia(s) (corrigir_conector)",
+      "chave": "INC-0016"
+    },
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0017 resolvido: Tesouro Direto (CSV) voltou após 1 dia(s) (corrigir_conector)",
+      "chave": "INC-0017"
+    },
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0018: BCB · SGS — a fonte publicou atrasado",
+      "chave": "INC-0018"
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0018",
+      "fonte": "bcb_sgs",
+      "tipo": "atraso"
+    }
+  ],
+  "alertas_abertos": [
+    "INC-0018"
+  ],
+  "alertas_fechados": [
+    "INC-0016",
+    "INC-0017"
+  ],
+  "resumo": {
+    "cota": 1.02652106,
+    "pl": 336987232.05,
+    "bench": 1.02797708,
+    "retorno_dia": -0.002109,
+    "fluxo": -2089140.64,
+    "pesos": {
+      "caixa": 0.3367,
+      "prefixado": 0.1556,
+      "inflacao": 0.2584,
+      "dolar": 0.1525,
+      "bolsa": 0.0968
+    },
+    "divida_tecnica": 25.2,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.83,
+    "confianca_media": 0.88,
+    "caixa_gestora": 2048980.52
+  }
+}
