@@ -1,0 +1,163 @@
+{
+  "data": "2026-11-09",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {
+      "INC-0018": "fonte_alternativa"
+    },
+    "dashboards": {
+      "cdi": "estimar",
+      "selic": "usar_ontem"
+    },
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia. Temos 1 incidente(s) aberto(s) e 4 pessoa(s) na equipe. Vamos priorizar.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:02",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "INC-0018 · BCB · SGS (a fonte publicou atrasado, aberto ontem): `fonte_alternativa` — o atraso passou de um dia: liga a alternativa.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Faltam dados novos para: CDI (% a.a.), Selic meta (% a.a.). Credibilidade em 83%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:02",
+      "area": "dashboards",
+      "quem": "Lia",
+      "papel": "analista de dados",
+      "texto": "CDI (% a.a.) (4 dia(s) atrasado): `estimar` — o CDI acompanha a Selic, dá para estimar com folga.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "09:04",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Selic meta (% a.a.) (4 dia(s) atrasado): `usar_ontem` — número que muda devagar; repetir o último é seguro.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo -3,28% contra o CDI em 21 dias, caixa da gestora R$ 2.049.221, credibilidade dos painéis 84%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,51 [confiança 90%]; BOVA11 169,67 (+2,25%); Tesouro Prefixado 14,71 (-0,47%); Tesouro IPCA+ 7,75 (-1,52%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Comitê de investimentos (reunião semanal).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:06",
+      "area": "executivos",
+      "quem": "Marta",
+      "papel": "Risco",
+      "texto": "Postura defensiva: estamos perdendo do CDI. Não aumentamos risco hoje.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:08",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Tesouro IPCA+ pagando 7,75% acima da inflação.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:10",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Selic em 13,75% e Focus para o fim do ano em 13,75%: Selic estável no horizonte.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:12",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Bolsa (BOVA11) -10,7% em 20 pregões.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:14",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Carteira coerente com os números. Mantemos o alvo.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,037442 (+0,56% no dia), PL R$ 338,1 mi, fluxo de cotistas R$ -937 mil. Caixa da gestora R$ 2,05 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0018",
+      "fonte": "bcb_sgs",
+      "tipo": "atraso"
+    }
+  ],
+  "alertas_abertos": [],
+  "alertas_fechados": [
+    "DEFAS-dolar"
+  ],
+  "resumo": {
+    "cota": 1.03744198,
+    "pl": 338107824.41,
+    "bench": 1.02902152,
+    "retorno_dia": 0.005597,
+    "fluxo": -937279.12,
+    "pesos": {
+      "caixa": 0.3286,
+      "prefixado": 0.1559,
+      "inflacao": 0.2616,
+      "dolar": 0.1535,
+      "bolsa": 0.1004
+    },
+    "divida_tecnica": 25.1,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.835,
+    "confianca_media": 0.87,
+    "caixa_gestora": 2049475.31
+  }
+}

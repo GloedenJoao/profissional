@@ -1,14 +1,9 @@
 {
-  "data_ref": "2026-11-06",
+  "data_ref": "2026-11-09",
   "issues": {
     "DEFAS-cdi": {
       "numero": 24,
       "url": "https://github.com/GloedenJoao/profissional/issues/24",
-      "estado": "open"
-    },
-    "DEFAS-dolar": {
-      "numero": 25,
-      "url": "https://github.com/GloedenJoao/profissional/issues/25",
       "estado": "open"
     },
     "DEFAS-selic": {
@@ -27,17 +22,6 @@
       "numero": 24,
       "titulo": "Painel: CDI (% a.a.) defasado",
       "url": "https://github.com/GloedenJoao/profissional/issues/24",
-      "rotulos": [
-        "simulacao",
-        "area:dashboards",
-        "sev:media"
-      ],
-      "criada_em": "2026-10-12T20:15:32Z"
-    },
-    {
-      "numero": 25,
-      "titulo": "Painel: Dólar PTAX (R$) defasado",
-      "url": "https://github.com/GloedenJoao/profissional/issues/25",
       "rotulos": [
         "simulacao",
         "area:dashboards",
@@ -66,18 +50,28 @@
         "sev:media"
       ],
       "criada_em": "2026-11-06T17:54:11Z"
+    },
+    {
+      "numero": 25,
+      "titulo": "Painel: Dólar PTAX (R$) defasado",
+      "url": "https://github.com/GloedenJoao/profissional/issues/25",
+      "rotulos": [
+        "simulacao",
+        "area:dashboards",
+        "sev:media"
+      ],
+      "criada_em": "2026-10-12T20:15:32Z"
     }
   ],
   "detalhes": {
-    "INC-0018": "dia 1, ação `aguardar`",
-    "DEFAS-cdi": "3 dias úteis de defasagem; estratégia `estimar`",
-    "DEFAS-selic": "3 dias úteis de defasagem; estratégia `usar_ontem`",
-    "DEFAS-dolar": "3 dias úteis de defasagem; estratégia `suspender`"
+    "INC-0018": "dia 2, ação `fonte_alternativa`",
+    "DEFAS-cdi": "4 dias úteis de defasagem; estratégia `estimar`",
+    "DEFAS-selic": "4 dias úteis de defasagem; estratégia `usar_ontem`"
   },
   "log": [
-    "reaberta #24 DEFAS-cdi",
-    "reaberta #25 DEFAS-dolar",
-    "reaberta #26 DEFAS-selic",
-    "comentada #36 INC-0018"
+    "comentada #24 DEFAS-cdi",
+    "comentada #26 DEFAS-selic",
+    "comentada #36 INC-0018",
+    "fechada #25 DEFAS-dolar"
   ]
 }
