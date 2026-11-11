@@ -1,6 +1,8 @@
 import json
 from datetime import date
 
+import pytest
+
 from gestora import __main__ as cli
 from gestora import armazem, config, decisoes, painel, simulacao
 from gestora.mercado import Mercado
@@ -107,3 +109,73 @@ def test_incidentes_simulados_acontecem(repo):
 
 def test_politicas_do_repo_validas():
     assert decisoes.validar_politicas(json.loads(config.POLITICAS.read_text())) == []
+
+
+def test_verificacoes_passam_em_dois_meses(repo):
+    _rodar()
+    assert cli.auditar() == []
+    p = armazem.ler_json(config.DADOS / "painel.json")
+    assert {c["id"] for c in p["verificacoes"]} == {"sem_futuro", "portao", "contabilidade", "reconciliacao", "limites",
+                                                    "precos", "caixa_gestora", "referencia"}
+    assert all(c["falhas"] == 0 for c in p["verificacoes"])
+    # o painel antigo continua igual para quem já lia (app Android), com os campos novos ao lado
+    for chave in ("resumo", "extracao", "dashboards", "executivos", "alertas", "dias", "historico", "ata", "nomes"):
+        assert chave in p
+    for chave in ("calendario", "regras", "fundacao", "referencia", "metricas", "series", "versao_motor"):
+        assert chave in p
+
+
+def test_reunioes_so_veem_o_que_estava_publicado_as_8h(repo):
+    _rodar(date(2026, 9, 16))
+    reg = armazem.ler_json(config.DIAS / "2026-09-16.json")
+    estado = armazem.ler_json(config.DADOS / "estado.json")
+    ind = estado["dashboards"]["indicadores"]
+    assert ind["cdi"]["data_ref"] == "2026-09-15"  # o CDI de hoje só sai depois das reuniões
+    assert ind["bova11"]["data_ref"] <= "2026-09-15"
+    assert ind["ipca_12m"]["data_ref"] == "2026-08-01"  # dia 16: o IPCA de agosto já saiu, o de setembro não
+    assert ind["focus_selic"]["data_ref"] == "2026-09-11"  # Focus de segunda traz a pesquisa até sexta
+    # a marcação do fundo, às 18h, usa o fechamento do próprio dia
+    assert estado["fundo"]["posicoes"]["bolsa"]["data_preco"] == "2026-09-16"
+    assert next(c for c in reg["verificacoes"] if c["id"] == "sem_futuro")["ok"]
+
+
+def test_ipca_antes_do_dia_15_ainda_e_o_de_dois_meses_antes(repo):
+    _rodar(date(2026, 9, 14))
+    estado = armazem.ler_json(config.DADOS / "estado.json")
+    assert estado["dashboards"]["indicadores"]["ipca_12m"]["data_ref"] == "2026-07-01"
+
+
+def test_fluxo_de_cotistas_segue_o_modelo_sem_sorteio(repo):
+    _rodar(date(2026, 8, 20))
+    reg = armazem.ler_json(config.DIAS / "2026-08-20.json")
+    fundo = next(e for e in reg["rastro"] if e["id"] == "fundo")
+    contas = next(b for b in fundo["blocos"] if b["titulo"].startswith("Aplicações"))
+    assert [ln["rot"] for ln in contas["linhas"]] == ["captação de base", "desempenho", "credibilidade", "fluxo do dia"]
+    assert "semente" not in str(contas["linhas"])
+
+
+def test_sem_comite_fundo_anda_com_a_referencia(repo):
+    pol = armazem.ler_json(config.POLITICAS)
+    pol["executivos"]["modelo"]["sensibilidade"] = {"prefixado": 0, "inflacao": 0, "dolar": 0, "bolsa": 0}
+    pol["fundo"]["cotistas"] |= {"captacao_base": 0, "sens_desempenho": 0, "sens_credibilidade": 0}
+    armazem.gravar_json(config.POLITICAS, pol)
+    _rodar()
+    estado = armazem.ler_json(config.DADOS / "estado.json")
+    assert estado["metricas"]["mudancas_alvo"] == 0
+    # sem decisões e sem cotistas, o fundo é a carteira de referência
+    assert estado["fundo"]["cota"] == pytest.approx(estado["referencia"]["cota"], rel=1e-9)
+
+
+def test_motor_novo_reprocessa_o_historico(repo):
+    _rodar(date(2026, 8, 31))
+    antes = (config.DADOS / "historico.csv").read_text()
+    estado = armazem.ler_json(config.DADOS / "estado.json")
+    estado["versao"] = 1
+    armazem.gravar_json(config.DADOS / "estado.json", estado)
+    assert cli.precisa_reprocessar()
+    cli.fechamento(date(2026, 9, 1), None, extrair=False)
+    estado = armazem.ler_json(config.DADOS / "estado.json")
+    assert estado["versao"] == simulacao.VERSAO_MOTOR and estado["ultima_data"] == "2026-09-01"
+    depois = (config.DADOS / "historico.csv").read_text().splitlines()
+    assert depois[:-1] == antes.splitlines()  # o mesmo motor refaz o mesmo passado, e o dia novo entra no fim
+    assert depois[-1].startswith("2026-09-01")

@@ -9,24 +9,26 @@ from pathlib import Path
 
 from . import armazem, calendario, config
 
-COLUNAS_HISTORICO = ["data", "cota", "bench", "pl", "fluxo", "retorno_dia", "divida_tecnica", "incidentes_abertos",
-                     "credibilidade", "confianca_media", "caixa_gestora", *[f"peso_{a}" for a in config.ATIVOS]]
+COLUNAS_HISTORICO = ["data", "cota", "bench", "cota_ref", "pl", "fluxo", "retorno_dia", "divida_tecnica",
+                     "incidentes_abertos", "credibilidade", "confianca_media", "caixa_gestora", "equipe", "orcamento_dia",
+                     "verificacoes_ok", "verificacoes_total", *[f"peso_{a}" for a in config.ATIVOS],
+                     *[f"alvo_{a}" for a in config.ATIVOS]]
 
 
 def registrar_historico(registro: dict, caminho: Path | None = None) -> None:
     caminho = caminho or (config.DADOS / "historico.csv")
     linhas = ler_historico(caminho)
     r = registro["resumo"]
-    nova = {"data": registro["data"], "cota": r["cota"], "bench": r["bench"], "pl": r["pl"], "fluxo": r["fluxo"],
-            "retorno_dia": r["retorno_dia"], "divida_tecnica": r["divida_tecnica"],
-            "incidentes_abertos": r["incidentes_abertos"], "credibilidade": r["credibilidade"],
-            "confianca_media": r["confianca_media"], "caixa_gestora": r["caixa_gestora"],
-            **{f"peso_{a}": w for a, w in r["pesos"].items()}}
+    nova = {"data": registro["data"], **{k: r.get(k) for k in COLUNAS_HISTORICO[1:16]},
+            **{f"peso_{a}": w for a, w in r["pesos"].items()},
+            **{f"alvo_{a}": w for a, w in (r.get("alvo") or {}).items()}}
+    nova["fluxo"] = r["fluxo"]
+    nova = {k: (float(v) if isinstance(v, (int, float)) else v) for k, v in nova.items()}  # mesmo formato ao reler
     linhas = [ln for ln in linhas if ln["data"] != registro["data"]] + [nova]
     linhas.sort(key=lambda ln: ln["data"])
     caminho.parent.mkdir(parents=True, exist_ok=True)
     with caminho.open("w", encoding="utf-8", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=COLUNAS_HISTORICO, lineterminator="\n")
+        w = csv.DictWriter(f, fieldnames=COLUNAS_HISTORICO, lineterminator="\n", extrasaction="ignore")
         w.writeheader()
         w.writerows(linhas)
 
@@ -39,8 +41,33 @@ def ler_historico(caminho: Path | None = None) -> list[dict]:
         linhas = list(csv.DictReader(f))
     for ln in linhas:
         for k in COLUNAS_HISTORICO[1:]:
-            ln[k] = float(ln[k])
+            v = ln.get(k)
+            ln[k] = float(v) if v not in (None, "") else None
     return linhas
+
+
+def resumo_dos_dias(pasta: Path | None = None) -> dict:
+    """Uma passada por todos os dias simulados: calendário (status de cada etapa) e totais das verificações."""
+    pasta = pasta or config.DIAS
+    calendario_, por_check = [], {}
+    for arq in sorted(pasta.glob("*.json")):
+        reg = armazem.ler_json(arq)
+        r = reg.get("resumo", {})
+        mudou = bool((reg.get("decisoes") or {}).get("executivos", {}).get("alocacao"))
+        calendario_.append({"data": reg["data"], "n": reg.get("dia_numero"), "status": r.get("status", {}),
+                            "retorno": r.get("retorno_dia"), "cota": r.get("cota"), "cota_ref": r.get("cota_ref"),
+                            "verif": [r.get("verificacoes_ok"), r.get("verificacoes_total")],
+                            "incidentes": r.get("incidentes_abertos"), "alocacao": mudou,
+                            "conselho": bool((reg.get("decisao") or {}).get("intervencao")),
+                            "eventos": len(reg.get("eventos", []))})
+        for c in reg.get("verificacoes", []):
+            agg = por_check.setdefault(c["id"], {"id": c["id"], "nome": c["nome"], "ok": 0, "falhas": 0, "ultima_falha": None})
+            if c["ok"]:
+                agg["ok"] += 1
+            else:
+                agg["falhas"] += 1
+                agg["ultima_falha"] = {"data": reg["data"], "detalhe": c["detalhe"]}
+    return {"calendario": calendario_, "verificacoes": list(por_check.values())}
 
 
 def _ret(hist: list[dict], campo: str, n: int) -> float | None:
@@ -94,8 +121,8 @@ def montar_painel(estado: dict, dias: list[dict], historico: list[dict], control
                 "alternativa_ligada": ex["fontes"][f]["alternativa_ligada"],
                 "incidente": next((i["id"] for i in abertos if i["fonte"] == f), None),
             } for f, meta in config.FONTES.items()],
-            "incidentes": [{k: i[k] for k in ("id", "fonte", "tipo", "aberto_em", "estado", "dias", "acao", "detalhe",
-                                              "resolvido_em", "historico")} | {"issue": issues.get(i["id"])}
+            "incidentes": [{k: i.get(k) for k in ("id", "fonte", "tipo", "aberto_em", "estado", "dias", "acao", "detalhe",
+                                                  "resolvido_em", "historico", "origem")} | {"issue": issues.get(i["id"])}
                            for i in sorted(estado["incidentes"], key=lambda i: i["id"], reverse=True)],
             "disponibilidade": disponibilidade,
         },
@@ -118,9 +145,20 @@ def montar_painel(estado: dict, dias: list[dict], historico: list[dict], control
         # a reunião do último dia (o site toca as outras a partir de dias/AAAA-MM-DD.json)
         "ata": (dias[-1].get("ata") or []) if dias else [],
         "datas": [ln["data"] for ln in historico],
-        "historico": [{k: ln[k] for k in ("data", "cota", "bench", "pl", "fluxo", "divida_tecnica", "credibilidade",
-                                         "confianca_media", "incidentes_abertos", "caixa_gestora")}
-                      | {"pesos": {a: ln[f"peso_{a}"] for a in config.ATIVOS}} for ln in historico],
+        "historico": [{k: ln[k] for k in ("data", "cota", "bench", "cota_ref", "pl", "fluxo", "divida_tecnica",
+                                         "credibilidade", "confianca_media", "incidentes_abertos", "caixa_gestora",
+                                         "equipe", "orcamento_dia")}
+                      | {"pesos": {a: ln[f"peso_{a}"] for a in config.ATIVOS},
+                         "alvo": {a: ln.get(f"alvo_{a}") for a in config.ATIVOS}} for ln in historico],
+        "versao_motor": estado.get("versao", 1),
+        "produto": "experimento" if cen["modo"] == "diario" else "simulacao",
+        "fundacao": estado.get("fundacao"),
+        "referencia": {"cota": estado.get("referencia", {}).get("cota"),
+                       "valor_decisoes": (fundo["cota"] / estado["referencia"]["cota"] - 1) if estado.get("referencia") else None},
+        "metricas": estado.get("metricas"),
+        "series": {s: {"nome": config.SERIES_INFO[s][0], "unidade": config.SERIES_INFO[s][1],
+                       "publicacao": config.REGRA_PUBLICACAO[config.PUBLICACAO[s]],
+                       "fonte": next(f for f, m in config.FONTES.items() if s in m["series"])} for s in config.PUBLICACAO},
         "nomes": {"ativos": config.ATIVOS, "acoes_extracao": config.ACOES_EXTRACAO,
                   "estrategias": config.ESTRATEGIAS_DASHBOARD, "tipos_incidente": config.TIPOS_INCIDENTE},
         "processos": {"issues_abertas": (processos or {}).get("abertas", []),
@@ -276,6 +314,10 @@ def briefing(painel: dict) -> str:
         f"- Cota {r['cota']:.6f} · PL R$ {r['pl']:,.0f} · dia {pct(r['retorno_dia'])} · 21d {pct(r['retorno_mes'])} "
         f"vs CDI {pct(r['cdi_mes'])} · desde o início {pct(r['retorno_total'])} vs CDI {pct(r['cdi_total'])}",
         f"- Fluxo de cotistas no dia: R$ {r['fluxo_dia']:,.0f} · caixa da gestora R$ {r['caixa_gestora']:,.0f}",
+        f"- Carteira de referência (sem o comitê): {(painel.get('referencia') or {}).get('cota') or 0:.6f} · valor das "
+        f"decisões {pct((painel.get('referencia') or {}).get('valor_decisoes'))}",
+        f"- Verificações do motor: {(painel.get('metricas') or {}).get('verificacoes_ok', 0)} ok, "
+        f"{(painel.get('metricas') or {}).get('verificacoes_falha', 0)} falha(s) desde a fundação",
         "- Alocação (atual → alvo): " + ", ".join(
             f"{a} {exe['pesos'][a]:.1%}→{exe['alvo'][a]:.0%}" for a in exe["alvo"]),
         f"- Limites: " + ", ".join(f"{a} {mn:.0%}–{mx:.0%}" for a, (mn, mx) in exe["limites"].items()),
@@ -313,6 +355,9 @@ def briefing(painel: dict) -> str:
 
 
 def completar(painel: dict, politicas: dict) -> dict:
+    from . import regras  # import tardio: regras importa simulacao
+    painel.update(resumo_dos_dias())
+    painel["regras"] = regras.descrever(politicas)
     painel["status_areas"] = status_areas(painel, politicas)
     painel["decisao_proxima"] = decisao_proxima(painel, politicas)
     painel["tarefas"] = tarefas(painel)

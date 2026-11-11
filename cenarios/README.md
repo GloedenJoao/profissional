@@ -1,30 +1,31 @@
-# Cenários paralelos
+# Simulação
 
-Cada pasta aqui é uma Capivara Asset paralela que roda **o mesmo motor e os mesmos times** (`gestora/`)
-com dados, estado e memória próprios. O cenário principal ("Dia a dia") continua em `dados/` e `empresa/`
-na raiz.
+Cada pasta aqui é uma Capivara Asset que roda **o mesmo motor e os mesmos times** (`gestora/`) do Experimento,
+com dados, estado e memória próprios. Hoje há uma: `2026`, a mesma empresa refazendo 2026 desde 1º de janeiro, para
+testar o experimento (veja `IDEIA.md`). O Experimento continua em `dados/` e `empresa/` na raiz.
 
 ```
 cenarios/<id>/
-  cenario.json          nome, descrição, data de fundação (`inicio`), `issues` e `automatico`
-  empresa/              políticas e diretrizes opcionais do conselho deste cenário
+  cenario.json          nome, descrição e data de fundação (`inicio`)
+  empresa/              políticas e diretrizes opcionais do conselho desta simulação
   dados/                escrito só pelo workflow `simulacao.yml` (não edite à mão)
 ```
 
-Com `"automatico": {"dias_por_execucao": 1, "intervalo": "30 min"}`, o workflow **Simulação · avançar**
-roda pela agenda (a cada 30 min) e simula o próximo dia útil com os dados reais daquele dia, sem nunca
-passar de ontem; quando alcança o presente, passa a andar um dia por dia útil. Sem o campo, o cenário só
-anda quando alguém manda: botão no Actions ou o comentário `/avancar N` na issue de controle.
+A simulação só anda quando o dono manda: o botão "Simular próximo dia" do site ou do app (dispara o workflow
+**Simulação · avançar** pela API e acompanha cada passo), o botão "Run workflow" ou o comentário `/avancar N` na
+issue de controle. Cada avanço simula os dias úteis com os dados reais daqueles dias, sem nunca passar de ontem e sem
+olhar o futuro dentro do dia. `recomecar: true` (botão "Recomeçar do zero" na aba Validação) volta a simulação à
+fundação, com as regras de agora: é assim que se testa uma regra nova antes de levá-la ao experimento.
 
-Os times decidem tudo. Um arquivo em `empresa/decisoes/AAAA-MM-DD.json` é diretriz do conselho: vale
-por cima dos times naquele dia. Com `"issues": false`, os alertas do cenário não viram issues (um cenário
-que anda a cada meia hora encheria o repositório).
+Um arquivo em `empresa/decisoes/AAAA-MM-DD.json` é diretriz do conselho: vale por cima dos times naquele dia. Os
+alertas da simulação não viram issues (`"issues": false` por padrão).
 
 ```bash
-python -m gestora cenarios                       # lista os cenários
-python -m gestora cenarios --pendentes           # automáticos com dia a simular
-python -m gestora --cenario 2026 avancar --dias 5
+python -m gestora cenarios                          # lista os cenários
+python -m gestora --cenario 2026 avancar --dias 5   # precisa das fontes (ou --sem-extracao)
+python -m gestora --cenario 2026 recomecar
 python -m gestora --cenario 2026 validar
+python -m gestora --cenario 2026 auditar
 ```
 
-O acaso de cada cenário usa uma semente própria: a 2026 não sorteia os mesmos incidentes do dia a dia.
+O teste de estresse de cada cenário usa uma semente própria: a simulação não sorteia as mesmas falhas do experimento.

@@ -1,430 +1,572 @@
-"""Os times da Capivara Asset: quem decide o dia a dia da empresa.
+"""Os times da Capivara Asset: as regras de decisão de cada área.
 
-Cada área tem um time com regras próprias, memória e uma reunião por dia. As reuniões acontecem dentro
-do motor, na ordem em que a informação chega: a Extração triagem os incidentes de manhã, os Dashboards
-decidem o que publicar com o que a Extração liberou e o Comitê de Executivos decide com os números que
-os Dashboards publicaram (nunca com o mercado "de verdade"). Tudo o que é dito vai para a ata do dia,
-que o site mostra no modo ao vivo.
+Cada função recebe a etapa do dia (gestora/rastro.py), decide com o que a etapa anterior entregou e grava no
+rastro a regra que aplicou e a conta que fez. As falas citam os números dessas contas: nada é dito sem um
+bloco do rastro que o sustente.
 
-O dono (João) não precisa decidir nada. Se quiser intervir, um arquivo em `empresa/decisoes/` vira
-**diretriz do conselho**: o que estiver nele vale por cima da decisão do time, e a ata registra.
+- Extração (08:00): triagem dos incidentes abertos, dentro da capacidade da equipe.
+- Dashboards (09:00): o que publicar quando o dado não chegou.
+- Comitê (10:00): pauta do dia, modelo de alocação e equipe/orçamento da Extração.
 
-Tudo é determinístico (o acaso usa a semente do dia), então o mesmo dia sempre tem a mesma reunião.
+Um arquivo em `empresa/decisoes/AAAA-MM-DD.json` é diretriz do conselho: o que estiver nele vale por cima
+do time naquele dia, e o rastro registra quem mandou.
 """
 from __future__ import annotations
 
 from datetime import date
 
 from . import calendario, config
-
-PESSOAS = {
-    "extracao": [("Bia", "líder de Extração"), ("Téo", "engenheiro de plantão")],
-    "dashboards": [("Caio", "líder de Dashboards"), ("Lia", "analista de dados")],
-    "executivos": [("Helena", "CEO"), ("Rafael", "CIO"), ("Marta", "Risco")],
-    "conselho": [("Conselho", "diretriz")],
-    "fundo": [("Administrador", "fechamento do fundo")],
-}
-HORARIO = {"extracao": "08:00", "dashboards": "09:00", "executivos": "10:00", "fundo": "18:00"}
-HORA_EVENTO = {"extracao": "08:40", "dashboards": "09:40", "executivos": "10:40", "fundo": "17:30"}
-
-FONTE_DO_ATIVO = {"dolar": "dolar", "bolsa": "bova11", "prefixado": "taxa_pre", "inflacao": "taxa_ipca"}
-PASSO_MAX = 0.05  # o comitê não mexe mais que 5 p.p. num ativo por reunião
-MEMORIA = 40      # quantos números publicados o comitê guarda por indicador
-
-
-def _pct(v: float, casas: int = 1) -> str:
-    return f"{v * 100:.{casas}f}%".replace(".", ",")
-
-
-def _num(v: float | None, casas: int = 2) -> str:
-    return "—" if v is None else f"{v:,.{casas}f}".replace(",", "X").replace(".", ",").replace("X", ".")
-
-
-def _brl(v: float) -> str:
-    return "R$ " + _num(v, 0)
-
-
-class Ata:
-    """As falas do dia, em ordem. Cada fala: hora, área, quem, texto e tipo (fala/decisao/evento/conselho)."""
-
-    def __init__(self) -> None:
-        self.falas: list[dict] = []
-        self._min = {}
-
-    def _hora(self, area: str, hora: str | None) -> str:
-        base = hora or HORARIO.get(area, "12:00")
-        h, m = map(int, base.split(":"))
-        chave = (area, base)
-        m += self._min.get(chave, 0)
-        self._min[chave] = self._min.get(chave, 0) + 2  # cada fala "leva" dois minutos
-        return f"{h + m // 60:02d}:{m % 60:02d}"
-
-    def diz(self, area: str, pessoa: int, texto: str, tipo: str = "fala", hora: str | None = None) -> None:
-        nome, papel = PESSOAS[area][pessoa]
-        self.falas.append({"hora": self._hora(area, hora), "area": area, "quem": nome, "papel": papel,
-                           "texto": texto, "tipo": tipo})
-
-    def conselho(self, area: str, texto: str, autor: str | None = None) -> None:
-        nome, papel = PESSOAS["conselho"][0]
-        papel = f"diretriz de {autor}" if autor and autor != "conselho" else papel
-        self.falas.append({"hora": self._hora(area, None), "area": area, "quem": nome, "papel": papel,
-                           "texto": texto, "tipo": "conselho"})
-
-    def ordenada(self) -> list[dict]:
-        return sorted(self.falas, key=lambda f: f["hora"])  # sort estável: a ordem de fala se mantém
-
-
-def memoria(estado: dict) -> dict:
-    m = estado.setdefault("times", {})
-    m.setdefault("serie", {})
-    m.setdefault("erros", {})
-    m.setdefault("comite", {"ultimo": None})
-    return m
-
+from .rastro import brl, cel, data, dm, mi, n_, num, pct, pp, sinal
 
 # ====================================================================== Extração (08:00)
 PRIORIDADE_FONTE = {"bcb_sgs": 0, "tesouro": 1, "yahoo": 2, "bcb_ptax": 3, "b3": 3, "bcb_focus": 4}
 
+REGRAS_EXTRACAO = [
+    "Falha real no conector: `corrigir_conector` (2 pontos). Só resolve quando a fonte real volta a publicar.",
+    "Mudança de formato: `corrigir_conector` (2 pontos). Esperar não resolve.",
+    "Fora do ar com fonte alternativa, até o 3º dia: `fonte_alternativa` (1 ponto).",
+    "Fora do ar a partir do 2º dia (sem alternativa) ou do 4º (com alternativa): `corrigir_conector`.",
+    "Fora do ar no 1º dia, sem alternativa: `aguardar` (quedas costumam voltar em 1 ou 2 dias).",
+    "Atraso: `aguardar`; com alternativa, `fonte_alternativa` a partir do 2º dia; `corrigir_conector` a partir do "
+    "3º dia sem alternativa ou do 5º com alternativa.",
+    "Capacidade: cada pessoa da equipe vale 1 ponto por dia. Sem 2 pontos para corrigir, liga a alternativa se "
+    "houver; sem nenhum ponto, `escalar` (pede reforço ao comitê).",
+    "Ordem de atendimento: falha real, mudança de formato, depois pela importância da fonte "
+    "(BCB SGS, Tesouro, Yahoo, PTAX/B3, Focus).",
+    "Os dias contam a partir da abertura: o incidente aberto hoje é triado amanhã, no 1º dia.",
+]
 
-def _tem_alternativa(fonte: str) -> bool:
+
+def tem_alternativa(fonte: str) -> bool:
     return any(i["alt"] and i["fonte"] == fonte for i in config.INDICADORES.values())
 
 
-def extracao(estado: dict, d: date, ata: Ata, intervencao: dict) -> dict:
-    """Triagem dos incidentes abertos. Devolve {INC: ação} dentro da capacidade da equipe."""
+def _regra_incidente(tipo: str, dias: int, alt: bool) -> tuple[str, str]:
+    """`dias`: dias úteis desde a abertura (1 na primeira triagem, no dia seguinte ao que o incidente abriu)."""
+    if tipo == "falha_real":
+        return "corrigir_conector", "falha real: só resolve no conector"
+    if tipo == "mudanca_formato":
+        return "corrigir_conector", "formato mudou: esperar não resolve"
+    if tipo == "fora_do_ar":
+        if alt and dias <= 3:
+            return "fonte_alternativa", f"fora do ar ({dias}º dia) e há fonte alternativa"
+        if dias >= 2:
+            return "corrigir_conector", f"fora do ar há {dias} dias" + (" mesmo com a alternativa" if alt else "")
+        return "aguardar", "fora do ar no 1º dia, sem alternativa"
+    if dias >= 3 and not alt:
+        return "corrigir_conector", f"atraso de {dias} dias, sem alternativa"
+    if dias >= 5:
+        return "corrigir_conector", f"atraso de {dias} dias mesmo com a alternativa"
+    if dias >= 2 and alt:
+        return "fonte_alternativa", f"atraso de {dias} dias e há alternativa"
+    return "aguardar", f"atraso no {dias}º dia" + ("" if alt else ", sem alternativa")
+
+
+def extracao(etapa, estado: dict, intervencao: dict) -> dict:
+    """Triagem dos incidentes herdados. Devolve {INC: ação} dentro da capacidade da equipe."""
     ex = estado["extracao"]
     abertos = [i for i in estado["incidentes"] if i["estado"] == "aberto"]
     capacidade = ex["equipe"]
     if not abertos:
-        if ex["divida_tecnica"] > 60:
-            ata.diz("extracao", 0, f"Todas as fontes no ar, mas a dívida técnica está em {ex['divida_tecnica']:.0f}/100. "
-                    "Quanto mais alta, mais a fonte quebra: vou pedir orçamento ao comitê.")
-        else:
-            ata.diz("extracao", 0, f"Bom dia! Nenhum incidente aberto. Dívida técnica {ex['divida_tecnica']:.0f}/100, "
-                    f"equipe de {ex['equipe']}. Seguimos monitorando.")
+        etapa.diz(0, f"Nenhum incidente herdado de ontem. Equipe de {n_(ex['equipe'], 'pessoa')} livre para monitorar "
+                     f"as fontes; o orçamento de {brl(ex['orcamento_dia'])}/dia segue abatendo dívida técnica "
+                     f"(hoje em {num(ex['divida_tecnica'], 1)}/100).")
         return {}
-    ata.diz("extracao", 0, f"Bom dia. Temos {len(abertos)} incidente(s) aberto(s) e {capacidade} pessoa(s) na equipe. "
-            "Vamos priorizar.")
+    humanas = (intervencao.get("extracao") or {}).get("acoes", {})
     ordem = sorted(abertos, key=lambda i: (i["tipo"] != "falha_real", i["tipo"] != "mudanca_formato",
                                            PRIORIDADE_FONTE.get(i["fonte"], 9), i["aberto_em"]))
     acoes: dict[str, str] = {}
-    humanas = (intervencao.get("extracao") or {}).get("acoes", {})
+    linhas = []
     for inc in ordem:
-        fonte = config.FONTES[inc["fonte"]]["nome"]
-        tipo, dias = inc["tipo"], inc["dias"]
+        alt = tem_alternativa(inc["fonte"])
+        dias = inc["dias"]
         if inc["id"] in humanas:
-            acao = humanas[inc["id"]]
-            ata.conselho("extracao", f"Para {inc['id']} ({fonte}) a diretriz é `{acao}`.", intervencao.get("autor"))
-            capacidade -= config.CUSTO_ACAO[acao]
-            continue
-        alt = _tem_alternativa(inc["fonte"])
-        if tipo == "falha_real":
-            acao, porque = "corrigir_conector", "falha real no conector: só resolve mexendo no código"
-        elif tipo == "mudanca_formato":
-            acao, porque = "corrigir_conector", "a fonte mudou o formato; esperar não resolve"
-        elif tipo == "fora_do_ar":
-            if alt and dias < 4:
-                acao, porque = "fonte_alternativa", "tem fonte alternativa: o painel segue com número enquanto a fonte volta"
-            elif dias >= 2:
-                acao, porque = "corrigir_conector", f"fora do ar há {dias} dias, não dá mais para esperar"
-            else:
-                acao, porque = "aguardar", "sem alternativa; quedas assim costumam voltar em um ou dois dias"
-        else:  # atraso
-            if dias >= 3 and not alt:
-                acao, porque = "corrigir_conector", f"atraso de {dias} dias já não é normal"
-            elif dias >= 5:
-                acao, porque = "corrigir_conector", f"{dias} dias de atraso mesmo com a alternativa: hora de mexer no conector"
-            elif dias >= 1 and alt:
-                acao, porque = "fonte_alternativa", "o atraso passou de um dia: liga a alternativa"
-            else:
-                acao, porque = "aguardar", "atraso costuma se resolver sozinho"
-        custo = config.CUSTO_ACAO[acao]
-        if custo > capacidade:
-            if alt and acao == "corrigir_conector" and capacidade >= 1:
-                acao, porque = "fonte_alternativa", "não tenho gente para corrigir agora; seguro com a alternativa"
-            else:
-                ata.diz("extracao", 0, f"{inc['id']} ({fonte}) precisava de `{acao}`, mas não sobrou gente. "
-                        "Vou escalar para o comitê.")
-                acao, porque = "escalar", "falta equipe"
-                custo = 0
-        capacidade -= config.CUSTO_ACAO[acao]
-        quem = 1 if acao == "corrigir_conector" else 0
-        aberto = "aberto ontem" if dias <= 1 else f"aberto há {dias} dias"
-        if acao != inc["acao"] or dias == 0:
-            ata.diz("extracao", quem, f"{inc['id']} · {fonte} ({config.TIPOS_INCIDENTE[tipo]}, {aberto}): "
-                    f"`{acao}` — {porque}.", tipo="decisao")
+            acao, porque, origem = humanas[inc["id"]], "diretriz do conselho", "conselho"
         else:
-            ata.diz("extracao", quem, f"{inc['id']} · {fonte} ({aberto}): seguimos com `{acao}`.")
+            acao, porque = _regra_incidente(inc["tipo"], dias, alt)
+            origem = "decisao"
+            custo = config.CUSTO_ACAO[acao]
+            if custo > capacidade:
+                if alt and acao == "corrigir_conector" and capacidade >= 1:
+                    acao, porque = "fonte_alternativa", f"{porque}; sem 2 pontos livres, segura com a alternativa"
+                else:
+                    acao, porque = "escalar", f"{porque}; sem pontos livres na equipe"
+        custo = config.CUSTO_ACAO[acao]
+        antes = capacidade
+        capacidade -= min(custo, max(capacidade, 0))
         acoes[inc["id"]] = acao
-    if capacidade > 0 and ex["divida_tecnica"] > 50:
-        ata.diz("extracao", 1, f"Sobrou {capacidade} pessoa(s): usamos para pagar dívida técnica.")
+        linhas.append([inc["id"], config.FONTES[inc["fonte"]]["nome"], inc["tipo"], str(dias),
+                       "sim" if alt else "não", porque, cel(f"`{acao}`", origem), f"{custo} ({antes}→{capacidade})"])
+    b = etapa.tabela("Triagem dos incidentes herdados", ["Incidente", "Fonte", "Tipo", "Dias aberto", "Alternativa?",
+                     "Regra aplicada", "Ação", "Pontos (livres)"], linhas,
+                     nota=f"Capacidade do dia = equipe de {ex['equipe']} = {n_(ex['equipe'], 'ponto')}.")
+    etapa.diz(0, f"Herdamos {n_(len(abertos), 'incidente')} e temos {n_(ex['equipe'], 'ponto')} de equipe. "
+                 "Atendo na ordem: falha real, mudança de formato, depois pela importância da fonte.", bloco=b)
+    for inc in ordem:
+        acao = acoes[inc["id"]]
+        nome = config.FONTES[inc["fonte"]]["nome"]
+        if inc["id"] in humanas:
+            etapa.conselho(f"{inc['id']} ({nome}): a diretriz manda `{acao}`.", intervencao.get("autor"), bloco=b)
+            continue
+        linha = next(ln for ln in linhas if ln[0] == inc["id"])
+        mudou = acao != inc.get("acao")
+        etapa.diz(1 if acao == "corrigir_conector" else 0,
+                  f"{inc['id']} · {nome} ({config.TIPOS_INCIDENTE[inc['tipo']]}, {inc['dias']}º dia): "
+                  f"{'passa para' if mudou else 'segue em'} `{acao}` — {linha[5]}.",
+                  tipo="decisao" if mudou else "fala", bloco=b)
     return acoes
 
 
 # ====================================================================== Dashboards (09:00)
 LENTOS = {"selic", "ipca_12m", "focus_ipca", "focus_selic"}
 ESTIMAVEIS = {"cdi", "dolar", "ibov", "bova11"}
+REGRAS_DASHBOARDS = [
+    "Número que muda devagar (Selic, IPCA 12m, Focus): `usar_ontem` — repetir o último é seguro.",
+    "CDI: `estimar` pela Selic (o CDI fica cerca de 0,10 p.p. abaixo da Selic meta).",
+    "Preço (dólar, Ibovespa, BOVA11) com 1 dia de atraso e credibilidade ≥ 70%, sem erro de estimativa "
+    "nos últimos 10 dias úteis: `estimar` pela tendência da última semana.",
+    "Preço de ativo da carteira com 3 dias ou mais de atraso: `suspender` (melhor não publicar do que induzir o "
+    "comitê ao erro; o ativo fica congelado).",
+    "Nos demais casos: `usar_ontem`, com aviso de defasagem.",
+    "Confiança publicada: dado em dia 100%; via fonte alternativa 90%; `usar_ontem` 100% − 20 p.p. por dia de "
+    "atraso (mínimo 20%); `estimar` 60%; `suspender` 0%.",
+]
 
 
-def dashboards(estado: dict, d: date, defasados: dict, ata: Ata, intervencao: dict) -> dict:
-    """`defasados`: {indicador: dias de atraso}. Devolve {indicador: estratégia}."""
-    db = estado["dashboards"]
-    mem = memoria(estado)
-    cred = db["credibilidade"]
-    humanas = (intervencao.get("dashboards") or {}).get("estrategias", {})
+def memoria(estado: dict) -> dict:
+    m = estado.setdefault("times", {})
+    m.setdefault("erros", {})
+    m.setdefault("comite", {"ultimo": None, "contratou": None})
+    return m
+
+
+def dashboards(etapa, estado: dict, d: date, defasados: dict, intervencao: dict) -> tuple[dict, str | None]:
+    """`defasados`: {indicador: dias de atraso}. Devolve ({indicador: estratégia}, bloco)."""
     if not defasados:
-        ata.diz("dashboards", 0, f"Todos os números chegaram em dia. Credibilidade dos painéis em {_pct(cred, 0)}. "
-                "Publicando.")
-        return {}
-    nomes = ", ".join(config.INDICADORES[i]["nome"] for i in defasados)
-    ata.diz("dashboards", 0, f"Faltam dados novos para: {nomes}. Credibilidade em {_pct(cred, 0)}.")
+        return {}, None
+    mem = memoria(estado)
+    cred = estado["dashboards"]["credibilidade"]
+    humanas = (intervencao.get("dashboards") or {}).get("estrategias", {})
     out: dict[str, str] = {}
+    linhas = []
     for ind, atraso in defasados.items():
-        nome = config.INDICADORES[ind]["nome"]
-        if ind in humanas:
-            out[ind] = humanas[ind]
-            ata.conselho("dashboards", f"{nome}: publicar com `{humanas[ind]}`.", intervencao.get("autor"))
-            continue
+        meta = config.INDICADORES[ind]
         errou = mem["erros"].get(ind)
-        errou_recente = errou and len(calendario.dias_uteis_entre(date.fromisoformat(errou), d)) <= 10
-        ativo = config.INDICADORES[ind]["ativo"]
-        if ind in LENTOS:
-            est, porque = "usar_ontem", "número que muda devagar; repetir o último é seguro"
+        errou_recente = bool(errou) and len(calendario.dias_uteis_entre(date.fromisoformat(errou), d)) <= 10
+        origem = "decisao"
+        if ind in humanas:
+            est, porque, origem = humanas[ind], "diretriz do conselho", "conselho"
+        elif ind in LENTOS:
+            est, porque = "usar_ontem", "muda devagar"
         elif ind == "cdi":
-            est, porque = "estimar", "o CDI acompanha a Selic, dá para estimar com folga"
+            est, porque = "estimar", "CDI acompanha a Selic"
         elif ind in ESTIMAVEIS and atraso == 1 and cred >= 0.7 and not errou_recente:
-            est, porque = "estimar", "só um dia de atraso; estimo pela tendência da última semana"
-        elif ativo and ativo != "caixa" and atraso >= 3:
-            est, porque = "suspender", f"{atraso} dias sem dado: prefiro não publicar a induzir o comitê ao erro"
+            est, porque = "estimar", f"1 dia de atraso, credibilidade {pct(cred, 0)} ≥ 70%"
+        elif meta["ativo"] and meta["ativo"] != "caixa" and atraso >= 3:
+            est, porque = "suspender", f"{atraso} dias sem preço de ativo da carteira"
         else:
             est = "usar_ontem"
-            porque = ("errei a estimativa disso há pouco, vou de último valor" if errou_recente
-                      else "repito o último valor com aviso de defasagem")
+            if errou_recente:
+                porque = f"errou a estimativa em {dm(errou)}: volta a repetir o último"
+            elif ind in ESTIMAVEIS and atraso == 1:
+                porque = f"credibilidade {pct(cred, 0)} < 70%: não arrisca estimar"
+            elif ind in ESTIMAVEIS:
+                porque = f"{atraso} dias de atraso: estimar ficaria arriscado"
+            elif ind in ("taxa_pre", "taxa_ipca"):
+                porque = "taxa de título não se estima com segurança: repete a última"
+            else:
+                porque = "repete o último, com aviso de atraso"
         out[ind] = est
-        ata.diz("dashboards", 1 if est == "estimar" else 0, f"{nome} ({atraso} dia(s) atrasado): `{est}` — {porque}.",
-                tipo="decisao")
-    return out
+        linhas.append([meta["nome"], str(atraso), porque, cel(f"`{est}`", origem)])
+    b = etapa.tabela("Estratégia para cada número atrasado", ["Indicador", "Dias de atraso", "Regra aplicada",
+                     "Estratégia"], linhas)
+    for ind, est in out.items():
+        nome = config.INDICADORES[ind]["nome"]
+        if ind in humanas:
+            etapa.conselho(f"{nome}: publicar com `{est}`.", intervencao.get("autor"), bloco=b)
+        else:
+            porque = next(ln[2] for ln in linhas if ln[0] == nome)
+            etapa.diz(1 if est == "estimar" else 0, f"{nome}: {n_(defasados[ind], 'dia')} de atraso → `{est}` "
+                      f"({porque}).", tipo="decisao", bloco=b)
+    return out, b
 
 
 def registrar_erro_estimativa(estado: dict, ind: str, d: date) -> None:
     memoria(estado)["erros"][ind] = d.isoformat()
 
 
-# ====================================================================== Executivos (10:00)
-def _lembrar_numeros(estado: dict) -> None:
-    """O comitê guarda os números publicados com dado real (não estimado) para ver tendência."""
-    serie = memoria(estado)["serie"]
-    for ind, reg in estado["dashboards"]["indicadores"].items():
-        if reg.get("valor") is None or reg.get("estrategia") or not reg.get("data_ref"):
-            continue
-        s = serie.setdefault(ind, [])
-        if s and s[-1][0] >= reg["data_ref"]:
-            continue
-        s.append([reg["data_ref"], reg["valor"]])
-        del s[:-MEMORIA]
+# ====================================================================== Comitê (10:00)
+FONTE_DO_ATIVO = {"dolar": "dolar", "bolsa": "bova11", "prefixado": "taxa_pre", "inflacao": "taxa_ipca"}
+MODELO_PADRAO = {
+    "sensibilidade": {"prefixado": 0.10, "inflacao": 0.10, "dolar": 0.05, "bolsa": 0.10},
+    "escala_premio_prefixado": 2.0,
+    "juro_real_neutro": 5.5,
+    "escala_juro_real": 2.0,
+    "escala_tendencia_bolsa": 0.08,
+    "escala_tendencia_dolar": 0.05,
+    "passo_max": 0.05,
+    "zona_morta": 0.02,
+    "confianca_minima": 0.5,
+    "gatilho_variacao_dia": 0.03,
+    "gatilho_resgate": 0.01,
+    "janela_tendencia": 20,
+}
+REGRAS_GESTORA = {
+    "folego_minimo": 15,       # dias de custo que o caixa da gestora precisa cobrir antes de cortar
+    "folego_para_gastar": 40,  # dias de custo para poder contratar ou subir orçamento
+    "passo_orcamento": 500,
+    "divida_para_orcamento": 50,
+    "divida_para_contratar": 65,
+    "divida_para_enxugar": 25,
+    "dias_entre_contratacoes": 10,
+}
 
 
-def _tendencia(estado: dict, ind: str, n: int) -> float | None:
-    s = memoria(estado)["serie"].get(ind, [])
-    if len(s) < max(3, n // 2):
-        return None
-    janela = s[-(n + 1):]
-    return janela[-1][1] / janela[0][1] - 1
+def modelo(politicas: dict) -> dict:
+    m = dict(MODELO_PADRAO)
+    m.update(politicas.get("executivos", {}).get("modelo", {}))
+    m["sensibilidade"] = {**MODELO_PADRAO["sensibilidade"], **m.get("sensibilidade", {})}
+    return m
 
 
-def _numero(estado: dict, ind: str) -> tuple[float | None, float]:
-    reg = estado["dashboards"]["indicadores"].get(ind, {})
-    return reg.get("valor"), reg.get("confianca", 0.0)
+def _clamp(v: float, lo: float = -1.0, hi: float = 1.0) -> float:
+    return max(lo, min(hi, v))
 
 
-def _pautas(estado: dict, d: date, ctx: dict) -> list[str]:
-    """O que faz o comitê de investimentos se reunir hoje (além da reunião de segunda)."""
-    pautas = []
+def _ind(estado: dict, ind: str) -> dict:
+    return estado["dashboards"]["indicadores"].get(ind, {})
+
+
+def sinais(estado: dict, politicas: dict) -> dict:
+    """Sinal de cada ativo (−1 a +1) com a conta, só com números publicados no painel de hoje."""
+    m = modelo(politicas)
+    out = {}
+
+    def conf(*inds):
+        return min(_ind(estado, i).get("confianca", 0.0) for i in inds)
+
+    pre, foc = _ind(estado, "taxa_pre").get("valor"), _ind(estado, "focus_selic").get("valor")
+    if pre is not None and foc is not None:
+        premio = pre - foc
+        s = _clamp(premio / m["escala_premio_prefixado"])
+        out["prefixado"] = {"sinal": s, "confianca": conf("taxa_pre", "focus_selic"),
+                            "numeros": f"Prefixado {num(pre)}% · Focus Selic {num(foc)}%",
+                            "conta": f"({num(pre)} − {num(foc)}) ÷ {num(m['escala_premio_prefixado'], 1)} = {sinal(s)}",
+                            "leitura": f"paga {num(pre)}%, {num(abs(premio))} p.p. {'acima' if premio >= 0 else 'abaixo'} "
+                                       f"da Selic que o mercado espera no fim do ano ({num(foc)}%)"}
+    real = _ind(estado, "taxa_ipca").get("valor")
+    if real is not None:
+        s = _clamp((real - m["juro_real_neutro"]) / m["escala_juro_real"])
+        out["inflacao"] = {"sinal": s, "confianca": conf("taxa_ipca"), "numeros": f"IPCA+ {num(real)}% real",
+                           "conta": f"({num(real)} − {num(m['juro_real_neutro'], 1)}) ÷ {num(m['escala_juro_real'], 1)} "
+                                    f"= {sinal(s)}",
+                           "leitura": f"paga {num(real)}% acima da inflação, {num(abs(real - m['juro_real_neutro']))} "
+                                      f"p.p. {'acima' if real >= m['juro_real_neutro'] else 'abaixo'} da nossa referência "
+                                      f"de juro real ({num(m['juro_real_neutro'], 1)}%)"}
+    for ativo, ind, chave in (("bolsa", "bova11", "escala_tendencia_bolsa"), ("dolar", "dolar", "escala_tendencia_dolar")):
+        t = _ind(estado, ind).get("tendencia")
+        if t:
+            s = _clamp(t["valor"] / m[chave])
+            out[ativo] = {"sinal": s, "confianca": conf(ind),
+                          "numeros": f"{config.INDICADORES[ind]['nome'].split(' (')[0]} {pct(t['valor'], 1, True)} "
+                                     f"em {t['n']} pregões",
+                          "conta": f"{pct(t['valor'], 2, True)} ÷ {pct(m[chave], 0)} = {sinal(s)}",
+                          "leitura": f"tendência de {pct(t['valor'], 1, True)} de {dm(t['de'])} a {dm(t['ate'])}"}
+    return out
+
+
+def _primeiro_dia_util_da_semana(d: date) -> bool:
+    return calendario.dia_util_anterior(d).isocalendar()[:2] != d.isocalendar()[:2]
+
+
+def pauta(estado: dict, d: date, politicas: dict, ctx: dict) -> tuple[list[list], list[str]]:
+    """Gatilhos da reunião de investimentos: (linhas da tabela, motivos que dispararam)."""
+    m = modelo(politicas)
+    mem = memoria(estado)
     alertas = estado["alertas"]
-    if any(k.startswith("DESENQ-") for k in alertas):
-        pautas.append("desenquadramento")
-    if ctx["fluxo_pct"] < -0.01:
-        pautas.append(f"resgate de {_pct(-ctx['fluxo_pct'])} do PL")
-    if estado["gestora"]["caixa"] < 0:
-        pautas.append("caixa da gestora negativo")
-    if any(k.startswith("ESCALA-") for k in alertas):
-        pautas.append("Extração pediu reforço")
+    linhas, motivos = [], []
+
+    def gatilho(nome, hoje, limite, dispara):
+        linhas.append([nome, hoje, limite, cel("sim" if dispara else "não", "regra")])
+        if dispara:
+            motivos.append(nome.lower())
+
+    gatilho("Reunião inaugural", "primeira reunião" if mem["comite"]["ultimo"] is None else
+            f"última em {dm(mem['comite']['ultimo'])}", "nunca houve reunião", mem["comite"]["ultimo"] is None)
+    gatilho("Reunião semanal", calendario.DIAS_SEMANA[d.weekday()], "primeiro dia útil da semana",
+            mem["comite"]["ultimo"] is not None and _primeiro_dia_util_da_semana(d))
+    fl = ctx["fluxo_ontem_pct"]
+    gatilho("Resgate relevante ontem", pct(fl, 2, True) + " do PL", f"≤ −{pct(m['gatilho_resgate'], 0)}",
+            fl <= -m["gatilho_resgate"])
+    desenq = sorted(k[7:] for k in alertas if k.startswith("DESENQ-"))
+    gatilho("Desenquadramento", ", ".join(desenq) or "nenhum", "algum ativo fora do limite", bool(desenq))
+    caixa = estado["gestora"]["caixa"]
+    gatilho("Caixa da gestora", brl(caixa), "negativo", caixa < 0)
+    esc = sorted(k[7:] for k in alertas if k.startswith("ESCALA-"))
+    gatilho("Pedido de reforço da Extração", ", ".join(esc) or "nenhum", "algum incidente escalado", bool(esc))
     for ind in ("bova11", "dolar"):
-        t = _tendencia(estado, ind, 1)
-        if t is not None and abs(t) >= 0.03:
-            pautas.append(f"{config.INDICADORES[ind]['nome']} {'+' if t > 0 else ''}{_pct(t)} no dia")
-    return pautas
+        reg = _ind(estado, ind)
+        v, ant = reg.get("valor"), reg.get("valor_anterior")
+        var = (v / ant - 1) if v is not None and ant else None
+        gatilho(f"{config.INDICADORES[ind]['nome'].split(' (')[0]} no último pregão", pct(var, 2, True) if var is not None else "—",
+                f"|variação| ≥ {pct(m['gatilho_variacao_dia'], 0)}",
+                var is not None and abs(var) >= m["gatilho_variacao_dia"])
+    return linhas, motivos
 
 
-def _alvo_desejado(estado: dict, politicas: dict, ctx: dict, ata: Ata) -> tuple[dict, list[str]]:
-    """A tese do CIO: para onde cada ativo deveria ir, com os números do painel e sua confiança."""
+def alocacao(estado: dict, politicas: dict, ctx: dict) -> tuple[dict, list[list], dict]:
+    """Modelo de alocação: alvo = neutro + sensibilidade × sinal, dentro das travas. Devolve (novo alvo, linhas da
+    tabela, desfecho de cada ativo: {"sinal", "antes", "depois", "trava"})."""
+    m = modelo(politicas)
     lim = politicas["fundo"]["limites"]
+    neutro = politicas["fundo"]["alocacao_inicial"]
     alvo = dict(estado["executivos"]["alvo"])
     novo = dict(alvo)
-    motivos = []
-
-    def quer(ativo: str, destino: float, porque: str) -> None:
-        ind = FONTE_DO_ATIVO[ativo]
-        _, conf = _numero(estado, ind)
-        if ativo in ctx["congelados"] or conf < 0.5:
-            ata.diz("executivos", 2, f"{config.ATIVOS[ativo]}: o número tem confiança {_pct(conf, 0)}. Não mexemos no que "
-                    "não enxergamos.")
-            return
-        mn, mx = lim[ativo]
-        destino = min(mx, max(mn, destino))
-        passo = max(-PASSO_MAX, min(PASSO_MAX, destino - alvo[ativo]))
-        if abs(passo) >= 0.02:
-            novo[ativo] = round(alvo[ativo] + passo, 4)
-            motivos.append(f"{config.ATIVOS[ativo]} {'+' if passo > 0 else ''}{passo * 100:.0f} p.p. ({porque})")
-
-    taxa_ipca, _ = _numero(estado, "taxa_ipca")
-    if taxa_ipca is not None:
-        destino = 0.25 if taxa_ipca >= 7 else 0.2 if taxa_ipca >= 6 else 0.1 if taxa_ipca < 5 else 0.15
-        ata.diz("executivos", 1, f"Tesouro IPCA+ pagando {_num(taxa_ipca)}% acima da inflação.")
-        quer("inflacao", destino, f"juro real de {_num(taxa_ipca)}%")
-    selic, _ = _numero(estado, "selic")
-    focus_selic, _ = _numero(estado, "focus_selic")
-    if selic is not None and focus_selic is not None:
-        corte = selic - focus_selic
-        if corte >= 0.75:
-            destino, leitura = 0.25, f"mercado espera cortes de {_num(corte)} p.p. na Selic"
-        elif corte <= -0.25:
-            destino, leitura = 0.05, f"mercado espera alta de {_num(-corte)} p.p. na Selic"
+    sg = sinais(estado, politicas)
+    desfecho: dict[str, dict] = {}
+    for ativo in ("prefixado", "inflacao", "bolsa", "dolar"):
+        s = sg.get(ativo)
+        sens = m["sensibilidade"][ativo]
+        trava = ""
+        if s is None:
+            desejado = alvo[ativo]
+            trava = ("histórico curto para medir a tendência" if ativo in ("bolsa", "dolar")
+                     else "sem número publicado no painel")
         else:
-            destino, leitura = 0.15, "Selic estável no horizonte"
-        ata.diz("executivos", 1, f"Selic em {_num(selic)}% e Focus para o fim do ano em {_num(focus_selic)}%: {leitura}.")
-        quer("prefixado", destino, leitura)
-    t_bolsa = _tendencia(estado, "bova11", 20)
-    if t_bolsa is not None:
-        destino = 0.25 if t_bolsa > 0.04 else 0.2 if t_bolsa > 0 else 0.1 if t_bolsa < -0.04 else 0.15
-        if ctx["defensivo"]:
-            destino = min(destino, alvo["bolsa"])
-        ata.diz("executivos", 1, f"Bolsa (BOVA11) {'+' if t_bolsa >= 0 else ''}{_pct(t_bolsa)} em 20 pregões.")
-        quer("bolsa", destino, f"tendência de {'+' if t_bolsa >= 0 else ''}{_pct(t_bolsa)} em 20 pregões")
-    t_dolar = _tendencia(estado, "dolar", 20)
-    if t_dolar is not None:
-        destino = 0.15 if t_dolar > 0.03 else 0.05 if t_dolar < -0.03 else 0.1
-        if ctx["defensivo"]:
-            destino = max(destino, alvo["dolar"])  # dólar é proteção: na defensiva não se reduz
-        quer("dolar", destino, f"dólar {'+' if t_dolar >= 0 else ''}{_pct(t_dolar)} em 20 pregões")
-    # o caixa fecha a conta, dentro do limite; se não couber, tira proporcionalmente do risco
+            desejado = neutro[ativo] + sens * s["sinal"]
+        final = desejado
+        if s is not None:
+            if ativo in ctx["congelados"]:
+                final, trava = alvo[ativo], "congelado: o número está defasado ou suspenso"
+            elif s["confianca"] < m["confianca_minima"]:
+                final, trava = alvo[ativo], (f"o número tem confiança {pct(s['confianca'], 0)}, abaixo do mínimo de "
+                                             f"{pct(m['confianca_minima'], 0)}")
+            else:
+                if ctx["defensivo"] and ativo == "bolsa" and final > alvo[ativo]:
+                    final, trava = alvo[ativo], "postura defensiva: não aumenta bolsa"
+                if ctx["defensivo"] and ativo == "dolar" and final < alvo[ativo]:
+                    final, trava = alvo[ativo], "postura defensiva: dólar é proteção, não reduz"
+                mn, mx = lim[ativo]
+                if final < mn or final > mx:
+                    trava = f"limite da política {pct(mn, 0)}–{pct(mx, 0)}"
+                    final = min(mx, max(mn, final))
+                passo = final - alvo[ativo]
+                if abs(passo) > m["passo_max"]:
+                    final = alvo[ativo] + (m["passo_max"] if passo > 0 else -m["passo_max"])
+                    trava = f"passo máximo de {pp(m['passo_max'], 0)[1:]} por reunião"
+                if abs(final - alvo[ativo]) < m["zona_morta"] - 1e-9:
+                    final = alvo[ativo]
+                    trava = trava or f"mudança menor que {pp(m['zona_morta'], 0)[1:]}: não vale o custo de girar"
+        novo[ativo] = round(final, 4)
+        desfecho[ativo] = {"s": s, "desejado": desejado, "trava": trava}
+    # o caixa fecha a conta; se ficar abaixo do mínimo, os ativos de risco cedem proporcionalmente
     risco = [a for a in novo if a != "caixa"]
     novo["caixa"] = round(1 - sum(novo[a] for a in risco), 4)
-    mn, mx = lim["caixa"]
+    mn, _ = lim["caixa"]
+    nota_caixa = "o que sobra"
     if novo["caixa"] < mn:
         falta = mn - novo["caixa"]
         soma = sum(novo[a] for a in risco)
         for a in risco:
             novo[a] = round(novo[a] - falta * novo[a] / soma, 4)
         novo["caixa"] = round(1 - sum(novo[a] for a in risco), 4)
-    return novo, motivos
+        nota_caixa = f"mínimo de {pct(mn, 0)}: os outros cederam proporcionalmente"
+        for a in risco:
+            desfecho[a]["trava"] = (desfecho[a]["trava"] + "; " if desfecho[a]["trava"] else "") + "cedeu para o caixa mínimo"
+    linhas = []
+    for ativo in risco:
+        s, des = desfecho[ativo]["s"], desfecho[ativo]
+        mudou = abs(novo[ativo] - alvo[ativo]) > 1e-9
+        des.update(antes=alvo[ativo], depois=novo[ativo], mudou=mudou)
+        sens = m["sensibilidade"][ativo]
+        linhas.append([
+            config.ATIVOS[ativo],
+            cel(s["numeros"] + f" · confiança {pct(s['confianca'], 0)}", "real") if s else "—",
+            cel(s["conta"], "derivado") if s else "—",
+            pct(neutro[ativo], 1),
+            cel(f"{pct(neutro[ativo], 1)} + {num(sens * 100, 0)} p.p. × {sinal(s['sinal'])} = {pct(des['desejado'], 1)}",
+                "derivado") if s else "—",
+            pct(alvo[ativo], 1), cel(pct(novo[ativo], 1), "decisao"),
+            des["trava"] or ("segue o modelo" if mudou else "mantém")])
+    linhas.append([config.ATIVOS["caixa"], "—", "—", pct(neutro["caixa"], 1), "1 − soma dos outros",
+                   pct(alvo["caixa"], 1), cel(pct(novo["caixa"], 1), "decisao"), nota_caixa])
+    desfecho["caixa"] = {"antes": alvo["caixa"], "depois": novo["caixa"], "mudou": abs(novo["caixa"] - alvo["caixa"]) > 1e-9}
+    return novo, linhas, desfecho
 
 
-def _equipe_e_orcamento(estado: dict, d: date, politicas: dict, ata: Ata) -> dict:
+def equipe_e_orcamento(estado: dict, d: date, politicas: dict) -> tuple[dict, list[list], list[str], dict]:
     ex, g, pg = estado["extracao"], estado["gestora"], politicas["gestora"]
+    R = REGRAS_GESTORA
     custo_dia = pg["custo_fixo_dia"] + ex["equipe"] * pg["custo_engenheiro_dia"] + ex["orcamento_dia"]
+    folego = g["caixa"] / custo_dia if custo_dia else 999
     receita = g.get("receita_dia") or 0.0
-    folego = g["caixa"] / custo_dia if custo_dia else 99
     abertos = [i for i in estado["incidentes"] if i["estado"] == "aberto"]
     escalas = [k for k in estado["alertas"] if k.startswith("ESCALA-")]
-    out = {}
-    if g["caixa"] < 0 or folego < 15:
+    mem = memoria(estado)["comite"]
+    ultima = mem.get("contratou")
+    recente = bool(ultima) and len(calendario.dias_uteis_entre(date.fromisoformat(ultima), d)) < R["dias_entre_contratacoes"]
+    out: dict = {}
+    frases: list[str] = []
+    linhas = []
+
+    def regra(nome, condicao, vale, efeito):
+        linhas.append([nome, condicao, cel("sim" if vale else "não", "regra"), efeito if vale else "—"])
+
+    corte = g["caixa"] < 0 or folego < R["folego_minimo"]
+    efeito = "—"
+    if corte:
         if ex["orcamento_dia"] > 0:
-            out["orcamento_extracao_dia"] = max(0.0, ex["orcamento_dia"] - 500)
-            ata.diz("executivos", 0, f"Caixa da gestora em {_brl(g['caixa'])} ({folego:.0f} dias de custo). "
-                    f"Cortamos o orçamento da Extração para {_brl(out['orcamento_extracao_dia'])}/dia.", tipo="decisao")
+            out["orcamento_extracao_dia"] = max(0.0, ex["orcamento_dia"] - R["passo_orcamento"])
+            efeito = f"orçamento {brl(ex['orcamento_dia'])} → {brl(out['orcamento_extracao_dia'])}/dia"
         elif ex["equipe"] > 2:
             out["equipe_extracao"] = ex["equipe"] - 1
-            ata.diz("executivos", 0, f"Caixa apertado ({_brl(g['caixa'])}). Equipe de Extração cai para "
-                    f"{out['equipe_extracao']}.", tipo="decisao")
-        return out
-    comite = memoria(estado)["comite"]
-    ultima = comite.get("contratou")
-    recente = ultima and len(calendario.dias_uteis_entre(date.fromisoformat(ultima), d)) < 10
-    precisa = escalas or (len(abertos) >= 3 and ex["equipe"] < 4) or ex["divida_tecnica"] > 65
-    if precisa and recente:
-        ata.diz("executivos", 0, f"Contratamos para a Extração em {ultima[8:10]}/{ultima[5:7]}: esperamos a equipe nova "
-                "render antes de contratar de novo.")
-    elif precisa and ex["equipe"] < pg["equipe_max"] and folego > 40:
+            efeito = f"equipe {ex['equipe']} → {out['equipe_extracao']}"
+        frases.append(f"o caixa da gestora cobre só {num(folego, 0)} dias de custo: {efeito}")
+    regra("Cortar custos", f"fôlego {num(folego, 0)} dias < {R['folego_minimo']}?", corte, efeito)
+    precisa = bool(escalas) or (len(abertos) >= 3 and ex["equipe"] < 4) or ex["divida_tecnica"] > R["divida_para_contratar"]
+    pode = not corte and folego > R["folego_para_gastar"] and ex["equipe"] < pg["equipe_max"] and not recente
+    contrata = precisa and pode
+    if contrata:
         out["equipe_extracao"] = ex["equipe"] + 1
-        comite["contratou"] = d.isoformat()
-        motivo = "a Extração pediu reforço" if escalas else (
-            f"{len(abertos)} incidentes abertos" if len(abertos) >= 3 else f"dívida técnica em {ex['divida_tecnica']:.0f}")
-        ata.diz("executivos", 0, f"Aprovado: +1 pessoa na Extração ({motivo}). Equipe vai para {out['equipe_extracao']}.",
-                tipo="decisao")
-    if ex["divida_tecnica"] > 50 and ex["orcamento_dia"] < pg["orcamento_max_dia"] and folego > 40:
-        out["orcamento_extracao_dia"] = min(pg["orcamento_max_dia"], ex["orcamento_dia"] + 500)
-        ata.diz("executivos", 0, f"Dívida técnica em {ex['divida_tecnica']:.0f}/100: orçamento da Extração sobe para "
-                f"{_brl(out['orcamento_extracao_dia'])}/dia.", tipo="decisao")
-    elif not abertos and ex["divida_tecnica"] < 25 and ex["equipe"] > 3 and receita < custo_dia:
+        mem["contratou"] = d.isoformat()
+        motivo = ("a Extração escalou " + ", ".join(k[7:] for k in escalas) if escalas else
+                  f"{len(abertos)} incidentes abertos" if len(abertos) >= 3 else f"dívida técnica {num(ex['divida_tecnica'], 0)}")
+        frases.append(f"+1 pessoa na Extração ({motivo}): equipe {ex['equipe']} → {out['equipe_extracao']}")
+    regra("Contratar para a Extração",
+          f"escalada: {'sim' if escalas else 'não'}; incidentes {len(abertos)} (≥3 com equipe < 4); dívida "
+          f"{num(ex['divida_tecnica'], 0)} (> {R['divida_para_contratar']}); fôlego {num(folego, 0)} (> {R['folego_para_gastar']})"
+          + (f"; última contratação {dm(ultima)}" if ultima else ""), contrata,
+          f"equipe {ex['equipe']} → {ex['equipe'] + 1}")
+    sobe = (not corte and ex["divida_tecnica"] > R["divida_para_orcamento"] and folego > R["folego_para_gastar"]
+            and ex["orcamento_dia"] < pg["orcamento_max_dia"])
+    if sobe:
+        out["orcamento_extracao_dia"] = min(pg["orcamento_max_dia"], ex["orcamento_dia"] + R["passo_orcamento"])
+        frases.append(f"dívida técnica em {num(ex['divida_tecnica'], 0)}: orçamento {brl(ex['orcamento_dia'])} → "
+                      f"{brl(out['orcamento_extracao_dia'])}/dia")
+    regra("Subir orçamento da Extração", f"dívida {num(ex['divida_tecnica'], 0)} > {R['divida_para_orcamento']} e "
+          f"fôlego {num(folego, 0)} > {R['folego_para_gastar']}?", sobe,
+          f"orçamento +{brl(R['passo_orcamento'])}/dia")
+    enxuga = (not corte and not contrata and not abertos and ex["divida_tecnica"] < R["divida_para_enxugar"]
+              and ex["equipe"] > 3 and receita < custo_dia)
+    if enxuga:
         out["equipe_extracao"] = ex["equipe"] - 1
-        ata.diz("executivos", 0, f"Fontes estáveis e dívida em {ex['divida_tecnica']:.0f}: a equipe de Extração volta para "
-                f"{out['equipe_extracao']} para aliviar os custos.", tipo="decisao")
-    return out
+        frases.append(f"fontes estáveis e dívida em {num(ex['divida_tecnica'], 0)}: equipe {ex['equipe']} → "
+                      f"{out['equipe_extracao']} para aliviar custos")
+    regra("Enxugar a Extração", f"sem incidentes, dívida {num(ex['divida_tecnica'], 0)} < {R['divida_para_enxugar']}, "
+          f"equipe {ex['equipe']} > 3 e receita {brl(receita)} < custo {brl(custo_dia)}?", enxuga,
+          f"equipe {ex['equipe']} → {ex['equipe'] - 1}")
+    return out, linhas, frases, {"custo_dia": custo_dia, "folego": folego}
 
 
-def executivos(estado: dict, d: date, politicas: dict, ctx: dict, ata: Ata, intervencao: dict) -> dict:
-    """Reunião diária dos executivos e, às segundas ou quando há pauta, o comitê de investimentos.
-
-    `ctx`: {"congelados", "excesso_21d", "fluxo_pct"}. Devolve o bloco `executivos` da decisão."""
-    _lembrar_numeros(estado)
-    mem = memoria(estado)
+def comite(etapa, estado: dict, d: date, politicas: dict, ctx: dict, intervencao: dict) -> dict:
+    """Reunião dos executivos. `ctx`: congelados, excesso, janela, fluxo_ontem_pct, cota_ontem, defensivo.
+    Devolve o bloco `executivos` da decisão do dia."""
     db = estado["dashboards"]
-    ctx = dict(ctx, defensivo=db["credibilidade"] < 0.6 or ctx["excesso_21d"] < -0.01)
+    mem = memoria(estado)
     humano = intervencao.get("executivos") or {}
     out: dict = {}
-    pautas = _pautas(estado, d, ctx)
-    segunda = mem["comite"]["ultimo"] is None or date.fromisoformat(mem["comite"]["ultimo"]).isocalendar()[:2] != d.isocalendar()[:2]
-    ata.diz("executivos", 0, f"Bom dia. Fundo {'+' if ctx['excesso_21d'] >= 0 else ''}{_pct(ctx['excesso_21d'], 2)} contra o "
-            f"CDI em 21 dias, caixa da gestora {_brl(estado['gestora']['caixa'])}, credibilidade dos painéis "
-            f"{_pct(db['credibilidade'], 0)}.")
-    destaques = []
-    for ind in ("dolar", "bova11", "taxa_pre", "taxa_ipca"):
-        reg = db["indicadores"].get(ind, {})
-        v, ant = reg.get("valor"), reg.get("valor_anterior")
-        if v is None:
-            continue
-        nome = config.INDICADORES[ind]["nome"].split(" (")[0]
-        var = f" ({'+' if v >= ant else ''}{_pct(v / ant - 1, 2)})" if ant else ""
-        aviso = "" if reg.get("confianca", 1) >= 0.95 else f" [confiança {_pct(reg.get('confianca', 0), 0)}]"
-        destaques.append(f"{nome} {_num(v)}{var}{aviso}")
-    if destaques:
-        ata.diz("executivos", 1, "No painel de hoje: " + "; ".join(destaques) + ".")
-    if ctx["congelados"]:
-        ata.diz("executivos", 2, "Sem número confiável para " + ", ".join(config.ATIVOS[a] for a in ctx["congelados"])
-                + ": esses ficam como estão.")
-    if humano.get("alocacao"):
-        out["alocacao"] = humano["alocacao"]
-        ata.conselho("executivos", "Alocação definida pelo conselho: " + ", ".join(
-            f"{config.ATIVOS[a]} {_pct(w, 0)}" for a, w in humano["alocacao"].items()) + ".", intervencao.get("autor"))
-    elif segunda or pautas:
-        mem["comite"]["ultimo"] = d.isoformat()
-        motivo = "reunião semanal" if segunda and not pautas else "pauta: " + "; ".join(pautas)
-        ata.diz("executivos", 1, f"Comitê de investimentos ({motivo}).")
-        if ctx["defensivo"]:
-            ata.diz("executivos", 2, "Postura defensiva: " + ("os painéis estão pouco confiáveis" if db["credibilidade"] < 0.6
-                    else "estamos perdendo do CDI") + ". Não aumentamos risco hoje.")
-        novo, motivos = _alvo_desejado(estado, politicas, ctx, ata)
-        if motivos:
-            out["alocacao"] = novo
-            ata.diz("executivos", 1, "Decidido: " + "; ".join(motivos) + ". Caixa fica em " + _pct(novo["caixa"], 0) + ".",
-                    tipo="decisao")
+
+    # abertura: o que o comitê está vendo
+    linhas = []
+    for ind, reg in db["indicadores"].items():
+        if reg.get("valor") is None:
+            v = cel("não publicado", "decisao")
         else:
-            ata.diz("executivos", 1, "Carteira coerente com os números. Mantemos o alvo.", tipo="decisao")
+            v = cel(config.formatar(ind, reg["valor"]), "derivado" if reg.get("estrategia") == "estimar" else "real",
+                    "estimado pelos Dashboards" if reg.get("estrategia") == "estimar" else None)
+        linhas.append([reg["nome"], v, data(reg.get("data_ref")), reg.get("estrategia") or "em dia",
+                       pct(reg.get("confianca", 0), 0)])
+    b_painel = etapa.tabela("O que o comitê recebeu dos Dashboards (09h)", ["Indicador", "Valor", "Referência",
+                            "Situação", "Confiança"], linhas,
+                            nota="O comitê só enxerga estes números: nunca o mercado diretamente.")
+    exc, jan = ctx["excesso"], ctx["janela"]
+    if jan == 0:
+        abertura = (f"Bom dia. Primeiro dia do fundo: começamos com cota 1,000000 e patrimônio "
+                    f"{mi(estado['fundo']['pl'])}, na alocação neutra da política.")
     else:
-        ata.diz("executivos", 1, "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.")
-    for campo in ("equipe_extracao", "orcamento_extracao_dia"):
-        if campo in humano:
-            out[campo] = humano[campo]
+        abertura = (f"Bom dia. O fundo fechou ontem com cota {num(ctx['cota_ontem'], 6)}; desde {dm(ctx['desde'])} "
+                    f"({jan} {'pregões' if jan > 1 else 'pregão'}) rendeu {pct(ctx['ret_fundo'], 2, True)} contra "
+                    f"{pct(ctx['ret_cdi'], 2, True)} do CDI ({pp(exc, 2)}).")
+    etapa.diz(0, abertura + f" Painel das 09h com confiança média {pct(db.get('confianca_media'), 0)} e credibilidade "
+                 f"{pct(db['credibilidade'], 0)}.", bloco=b_painel)
+    if ctx["congelados"]:
+        etapa.diz(2, "Sem número confiável para " + ", ".join(config.ATIVOS[a] for a in ctx["congelados"])
+                  + ": esses ativos ficam como estão hoje.", bloco=b_painel)
+
+    # pauta
+    linhas_p, motivos = pauta(estado, d, politicas, ctx)
+    b_pauta = etapa.tabela("Pauta: há reunião de investimentos hoje?", ["Gatilho", "Hoje", "Dispara se", "Dispara?"],
+                           linhas_p)
+    reuniao = bool(motivos)
+    if humano.get("alocacao"):
+        out["alocacao"] = dict(humano["alocacao"])
+        etapa.conselho("Alocação definida pelo conselho: " + ", ".join(
+            f"{config.ATIVOS[a]} {pct(w, 1)}" for a, w in humano["alocacao"].items()) + ".", intervencao.get("autor"),
+            bloco=b_pauta)
+    elif reuniao:
+        mem["comite"]["ultimo"] = d.isoformat()
+        etapa.diz(1, "Reunião de investimentos hoje: " + "; ".join(motivos) + ".", bloco=b_pauta)
+        if ctx["defensivo"]:
+            etapa.diz(2, "Postura defensiva: " + ("credibilidade dos painéis abaixo de 60%"
+                      if db["credibilidade"] < 0.6 else f"o fundo está {pp(exc, 2)} contra o CDI")
+                      + ". Não aumentamos bolsa e não reduzimos dólar.", bloco=b_pauta)
+        novo, linhas_m, desfecho = alocacao(estado, politicas, ctx)
+        m = modelo(politicas)
+        b_mod = etapa.tabela("Modelo de alocação: alvo = neutro + sensibilidade × sinal", [
+            "Ativo", "Número do painel", "Sinal (−1 a +1)", "Neutro", "Desejado", "Alvo atual", "Novo alvo", "Trava"],
+            linhas_m, nota=f"Travas: confiança mínima {pct(m['confianca_minima'], 0)}; limites da política; passo máximo "
+                           f"{pp(m['passo_max'], 0)[1:]}; mudanças menores que {pp(m['zona_morta'], 0)[1:]} não giram a carteira.")
+        for ativo in ("prefixado", "inflacao", "bolsa", "dolar"):
+            des = desfecho[ativo]
+            s = des["s"]
+            if s is None:
+                etapa.diz(1, f"{config.ATIVOS[ativo]}: {des['trava']}; fica em {pct(des['depois'], 1)}.", bloco=b_mod)
+                continue
+            fim = (f"alvo {pct(des['antes'], 1)} → {pct(des['depois'], 1)}" if des["mudou"] else
+                   f"fica em {pct(des['depois'], 1)}")
+            if des["trava"]:
+                fim += f" ({des['trava']})"
+            etapa.diz(2 if des["trava"] and not des["mudou"] and "confiança" in des["trava"] else 1,
+                      f"{config.ATIVOS[ativo]}: {s['leitura']} → sinal {sinal(s['sinal'])} → {fim}.", bloco=b_mod)
+        if any(des.get("mudou") for des in desfecho.values()):
+            out["alocacao"] = novo
+            etapa.diz(1, "Decidido. Novo alvo: " + ", ".join(f"{config.ATIVOS[a].split(' (')[0]} {pct(w, 1)}"
+                                                             for a, w in novo.items()) + ".", tipo="decisao", bloco=b_mod)
+        else:
+            etapa.diz(1, "Nenhuma mudança passou pelas travas: o alvo fica como está.", tipo="decisao", bloco=b_mod)
+    else:
+        m = modelo(politicas)
+        movs = "; ".join(f"{ln[0].replace(' no último pregão', '')} {ln[1]}" for ln in linhas_p
+                         if ln[0].endswith(" no último pregão"))
+        etapa.diz(1, f"Sem reunião de investimentos: não é o primeiro dia útil da semana e nenhum gatilho disparou "
+                     f"(último pregão: {movs}; o gatilho é ±{pct(m['gatilho_variacao_dia'], 0)}). O alvo segue "
+                     + ", ".join(f"{config.ATIVOS[a].split(' (')[0]} {pct(w, 1)}"
+                                 for a, w in estado["executivos"]["alvo"].items()) + ".", bloco=b_pauta)
+
+    # equipe e orçamento da Extração
     if "equipe_extracao" in humano or "orcamento_extracao_dia" in humano:
-        ata.conselho("executivos", f"Equipe de Extração {humano.get('equipe_extracao', estado['extracao']['equipe'])}, "
-                     f"orçamento {_brl(humano.get('orcamento_extracao_dia', estado['extracao']['orcamento_dia']))}/dia.",
-                     intervencao.get("autor"))
+        for campo in ("equipe_extracao", "orcamento_extracao_dia"):
+            if campo in humano:
+                out[campo] = humano[campo]
+        etapa.conselho(f"Equipe de Extração {humano.get('equipe_extracao', estado['extracao']['equipe'])}, orçamento "
+                       f"{brl(humano.get('orcamento_extracao_dia', estado['extracao']['orcamento_dia']))}/dia.",
+                       intervencao.get("autor"))
     else:
-        out.update(_equipe_e_orcamento(estado, d, politicas, ata))
+        mudou, linhas_g, frases, f = equipe_e_orcamento(estado, d, politicas)
+        out.update(mudou)
+        b_g = etapa.tabela("Equipe e orçamento da Extração", ["Regra", "Condição com os números de hoje", "Vale?",
+                           "Efeito"], linhas_g,
+                           nota=f"Custo diário da casa hoje: {brl(f['custo_dia'])}; caixa da gestora "
+                                f"{brl(estado['gestora']['caixa'])} = {num(f['folego'], 0)} dias de fôlego.")
+        if frases:
+            etapa.diz(0, "Aprovado: " + "; ".join(frases) + ".", tipo="decisao", bloco=b_g)
+        else:
+            etapa.diz(0, f"Caixa da gestora {brl(estado['gestora']['caixa'])} cobre {num(f['folego'], 0)} dias de custo "
+                         f"({brl(f['custo_dia'])}/dia). Equipe de {estado['extracao']['equipe']} e orçamento de "
+                         f"{brl(estado['extracao']['orcamento_dia'])}/dia ficam como estão.", bloco=b_g)
     if humano.get("justificativa"):
         out["justificativa"] = humano["justificativa"]
     elif out:
-        out["justificativa"] = " ".join(f["texto"] for f in ata.falas if f["area"] == "executivos"
-                                        and f["tipo"] == "decisao")[:300]
+        out["justificativa"] = " ".join(f["texto"] for f in etapa.rastro.falas
+                                        if f["etapa"] == etapa.id and f["tipo"] in ("decisao", "conselho"))[:300]
     return out
