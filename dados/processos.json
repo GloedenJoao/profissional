@@ -1,33 +1,17 @@
 {
-  "data_ref": "2026-11-09",
-  "issues": {
-    "DEFAS-cdi": {
-      "numero": 24,
-      "url": "https://github.com/GloedenJoao/profissional/issues/24",
-      "estado": "open"
-    },
-    "DEFAS-selic": {
-      "numero": 26,
-      "url": "https://github.com/GloedenJoao/profissional/issues/26",
-      "estado": "open"
-    },
-    "INC-0018": {
-      "numero": 36,
-      "url": "https://github.com/GloedenJoao/profissional/issues/36",
-      "estado": "open"
-    }
-  },
+  "data_ref": "2026-11-10",
+  "issues": {},
   "abertas": [
     {
-      "numero": 24,
-      "titulo": "Painel: CDI (% a.a.) defasado",
-      "url": "https://github.com/GloedenJoao/profissional/issues/24",
+      "numero": 36,
+      "titulo": "INC-0018 · BCB · SGS: a fonte publicou atrasado",
+      "url": "https://github.com/GloedenJoao/profissional/issues/36",
       "rotulos": [
         "simulacao",
-        "area:dashboards",
+        "area:extracao",
         "sev:media"
       ],
-      "criada_em": "2026-10-12T20:15:32Z"
+      "criada_em": "2026-11-06T17:54:11Z"
     },
     {
       "numero": 26,
@@ -41,20 +25,9 @@
       "criada_em": "2026-10-12T20:15:33Z"
     },
     {
-      "numero": 36,
-      "titulo": "INC-0018 · BCB · SGS: a fonte publicou atrasado",
-      "url": "https://github.com/GloedenJoao/profissional/issues/36",
-      "rotulos": [
-        "simulacao",
-        "area:extracao",
-        "sev:media"
-      ],
-      "criada_em": "2026-11-06T17:54:11Z"
-    },
-    {
-      "numero": 25,
-      "titulo": "Painel: Dólar PTAX (R$) defasado",
-      "url": "https://github.com/GloedenJoao/profissional/issues/25",
+      "numero": 24,
+      "titulo": "Painel: CDI (% a.a.) defasado",
+      "url": "https://github.com/GloedenJoao/profissional/issues/24",
       "rotulos": [
         "simulacao",
         "area:dashboards",
@@ -63,15 +36,10 @@
       "criada_em": "2026-10-12T20:15:32Z"
     }
   ],
-  "detalhes": {
-    "INC-0018": "dia 2, ação `fonte_alternativa`",
-    "DEFAS-cdi": "4 dias úteis de defasagem; estratégia `estimar`",
-    "DEFAS-selic": "4 dias úteis de defasagem; estratégia `usar_ontem`"
-  },
+  "detalhes": {},
   "log": [
-    "comentada #24 DEFAS-cdi",
-    "comentada #26 DEFAS-selic",
-    "comentada #36 INC-0018",
-    "fechada #25 DEFAS-dolar"
+    "fechada #24 DEFAS-cdi",
+    "fechada #26 DEFAS-selic",
+    "fechada #36 INC-0018"
   ]
 }

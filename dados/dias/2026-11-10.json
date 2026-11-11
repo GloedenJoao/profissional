@@ -1,0 +1,115 @@
+{
+  "data": "2026-11-10",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {
+      "INC-0018": "fonte_alternativa"
+    },
+    "dashboards": {},
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia. Temos 1 incidente(s) aberto(s) e 4 pessoa(s) na equipe. Vamos priorizar.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:02",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "INC-0018 · BCB · SGS (aberto há 2 dias): seguimos com `fonte_alternativa`.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0018 resolvido: BCB · SGS voltou após 3 dia(s) (fonte_alternativa)",
+      "tipo": "evento"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Todos os números chegaram em dia. Credibilidade dos painéis em 84%. Publicando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo -3,34% contra o CDI em 21 dias, caixa da gestora R$ 2.049.475, credibilidade dos painéis 88%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,58 (+1,26%); BOVA11 168,85 (-0,48%); Tesouro Prefixado 14,59 (-0,82%); Tesouro IPCA+ 7,71 (-0,52%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,040474 (+0,29% no dia), PL R$ 338,3 mi, fluxo de cotistas R$ -834 mil. Caixa da gestora R$ 2,05 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "resolvido",
+      "texto": "INC-0018 resolvido: BCB · SGS voltou após 3 dia(s) (fonte_alternativa)",
+      "chave": "INC-0018"
+    }
+  ],
+  "incidentes_do_dia": [],
+  "alertas_abertos": [],
+  "alertas_fechados": [
+    "DEFAS-cdi",
+    "DEFAS-selic",
+    "INC-0018"
+  ],
+  "resumo": {
+    "cota": 1.04047375,
+    "pl": 338262033.87,
+    "bench": 1.02954414,
+    "retorno_dia": 0.002922,
+    "fluxo": -833857.72,
+    "pesos": {
+      "caixa": 0.3261,
+      "prefixado": 0.1562,
+      "inflacao": 0.2624,
+      "dolar": 0.1554,
+      "bolsa": 0.0999
+    },
+    "divida_tecnica": 24.35,
+    "incidentes_abertos": 0,
+    "credibilidade": 0.876,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2049732.03
+  }
+}
