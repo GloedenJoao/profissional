@@ -1,19 +1,19 @@
 {
-  "executado_em": "2026-11-11T18:37:19+00:00",
+  "executado_em": "2026-11-12T18:49:24+00:00",
   "janela": [
-    "2026-10-28",
-    "2026-11-10"
+    "2026-10-29",
+    "2026-11-11"
   ],
   "fontes": {
     "bcb_sgs": {
       "status": "ok",
       "erro": null,
-      "linhas_novas": 3,
+      "linhas_novas": 4,
       "ultima_data": {
-        "cdi": "2026-11-10",
-        "selic": "2026-11-10",
-        "dolar": "2026-11-10",
-        "ipca": "2026-09-01"
+        "cdi": "2026-11-11",
+        "selic": "2026-11-11",
+        "dolar": "2026-11-11",
+        "ipca": "2026-10-01"
       }
     },
     "bcb_ptax": {
@@ -21,7 +21,7 @@
       "erro": null,
       "linhas_novas": 1,
       "ultima_data": {
-        "dolar_ptax": "2026-11-10"
+        "dolar_ptax": "2026-11-11"
       }
     },
     "bcb_focus": {
@@ -38,7 +38,7 @@
       "erro": null,
       "linhas_novas": 11,
       "ultima_data": {
-        "tesouro": "2026-11-10"
+        "tesouro": "2026-11-11"
       }
     },
     "yahoo": {
@@ -46,8 +46,8 @@
       "erro": null,
       "linhas_novas": 2,
       "ultima_data": {
-        "ibov": "2026-11-10",
-        "bova11": "2026-11-10"
+        "ibov": "2026-11-11",
+        "bova11": "2026-11-11"
       }
     },
     "b3": {
@@ -55,7 +55,7 @@
       "erro": null,
       "linhas_novas": 1,
       "ultima_data": {
-        "bova11_b3": "2026-11-10"
+        "bova11_b3": "2026-11-11"
       }
     }
   }

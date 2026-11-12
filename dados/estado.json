@@ -1,25 +1,25 @@
 {
   "versao": 1,
   "inicio": "2026-08-18",
-  "ultima_data": "2026-11-10",
+  "ultima_data": "2026-11-11",
   "seq_incidente": 18,
   "extracao": {
-    "divida_tecnica": 24.35,
+    "divida_tecnica": 23.6,
     "equipe": 4,
     "orcamento_dia": 1200.0,
     "fontes": {
       "bcb_sgs": {
         "liberado_ate": {
-          "cdi": "2026-11-10",
-          "selic": "2026-11-10",
-          "dolar": "2026-11-10",
-          "ipca": "2026-09-01"
+          "cdi": "2026-11-11",
+          "selic": "2026-11-11",
+          "dolar": "2026-11-11",
+          "ipca": "2026-10-01"
         },
         "alternativa_ligada": false
       },
       "bcb_ptax": {
         "liberado_ate": {
-          "dolar_ptax": "2026-11-10"
+          "dolar_ptax": "2026-11-11"
         },
         "alternativa_ligada": false
       },
@@ -32,20 +32,20 @@
       },
       "tesouro": {
         "liberado_ate": {
-          "tesouro": "2026-11-10"
+          "tesouro": "2026-11-11"
         },
         "alternativa_ligada": false
       },
       "yahoo": {
         "liberado_ate": {
-          "ibov": "2026-11-10",
-          "bova11": "2026-11-10"
+          "ibov": "2026-11-11",
+          "bova11": "2026-11-11"
         },
         "alternativa_ligada": false
       },
       "b3": {
         "liberado_ate": {
-          "bova11_b3": "2026-11-10"
+          "bova11_b3": "2026-11-11"
         },
         "alternativa_ligada": false
       }
@@ -168,11 +168,11 @@
   ],
   "alertas": {},
   "dashboards": {
-    "credibilidade": 0.876,
+    "credibilidade": 0.877,
     "indicadores": {
       "cdi": {
         "nome": "CDI (% a.a.)",
-        "data_ref": "2026-11-10",
+        "data_ref": "2026-11-11",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
@@ -182,7 +182,7 @@
       },
       "selic": {
         "nome": "Selic meta (% a.a.)",
-        "data_ref": "2026-11-10",
+        "data_ref": "2026-11-11",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
@@ -192,21 +192,21 @@
       },
       "dolar": {
         "nome": "Dólar PTAX (R$)",
-        "data_ref": "2026-11-10",
+        "data_ref": "2026-11-11",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 5.584,
+        "valor": 5.5606,
         "confianca": 1.0,
-        "valor_anterior": 5.5146
+        "valor_anterior": 5.584
       },
       "ipca_12m": {
         "nome": "IPCA 12 meses (%)",
-        "data_ref": "2026-09-01",
+        "data_ref": "2026-10-01",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 4.58,
+        "valor": 4.63,
         "confianca": 1.0,
         "valor_anterior": 4.58
       },
@@ -232,43 +232,43 @@
       },
       "ibov": {
         "nome": "Ibovespa (pts)",
-        "data_ref": "2026-11-10",
+        "data_ref": "2026-11-11",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 171337.0,
+        "valor": 172060.0,
         "confianca": 1.0,
-        "valor_anterior": 172236.0
+        "valor_anterior": 171337.0
       },
       "bova11": {
         "nome": "BOVA11 (R$)",
-        "data_ref": "2026-11-10",
+        "data_ref": "2026-11-11",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 168.85,
+        "valor": 169.2,
         "confianca": 1.0,
-        "valor_anterior": 169.67
+        "valor_anterior": 168.85
       },
       "taxa_pre": {
         "nome": "Tesouro Prefixado (% a.a.)",
-        "data_ref": "2026-11-10",
+        "data_ref": "2026-11-11",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 14.59,
+        "valor": 14.65,
         "confianca": 1.0,
-        "valor_anterior": 14.71
+        "valor_anterior": 14.59
       },
       "taxa_ipca": {
         "nome": "Tesouro IPCA+ (% a.a. real)",
-        "data_ref": "2026-11-10",
+        "data_ref": "2026-11-11",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 7.71,
+        "valor": 7.7,
         "confianca": 1.0,
-        "valor_anterior": 7.75
+        "valor_anterior": 7.71
       }
     },
     "estimativas": [],
@@ -309,44 +309,39 @@
     "congelados": []
   },
   "fundo": {
-    "cota": 1.0404737456986768,
-    "cotas": 325103862.8013218,
-    "pl": 338262033.87,
-    "bench": 1.029544140103774,
+    "cota": 1.0403651411708494,
+    "cotas": 322812502.3412791,
+    "pl": 335842874.57,
+    "bench": 1.03006702498165,
     "posicoes": {
       "caixa": {
-        "valor": 110308844.36922319,
+        "valor": 107967594.2485188,
         "preco": 1.0,
         "titulo": null
       },
       "prefixado": {
-        "valor": 52846573.371887565,
-        "preco": 747.24,
+        "valor": 52816869.982325725,
+        "preco": 746.82,
         "titulo": "2029-01-01"
       },
       "inflacao": {
-        "valor": 88760688.91270065,
-        "preco": 2524.76,
+        "valor": 88862641.5726948,
+        "preco": 2527.66,
         "titulo": "2035-05-15"
       },
       "dolar": {
-        "valor": 52549854.626412325,
-        "preco": 5.584,
+        "valor": 52329642.12672428,
+        "preco": 5.5606,
         "titulo": null
       },
       "bolsa": {
-        "valor": 33796072.593590066,
-        "preco": 168.85,
+        "valor": 33866126.638054125,
+        "preco": 169.2,
         "titulo": null
       }
     },
-    "fluxo_dia": -833857.72,
+    "fluxo_dia": -2383851.55,
     "hist_cota": [
-      [
-        "2026-10-08",
-        1.0646725751156256,
-        1.0186246645328039
-      ],
       [
         "2026-10-09",
         1.0709650979199925,
@@ -451,13 +446,18 @@
         "2026-11-10",
         1.0404737457104078,
         1.029544140103774
+      ],
+      [
+        "2026-11-11",
+        1.0403651411656383,
+        1.03006702498165
       ]
     ],
-    "retorno_dia": 0.002922343439377917
+    "retorno_dia": -0.00010437988298728218
   },
   "gestora": {
-    "caixa": 2049732.03,
-    "receita_dia": 13456.72,
+    "caixa": 2049954.26,
+    "receita_dia": 13422.23,
     "custo_dia": 13200.0
   },
   "times": {
@@ -530,6 +530,10 @@
         [
           "2026-11-10",
           13.65
+        ],
+        [
+          "2026-11-11",
+          13.65
         ]
       ],
       "selic": [
@@ -599,6 +603,10 @@
         ],
         [
           "2026-11-10",
+          13.75
+        ],
+        [
+          "2026-11-11",
           13.75
         ]
       ],
@@ -674,6 +682,10 @@
         [
           "2026-11-10",
           5.584
+        ],
+        [
+          "2026-11-11",
+          5.5606
         ]
       ],
       "ipca_12m": [
@@ -684,6 +696,10 @@
         [
           "2026-09-01",
           4.58
+        ],
+        [
+          "2026-10-01",
+          4.63
         ]
       ],
       "focus_ipca": [
@@ -826,6 +842,10 @@
         [
           "2026-11-10",
           14.59
+        ],
+        [
+          "2026-11-11",
+          14.65
         ]
       ],
       "taxa_ipca": [
@@ -908,6 +928,10 @@
         [
           "2026-11-10",
           7.71
+        ],
+        [
+          "2026-11-11",
+          7.7
         ]
       ],
       "ibov": [
@@ -986,6 +1010,10 @@
         [
           "2026-11-10",
           171337.0
+        ],
+        [
+          "2026-11-11",
+          172060.0
         ]
       ],
       "bova11": [
@@ -1072,6 +1100,10 @@
         [
           "2026-11-10",
           168.85
+        ],
+        [
+          "2026-11-11",
+          169.2
         ]
       ]
     },

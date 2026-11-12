@@ -1,45 +1,7 @@
 {
-  "data_ref": "2026-11-10",
+  "data_ref": "2026-11-11",
   "issues": {},
-  "abertas": [
-    {
-      "numero": 36,
-      "titulo": "INC-0018 · BCB · SGS: a fonte publicou atrasado",
-      "url": "https://github.com/GloedenJoao/profissional/issues/36",
-      "rotulos": [
-        "simulacao",
-        "area:extracao",
-        "sev:media"
-      ],
-      "criada_em": "2026-11-06T17:54:11Z"
-    },
-    {
-      "numero": 26,
-      "titulo": "Painel: Selic meta (% a.a.) defasado",
-      "url": "https://github.com/GloedenJoao/profissional/issues/26",
-      "rotulos": [
-        "simulacao",
-        "area:dashboards",
-        "sev:media"
-      ],
-      "criada_em": "2026-10-12T20:15:33Z"
-    },
-    {
-      "numero": 24,
-      "titulo": "Painel: CDI (% a.a.) defasado",
-      "url": "https://github.com/GloedenJoao/profissional/issues/24",
-      "rotulos": [
-        "simulacao",
-        "area:dashboards",
-        "sev:media"
-      ],
-      "criada_em": "2026-10-12T20:15:32Z"
-    }
-  ],
+  "abertas": [],
   "detalhes": {},
-  "log": [
-    "fechada #24 DEFAS-cdi",
-    "fechada #26 DEFAS-selic",
-    "fechada #36 INC-0018"
-  ]
+  "log": []
 }
