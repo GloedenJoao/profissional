@@ -1,15 +1,15 @@
-# Briefing · fechamento de 2026-11-12
+# Briefing · fechamento de 2026-11-13
 
-Os times decidem sozinhos. Diretriz do conselho (opcional): `empresa/decisoes/2026-11-13.json` vale por cima deles nesse dia.
+Os times decidem sozinhos. Diretriz do conselho (opcional): `empresa/decisoes/2026-11-16.json` vale por cima deles nesse dia.
 
 ## Fundo
-- Cota 1.041243 · PL R$ 334,625,848 · dia +0.08% · 21d -2.64% vs CDI +1.07% · desde o início +4.12% vs CDI +3.06%
-- Fluxo de cotistas no dia: R$ -1,500,356 · caixa da gestora R$ 2,050,093
-- Alocação (atual → alvo): caixa 31.8%→35%, prefixado 15.8%→15%, inflacao 26.5%→25%, dolar 15.8%→15%, bolsa 10.1%→10%
+- Cota 1.041677 · PL R$ 332,207,184 · dia +0.04% · 21d -2.58% vs CDI +1.07% · desde o início +4.17% vs CDI +3.11%
+- Fluxo de cotistas no dia: R$ -2,558,067 · caixa da gestora R$ 2,050,178
+- Alocação (atual → alvo): caixa 31.3%→35%, prefixado 15.9%→15%, inflacao 26.6%→25%, dolar 16.0%→15%, bolsa 10.2%→10%
 - Limites: caixa 10%–100%, prefixado 0%–40%, inflacao 0%–40%, dolar 0%–20%, bolsa 0%–30%
 
 ## Extração
-- Dívida técnica 22.9/100 · equipe 4 · orçamento R$ 1,200/dia
+- Dívida técnica 22.1/100 · equipe 4 · orçamento R$ 1,200/dia
 - Nenhum incidente aberto.
 
 ## Dashboards
@@ -17,16 +17,16 @@ Os times decidem sozinhos. Diretriz do conselho (opcional): `empresa/decisoes/20
 
 | indicador | valor | ref | defasagem | estratégia | confiança |
 |---|---|---|---|---|---|
-| cdi | 13.65 | 2026-11-12 | 0 | — | 100% |
-| selic | 13.75 | 2026-11-12 | 0 | — | 100% |
-| dolar | 5.6143 | 2026-11-12 | 0 | — | 100% |
+| cdi | 13.65 | 2026-11-13 | 0 | — | 100% |
+| selic | 13.75 | 2026-11-13 | 0 | — | 100% |
+| dolar | 5.6518 | 2026-11-13 | 0 | — | 100% |
 | ipca_12m | 4.63 | 2026-10-01 | 0 | — | 100% |
-| focus_ipca | 5.2195 | 2026-11-06 | 0 | — | 100% |
-| focus_selic | 13.75 | 2026-11-06 | 0 | — | 100% |
-| ibov | 171324.0 | 2026-11-12 | 0 | — | 100% |
-| bova11 | 168.55 | 2026-11-12 | 0 | — | 100% |
-| taxa_pre | 14.65 | 2026-11-12 | 0 | — | 100% |
-| taxa_ipca | 7.72 | 2026-11-12 | 0 | — | 100% |
+| focus_ipca | 5.1082 | 2026-11-13 | 0 | — | 100% |
+| focus_selic | 13.75 | 2026-11-13 | 0 | — | 100% |
+| ibov | 172458.0 | 2026-11-13 | 0 | — | 100% |
+| bova11 | 169.68 | 2026-11-13 | 0 | — | 100% |
+| taxa_pre | 14.85 | 2026-11-13 | 0 | — | 100% |
+| taxa_ipca | 7.77 | 2026-11-13 | 0 | — | 100% |
 
 ## Alertas ativos
 - nenhum
