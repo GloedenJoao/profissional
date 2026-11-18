@@ -1,0 +1,97 @@
+{
+  "data": "2026-11-17",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {},
+    "dashboards": {},
+    "executivos": {
+      "equipe_extracao": 3,
+      "justificativa": "Fontes estáveis e dívida em 21: a equipe de Extração volta para 3 para aliviar os custos."
+    }
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia! Nenhum incidente aberto. Dívida técnica 21/100, equipe de 4. Seguimos monitorando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Todos os números chegaram em dia. Credibilidade dos painéis em 88%. Publicando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo -3,21% contra o CDI em 21 dias, caixa da gestora R$ 2.050.172, credibilidade dos painéis 88%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,79 (+0,92%); BOVA11 167,42 (+0,50%); Tesouro Prefixado 14,98 (+1,56%); Tesouro IPCA+ 7,76 (-0,26%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:06",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Fontes estáveis e dívida em 21: a equipe de Extração volta para 3 para aliviar os custos.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,044712 (+0,21% no dia), PL R$ 330,6 mi, fluxo de cotistas R$ -1.692 mil. Caixa da gestora R$ 2,05 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [],
+  "incidentes_do_dia": [],
+  "alertas_abertos": [],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 1.04471234,
+    "pl": 330601683.44,
+    "bench": 1.03216122,
+    "retorno_dia": 0.00207,
+    "fluxo": -1692121.94,
+    "pesos": {
+      "caixa": 0.307,
+      "prefixado": 0.1591,
+      "inflacao": 0.2678,
+      "dolar": 0.1647,
+      "bolsa": 0.1014
+    },
+    "divida_tecnica": 20.6,
+    "incidentes_abertos": 0,
+    "credibilidade": 0.881,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2051659.24
+  }
+}
