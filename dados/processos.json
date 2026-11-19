@@ -1,7 +1,29 @@
 {
-  "data_ref": "2026-11-17",
-  "issues": {},
-  "abertas": [],
-  "detalhes": {},
-  "log": []
+  "data_ref": "2026-11-18",
+  "issues": {
+    "INC-0019": {
+      "numero": 37,
+      "url": "https://github.com/GloedenJoao/profissional/issues/37",
+      "estado": "open"
+    }
+  },
+  "abertas": [
+    {
+      "numero": 37,
+      "titulo": "INC-0019 · BCB · SGS: a fonte publicou atrasado",
+      "url": "https://github.com/GloedenJoao/profissional/issues/37",
+      "rotulos": [
+        "area:extracao",
+        "sev:media",
+        "simulacao"
+      ],
+      "criada_em": "2026-11-19T19:28:09Z"
+    }
+  ],
+  "detalhes": {
+    "INC-0019": "dia 0, ação `aguardar`"
+  },
+  "log": [
+    "aberta #37 INC-0019"
+  ]
 }
