@@ -11,6 +11,7 @@ Os times decidem sozinhos. Diretriz do conselho (opcional): `empresa/decisoes/20
 ## Extração
 - Dívida técnica 19.8/100 · equipe 3 · orçamento R$ 1,200/dia
 - Nenhum incidente aberto.
+- ⚠️ Falha REAL no conector `tesouro`: FonteIndisponivel: https://www.tesourotransparente.gov.br/ckan/dataset/df56aa42-484a-4a59-8184-7676580c81e3/resource/796d2059-14e9-44e3-80c: <urlopen error [Errno 104] Connection reset by peer> (corrigir em `gestora/fontes.py`)
 
 ## Dashboards
 - Credibilidade 90% · confiança média 100%

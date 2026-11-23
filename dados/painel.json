@@ -44,7 +44,7 @@
     "2027-12-25",
     "2027-12-31"
   ],
-  "gerado_em": "2026-11-20T19:03:25+00:00",
+  "gerado_em": "2026-11-23T22:33:41+00:00",
   "resumo": {
     "cota": 1.043688,
     "pl": 326768195.01,
@@ -122,8 +122,8 @@
         "series": [
           "tesouro"
         ],
-        "real": "ok",
-        "erro_real": null,
+        "real": "erro",
+        "erro_real": "FonteIndisponivel: https://www.tesourotransparente.gov.br/ckan/dataset/df56aa42-484a-4a59-8184-7676580c81e3/resource/796d2059-14e9-44e3-80c: <urlopen error [Errno 104] Connection reset by peer>",
         "liberado_ate": {
           "tesouro": "2026-11-19"
         },
@@ -2236,19 +2236,7 @@
     }
   },
   "processos": {
-    "issues_abertas": [
-      {
-        "numero": 37,
-        "titulo": "INC-0019 · BCB · SGS: a fonte publicou atrasado",
-        "url": "https://github.com/GloedenJoao/profissional/issues/37",
-        "rotulos": [
-          "simulacao",
-          "area:extracao",
-          "sev:media"
-        ],
-        "criada_em": "2026-11-19T19:28:09Z"
-      }
-    ],
+    "issues_abertas": [],
     "controle": null,
     "repositorio": "GloedenJoao/profissional"
   },
@@ -2295,5 +2283,15 @@
     "link_ver": "https://github.com/GloedenJoao/profissional/blob/main/empresa/decisoes/2026-11-23.json",
     "link_pasta": "https://github.com/GloedenJoao/profissional/tree/main/empresa/decisoes"
   },
-  "tarefas": []
+  "tarefas": [
+    {
+      "id": "CONECTOR-tesouro",
+      "area": "extracao",
+      "nivel": "ruim",
+      "titulo": "Conector Tesouro Direto (CSV) falhou de verdade",
+      "detalhe": "FonteIndisponivel: https://www.tesourotransparente.gov.br/ckan/dataset/df56aa42-484a-4a59-8184-7676580c81e3/resource/796d2059-14e9-44e3-80c: <urlopen error [Errno 104] Connection reset by peer>",
+      "link": "https://github.com/GloedenJoao/profissional/blob/main/gestora/fontes.py",
+      "acao": "Corrigir conector"
+    }
+  ]
 }
