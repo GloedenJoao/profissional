@@ -1,0 +1,163 @@
+{
+  "data": "2026-11-23",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {},
+    "dashboards": {},
+    "executivos": {}
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia! Nenhum incidente aberto. Dívida técnica 20/100, equipe de 3. Seguimos monitorando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0020: falha real em Tesouro Direto (CSV)",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Todos os números chegaram em dia. Credibilidade dos painéis em 90%. Publicando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo -3,18% contra o CDI em 21 dias, caixa da gestora R$ 2.054.385, credibilidade dos painéis 90%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,97 (+1,39%); BOVA11 162,35 (-0,76%); Tesouro Prefixado 15,04 (+0,00%); Tesouro IPCA+ 7,86 (+0,00%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Comitê de investimentos (reunião semanal).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:06",
+      "area": "executivos",
+      "quem": "Marta",
+      "papel": "Risco",
+      "texto": "Postura defensiva: estamos perdendo do CDI. Não aumentamos risco hoje.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:08",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Tesouro IPCA+ pagando 7,86% acima da inflação.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:10",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Selic em 13,75% e Focus para o fim do ano em 13,75%: Selic estável no horizonte.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:12",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Bolsa (BOVA11) -19,2% em 20 pregões.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:14",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Carteira coerente com os números. Mantemos o alvo.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "17:30",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Rebalanceamento: giro R$ 17,2 mi, custo R$ 8.620",
+      "tipo": "evento"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,045441 (+0,17% no dia), PL R$ 326,3 mi, fluxo de cotistas R$ -982 mil. Caixa da gestora R$ 2,06 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0020: falha real em Tesouro Direto (CSV)",
+      "chave": "INC-0020"
+    },
+    {
+      "area": "fundo",
+      "tipo": "info",
+      "texto": "Rebalanceamento: giro R$ 17,2 mi, custo R$ 8.620",
+      "chave": null
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0020",
+      "fonte": "tesouro",
+      "tipo": "falha_real"
+    }
+  ],
+  "alertas_abertos": [
+    "INC-0020"
+  ],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 1.04544058,
+    "pl": 326335301.96,
+    "bench": 1.03373466,
+    "retorno_dia": 0.001679,
+    "fluxo": -981639.44,
+    "pesos": {
+      "caixa": 0.35,
+      "prefixado": 0.15,
+      "inflacao": 0.25,
+      "dolar": 0.15,
+      "bolsa": 0.1
+    },
+    "divida_tecnica": 19.75,
+    "incidentes_abertos": 1,
+    "credibilidade": 0.902,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2055675.03
+  }
+}

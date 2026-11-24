@@ -251,3 +251,9 @@ executado_em,fonte,status,linhas_novas,ultima_data,erro
 2026-11-23T22:33:41+00:00,tesouro,erro,0,2026-11-19,FonteIndisponivel: https://www.tesourotransparente.gov.br/ckan/dataset/df56aa42-484a-4a59-8184-7676580c81e3/resource/796d2059-14e9-44e3-80c: <urlopen error [Errno 104] Connection reset by peer>
 2026-11-23T22:33:41+00:00,yahoo,ok,0,2026-11-19,
 2026-11-23T22:33:41+00:00,b3,ok,0,2026-11-19,
+2026-11-24T21:05:29+00:00,bcb_sgs,ok,6,2026-10-01,
+2026-11-24T21:05:29+00:00,bcb_ptax,ok,1,2026-11-23,
+2026-11-24T21:05:29+00:00,bcb_focus,ok,0,2026-11-19,
+2026-11-24T21:05:29+00:00,tesouro,erro,0,2026-11-19,FonteIndisponivel: https://www.tesourotransparente.gov.br/ckan/dataset/df56aa42-484a-4a59-8184-7676580c81e3/resource/796d2059-14e9-44e3-80c: <urlopen error [Errno 104] Connection reset by peer>
+2026-11-24T21:05:29+00:00,yahoo,ok,2,2026-11-23,
+2026-11-24T21:05:29+00:00,b3,ok,1,2026-11-23,

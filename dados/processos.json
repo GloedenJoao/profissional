@@ -1,7 +1,29 @@
 {
-  "data_ref": "2026-11-19",
-  "issues": {},
-  "abertas": [],
-  "detalhes": {},
-  "log": []
+  "data_ref": "2026-11-23",
+  "issues": {
+    "INC-0020": {
+      "numero": 38,
+      "url": "https://github.com/GloedenJoao/profissional/issues/38",
+      "estado": "open"
+    }
+  },
+  "abertas": [
+    {
+      "numero": 38,
+      "titulo": "INC-0020 · Tesouro Direto (CSV): o conector falhou de verdade nesta extração",
+      "url": "https://github.com/GloedenJoao/profissional/issues/38",
+      "rotulos": [
+        "area:extracao",
+        "sev:alta",
+        "simulacao"
+      ],
+      "criada_em": "2026-11-24T21:06:28Z"
+    }
+  ],
+  "detalhes": {
+    "INC-0020": "dia 0, ação `corrigir_conector`"
+  },
+  "log": [
+    "aberta #38 INC-0020"
+  ]
 }
