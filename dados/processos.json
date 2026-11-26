@@ -1,12 +1,6 @@
 {
-  "data_ref": "2026-11-24",
-  "issues": {
-    "INC-0020": {
-      "numero": 38,
-      "url": "https://github.com/GloedenJoao/profissional/issues/38",
-      "estado": "open"
-    }
-  },
+  "data_ref": "2026-11-25",
+  "issues": {},
   "abertas": [
     {
       "numero": 38,
@@ -20,10 +14,8 @@
       "criada_em": "2026-11-24T21:06:28Z"
     }
   ],
-  "detalhes": {
-    "INC-0020": "dia 1, ação `corrigir_conector`"
-  },
+  "detalhes": {},
   "log": [
-    "comentada #38 INC-0020"
+    "fechada #38 INC-0020"
   ]
 }
