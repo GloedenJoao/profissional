@@ -1,0 +1,184 @@
+{
+  "data": "2026-11-26",
+  "decisao": {
+    "existe": true,
+    "autor": "times",
+    "intervencao": false
+  },
+  "decisoes": {
+    "extracao": {},
+    "dashboards": {},
+    "executivos": {
+      "alocacao": {
+        "caixa": 0.3,
+        "prefixado": 0.15,
+        "inflacao": 0.25,
+        "dolar": 0.15,
+        "bolsa": 0.15
+      },
+      "justificativa": "Decidido: Ações (BOVA11) +5 p.p. (tendência de +0,9% em 20 pregões). Caixa fica em 30%."
+    }
+  },
+  "ata": [
+    {
+      "hora": "08:00",
+      "area": "extracao",
+      "quem": "Bia",
+      "papel": "líder de Extração",
+      "texto": "Bom dia! Nenhum incidente aberto. Dívida técnica 19/100, equipe de 3. Seguimos monitorando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "08:40",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0021: falha real em Tesouro Direto (CSV)",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "08:42",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0022: B3 · COTAHIST — a fonte saiu do ar",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "09:00",
+      "area": "dashboards",
+      "quem": "Caio",
+      "papel": "líder de Dashboards",
+      "texto": "Todos os números chegaram em dia. Credibilidade dos painéis em 90%. Publicando.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:00",
+      "area": "executivos",
+      "quem": "Helena",
+      "papel": "CEO",
+      "texto": "Bom dia. Fundo +0,94% contra o CDI em 21 dias, caixa da gestora R$ 2.058.046, credibilidade dos painéis 90%.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:02",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "No painel de hoje: Dólar PTAX 5,74 (-2,34%); BOVA11 174,49 (+6,39%); Tesouro Prefixado 14,89 (+0,00%); Tesouro IPCA+ 7,87 (+0,00%).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:04",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Comitê de investimentos (pauta: BOVA11 (R$) +6,4% no dia).",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:06",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Tesouro IPCA+ pagando 7,87% acima da inflação.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:08",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Selic em 13,75% e Focus para o fim do ano em 13,75%: Selic estável no horizonte.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:10",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Bolsa (BOVA11) +0,9% em 20 pregões.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:12",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Decidido: Ações (BOVA11) +5 p.p. (tendência de +0,9% em 20 pregões). Caixa fica em 30%.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "17:30",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Rebalanceamento: giro R$ 14,9 mi, custo R$ 7.474",
+      "tipo": "evento"
+    },
+    {
+      "hora": "18:00",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Fechamento: cota 1,048712 (+0,31% no dia), PL R$ 323,7 mi, fluxo de cotistas R$ 1.042 mil. Caixa da gestora R$ 2,06 mi.",
+      "tipo": "fechamento"
+    }
+  ],
+  "eventos": [
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0021: falha real em Tesouro Direto (CSV)",
+      "chave": "INC-0021"
+    },
+    {
+      "area": "extracao",
+      "tipo": "aberto",
+      "texto": "INC-0022: B3 · COTAHIST — a fonte saiu do ar",
+      "chave": "INC-0022"
+    },
+    {
+      "area": "fundo",
+      "tipo": "info",
+      "texto": "Rebalanceamento: giro R$ 14,9 mi, custo R$ 7.474",
+      "chave": null
+    }
+  ],
+  "incidentes_do_dia": [
+    {
+      "id": "INC-0021",
+      "fonte": "tesouro",
+      "tipo": "falha_real"
+    },
+    {
+      "id": "INC-0022",
+      "fonte": "b3",
+      "tipo": "fora_do_ar"
+    }
+  ],
+  "alertas_abertos": [
+    "INC-0021",
+    "INC-0022"
+  ],
+  "alertas_fechados": [],
+  "resumo": {
+    "cota": 1.04871163,
+    "pl": 323716818.04,
+    "bench": 1.0353105,
+    "retorno_dia": 0.003144,
+    "fluxo": 1042496.74,
+    "pesos": {
+      "caixa": 0.3,
+      "prefixado": 0.15,
+      "inflacao": 0.25,
+      "dolar": 0.15,
+      "bolsa": 0.15
+    },
+    "divida_tecnica": 19.6,
+    "incidentes_abertos": 2,
+    "credibilidade": 0.904,
+    "confianca_media": 1.0,
+    "caixa_gestora": 2059150.98
+  }
+}

@@ -1,8 +1,8 @@
 {
-  "executado_em": "2026-11-26T20:05:47+00:00",
+  "executado_em": "2026-11-27T19:53:08+00:00",
   "janela": [
-    "2026-11-12",
-    "2026-11-25"
+    "2026-11-13",
+    "2026-11-26"
   ],
   "fontes": {
     "bcb_sgs": {
@@ -10,9 +10,9 @@
       "erro": null,
       "linhas_novas": 3,
       "ultima_data": {
-        "cdi": "2026-11-25",
-        "selic": "2026-11-25",
-        "dolar": "2026-11-25",
+        "cdi": "2026-11-26",
+        "selic": "2026-11-26",
+        "dolar": "2026-11-26",
         "ipca": "2026-10-01"
       }
     },
@@ -21,7 +21,7 @@
       "erro": null,
       "linhas_novas": 1,
       "ultima_data": {
-        "dolar_ptax": "2026-11-25"
+        "dolar_ptax": "2026-11-26"
       }
     },
     "bcb_focus": {
@@ -34,9 +34,9 @@
       }
     },
     "tesouro": {
-      "status": "ok",
-      "erro": null,
-      "linhas_novas": 33,
+      "status": "erro",
+      "erro": "FonteIndisponivel: https://www.tesourotransparente.gov.br/ckan/dataset/df56aa42-484a-4a59-8184-7676580c81e3/resource/796d2059-14e9-44e3-80c: <urlopen error [Errno 104] Connection reset by peer>",
+      "linhas_novas": 0,
       "ultima_data": {
         "tesouro": "2026-11-25"
       }
@@ -46,8 +46,8 @@
       "erro": null,
       "linhas_novas": 2,
       "ultima_data": {
-        "ibov": "2026-11-25",
-        "bova11": "2026-11-25"
+        "ibov": "2026-11-26",
+        "bova11": "2026-11-26"
       }
     },
     "b3": {
@@ -55,7 +55,7 @@
       "erro": null,
       "linhas_novas": 1,
       "ultima_data": {
-        "bova11_b3": "2026-11-25"
+        "bova11_b3": "2026-11-26"
       }
     }
   }

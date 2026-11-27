@@ -1,21 +1,47 @@
 {
-  "data_ref": "2026-11-25",
-  "issues": {},
+  "data_ref": "2026-11-26",
+  "issues": {
+    "INC-0021": {
+      "numero": 39,
+      "url": "https://github.com/GloedenJoao/profissional/issues/39",
+      "estado": "open"
+    },
+    "INC-0022": {
+      "numero": 40,
+      "url": "https://github.com/GloedenJoao/profissional/issues/40",
+      "estado": "open"
+    }
+  },
   "abertas": [
     {
-      "numero": 38,
-      "titulo": "INC-0020 · Tesouro Direto (CSV): o conector falhou de verdade nesta extração",
-      "url": "https://github.com/GloedenJoao/profissional/issues/38",
+      "numero": 39,
+      "titulo": "INC-0021 · Tesouro Direto (CSV): o conector falhou de verdade nesta extração",
+      "url": "https://github.com/GloedenJoao/profissional/issues/39",
       "rotulos": [
-        "simulacao",
         "area:extracao",
-        "sev:alta"
+        "sev:alta",
+        "simulacao"
       ],
-      "criada_em": "2026-11-24T21:06:28Z"
+      "criada_em": "2026-11-27T19:54:03Z"
+    },
+    {
+      "numero": 40,
+      "titulo": "INC-0022 · B3 · COTAHIST: a fonte saiu do ar",
+      "url": "https://github.com/GloedenJoao/profissional/issues/40",
+      "rotulos": [
+        "area:extracao",
+        "sev:media",
+        "simulacao"
+      ],
+      "criada_em": "2026-11-27T19:54:04Z"
     }
   ],
-  "detalhes": {},
+  "detalhes": {
+    "INC-0021": "dia 0, ação `corrigir_conector`",
+    "INC-0022": "dia 0, ação `fonte_alternativa`"
+  },
   "log": [
-    "fechada #38 INC-0020"
+    "aberta #39 INC-0021",
+    "aberta #40 INC-0022"
   ]
 }

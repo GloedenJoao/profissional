@@ -9,9 +9,9 @@
     "modo": "diario",
     "inicio": "2026-08-18"
   },
-  "data_referencia": "2026-11-25",
-  "proximo_dia_util": "2026-11-26",
-  "proximo_fechamento_em": "2026-11-27",
+  "data_referencia": "2026-11-26",
+  "proximo_dia_util": "2026-11-27",
+  "proximo_fechamento_em": "2026-11-30",
   "feriados": [
     "2026-01-01",
     "2026-02-16",
@@ -44,25 +44,25 @@
     "2027-12-25",
     "2027-12-31"
   ],
-  "gerado_em": "2026-11-26T20:05:47+00:00",
+  "gerado_em": "2026-11-27T19:53:08+00:00",
   "resumo": {
-    "cota": 1.045424,
-    "pl": 321662900.06,
-    "retorno_dia": 0.0032378882835701894,
-    "retorno_mes": -0.022015083554860704,
-    "cdi_mes": 0.010719822107600363,
-    "retorno_total": 0.045424369599470715,
-    "cdi_total": 0.03478495540653914,
-    "fluxo_dia": -2453634.1,
-    "incidentes_abertos": 0,
-    "credibilidade": 0.903,
+    "cota": 1.048712,
+    "pl": 323716818.04,
+    "retorno_dia": 0.003144426370055964,
+    "retorno_mes": 0.02019042143553218,
+    "cdi_mes": 0.010719818216371912,
+    "retorno_total": 0.048711629555138414,
+    "cdi_total": 0.0353105019896911,
+    "fluxo_dia": 1042496.74,
+    "incidentes_abertos": 2,
+    "credibilidade": 0.904,
     "confianca_media": 1.0,
-    "divida_tecnica": 18.95,
-    "caixa_gestora": 2058045.64,
-    "alertas": 0
+    "divida_tecnica": 19.6,
+    "caixa_gestora": 2059150.98,
+    "alertas": 2
   },
   "extracao": {
-    "divida_tecnica": 18.95,
+    "divida_tecnica": 19.6,
     "equipe": 3,
     "orcamento_dia": 1200.0,
     "fontes": [
@@ -78,9 +78,9 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "cdi": "2026-11-25",
-          "selic": "2026-11-25",
-          "dolar": "2026-11-25",
+          "cdi": "2026-11-26",
+          "selic": "2026-11-26",
+          "dolar": "2026-11-26",
           "ipca": "2026-10-01"
         },
         "alternativa_ligada": false,
@@ -95,7 +95,7 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "dolar_ptax": "2026-11-25"
+          "dolar_ptax": "2026-11-26"
         },
         "alternativa_ligada": false,
         "incidente": null
@@ -122,13 +122,13 @@
         "series": [
           "tesouro"
         ],
-        "real": "ok",
-        "erro_real": null,
+        "real": "erro",
+        "erro_real": "FonteIndisponivel: https://www.tesourotransparente.gov.br/ckan/dataset/df56aa42-484a-4a59-8184-7676580c81e3/resource/796d2059-14e9-44e3-80c: <urlopen error [Errno 104] Connection reset by peer>",
         "liberado_ate": {
           "tesouro": "2026-11-25"
         },
         "alternativa_ligada": false,
-        "incidente": null
+        "incidente": "INC-0021"
       },
       {
         "id": "yahoo",
@@ -140,8 +140,8 @@
         "real": "ok",
         "erro_real": null,
         "liberado_ate": {
-          "ibov": "2026-11-25",
-          "bova11": "2026-11-25"
+          "ibov": "2026-11-26",
+          "bova11": "2026-11-26"
         },
         "alternativa_ligada": false,
         "incidente": null
@@ -158,10 +158,44 @@
           "bova11_b3": "2026-11-25"
         },
         "alternativa_ligada": false,
-        "incidente": null
+        "incidente": "INC-0022"
       }
     ],
     "incidentes": [
+      {
+        "id": "INC-0022",
+        "fonte": "b3",
+        "tipo": "fora_do_ar",
+        "aberto_em": "2026-11-26",
+        "estado": "aberto",
+        "dias": 0,
+        "acao": "fonte_alternativa",
+        "detalhe": "a fonte saiu do ar",
+        "resolvido_em": null,
+        "historico": [],
+        "issue": {
+          "numero": 40,
+          "url": "https://github.com/GloedenJoao/profissional/issues/40",
+          "estado": "open"
+        }
+      },
+      {
+        "id": "INC-0021",
+        "fonte": "tesouro",
+        "tipo": "falha_real",
+        "aberto_em": "2026-11-26",
+        "estado": "aberto",
+        "dias": 0,
+        "acao": "corrigir_conector",
+        "detalhe": "FonteIndisponivel: https://www.tesourotransparente.gov.br/ckan/dataset/df56aa42-484a-4a59-8184-7676580c81e3/resource/796d2059-14e9-44e3-80c: <urlopen error [Errno 104] Connection reset by peer>",
+        "resolvido_em": null,
+        "historico": [],
+        "issue": {
+          "numero": 39,
+          "url": "https://github.com/GloedenJoao/profissional/issues/39",
+          "estado": "open"
+        }
+      },
       {
         "id": "INC-0020",
         "fonte": "tesouro",
@@ -240,17 +274,6 @@
       }
     ],
     "disponibilidade": [
-      {
-        "data": "2026-10-27",
-        "fontes": {
-          "bcb_sgs": "ok",
-          "bcb_ptax": "ok",
-          "bcb_focus": "ok",
-          "tesouro": "ok",
-          "yahoo": "ok",
-          "b3": "ok"
-        }
-      },
       {
         "data": "2026-10-28",
         "fontes": {
@@ -459,17 +482,28 @@
           "yahoo": "ok",
           "b3": "ok"
         }
+      },
+      {
+        "data": "2026-11-26",
+        "fontes": {
+          "bcb_sgs": "ok",
+          "bcb_ptax": "ok",
+          "bcb_focus": "ok",
+          "tesouro": "falha_real",
+          "yahoo": "ok",
+          "b3": "fora_do_ar"
+        }
       }
     ]
   },
   "dashboards": {
-    "credibilidade": 0.903,
+    "credibilidade": 0.904,
     "confianca_media": 1.0,
     "indicadores": [
       {
         "id": "cdi",
         "nome": "CDI (% a.a.)",
-        "data_ref": "2026-11-25",
+        "data_ref": "2026-11-26",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
@@ -480,7 +514,7 @@
       {
         "id": "selic",
         "nome": "Selic meta (% a.a.)",
-        "data_ref": "2026-11-25",
+        "data_ref": "2026-11-26",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
@@ -491,13 +525,13 @@
       {
         "id": "dolar",
         "nome": "Dólar PTAX (R$)",
-        "data_ref": "2026-11-25",
+        "data_ref": "2026-11-26",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 5.8825,
+        "valor": 5.7446,
         "confianca": 1.0,
-        "valor_anterior": 5.8573
+        "valor_anterior": 5.8825
       },
       {
         "id": "ipca_12m",
@@ -535,24 +569,24 @@
       {
         "id": "ibov",
         "nome": "Ibovespa (pts)",
-        "data_ref": "2026-11-25",
+        "data_ref": "2026-11-26",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 166685.0,
+        "valor": 176800.0,
         "confianca": 1.0,
-        "valor_anterior": 164090.0
+        "valor_anterior": 166685.0
       },
       {
         "id": "bova11",
         "nome": "BOVA11 (R$)",
-        "data_ref": "2026-11-25",
+        "data_ref": "2026-11-26",
         "defasagem": 0,
         "via": "principal",
         "estrategia": null,
-        "valor": 164.01,
+        "valor": 174.49,
         "confianca": 1.0,
-        "valor_anterior": 161.49
+        "valor_anterior": 164.01
       },
       {
         "id": "taxa_pre",
@@ -563,7 +597,7 @@
         "estrategia": null,
         "valor": 14.89,
         "confianca": 1.0,
-        "valor_anterior": 15.04
+        "valor_anterior": 14.89
       },
       {
         "id": "taxa_ipca",
@@ -574,7 +608,7 @@
         "estrategia": null,
         "valor": 7.87,
         "confianca": 1.0,
-        "valor_anterior": 7.86
+        "valor_anterior": 7.87
       }
     ],
     "estimativas_pendentes": [],
@@ -582,18 +616,18 @@
   },
   "executivos": {
     "alvo": {
-      "caixa": 0.35,
+      "caixa": 0.3,
       "prefixado": 0.15,
       "inflacao": 0.25,
       "dolar": 0.15,
-      "bolsa": 0.1
+      "bolsa": 0.15
     },
     "pesos": {
-      "caixa": 0.34087334123447904,
-      "prefixado": 0.1528497889087365,
-      "inflacao": 0.25385861041666563,
-      "dolar": 0.1499283476173092,
-      "bolsa": 0.1024899118228097
+      "caixa": 0.3,
+      "prefixado": 0.15,
+      "inflacao": 0.25,
+      "dolar": 0.15,
+      "bolsa": 0.15
     },
     "limites": {
       "caixa": [
@@ -619,8 +653,13 @@
     },
     "congelados": [],
     "dias_sem_decisao": 0,
-    "ultima_decisao": "2026-11-17",
+    "ultima_decisao": "2026-11-26",
     "decisoes_recentes": [
+      {
+        "data": "2026-11-26",
+        "autor": "times",
+        "resumo": "Decidido: Ações (BOVA11) +5 p.p. (tendência de +0,9% em 20 pregões). Caixa fica em 30%."
+      },
       {
         "data": "2026-11-17",
         "autor": "times",
@@ -648,13 +687,68 @@
       }
     ],
     "gestora": {
-      "caixa": 2058045.64,
-      "receita_dia": 12862.28,
+      "caixa": 2059150.98,
+      "receita_dia": 12805.34,
       "custo_dia": 11700.0
     }
   },
-  "alertas": [],
+  "alertas": [
+    {
+      "chave": "INC-0021",
+      "titulo": "INC-0021 · Tesouro Direto (CSV): o conector falhou de verdade nesta extração",
+      "area": "extracao",
+      "sev": "alta",
+      "aberto_em": "2026-11-26",
+      "detalhe": "dia 0, ação `corrigir_conector`",
+      "issue": {
+        "numero": 39,
+        "url": "https://github.com/GloedenJoao/profissional/issues/39",
+        "estado": "open"
+      }
+    },
+    {
+      "chave": "INC-0022",
+      "titulo": "INC-0022 · B3 · COTAHIST: a fonte saiu do ar",
+      "area": "extracao",
+      "sev": "media",
+      "aberto_em": "2026-11-26",
+      "detalhe": "dia 0, ação `fonte_alternativa`",
+      "issue": {
+        "numero": 40,
+        "url": "https://github.com/GloedenJoao/profissional/issues/40",
+        "estado": "open"
+      }
+    }
+  ],
   "dias": [
+    {
+      "data": "2026-11-26",
+      "eventos": [
+        {
+          "area": "extracao",
+          "tipo": "aberto",
+          "texto": "INC-0021: falha real em Tesouro Direto (CSV)",
+          "chave": "INC-0021"
+        },
+        {
+          "area": "extracao",
+          "tipo": "aberto",
+          "texto": "INC-0022: B3 · COTAHIST — a fonte saiu do ar",
+          "chave": "INC-0022"
+        },
+        {
+          "area": "fundo",
+          "tipo": "info",
+          "texto": "Rebalanceamento: giro R$ 14,9 mi, custo R$ 7.474",
+          "chave": null
+        }
+      ],
+      "decisao": {
+        "existe": true,
+        "autor": "times",
+        "intervencao": false
+      }
+    },
     {
       "data": "2026-11-25",
       "eventos": [
@@ -840,28 +934,6 @@
         "autor": "times",
         "intervencao": false
       }
-    },
-    {
-      "data": "2026-11-04",
-      "eventos": [
-        {
-          "area": "extracao",
-          "tipo": "aberto",
-          "texto": "INC-0016: falha real em BCB · SGS",
-          "chave": "INC-0016"
-        },
-        {
-          "area": "extracao",
-          "tipo": "aberto",
-          "texto": "INC-0017: falha real em Tesouro Direto (CSV)",
-          "chave": "INC-0017"
-        }
-      ],
-      "decisao": {
-        "existe": true,
-        "autor": "times",
-        "intervencao": false
-      }
     }
   ],
   "ata": [
@@ -870,15 +942,7 @@
       "area": "extracao",
       "quem": "Bia",
       "papel": "líder de Extração",
-      "texto": "Bom dia. Temos 1 incidente(s) aberto(s) e 3 pessoa(s) na equipe. Vamos priorizar.",
-      "tipo": "fala"
-    },
-    {
-      "hora": "08:02",
-      "area": "extracao",
-      "quem": "Téo",
-      "papel": "engenheiro de plantão",
-      "texto": "INC-0020 · Tesouro Direto (CSV) (aberto ontem): seguimos com `corrigir_conector`.",
+      "texto": "Bom dia! Nenhum incidente aberto. Dívida técnica 19/100, equipe de 3. Seguimos monitorando.",
       "tipo": "fala"
     },
     {
@@ -886,8 +950,16 @@
       "area": "extracao",
       "quem": "Téo",
       "papel": "engenheiro de plantão",
-      "texto": "INC-0020 resolvido: Tesouro Direto (CSV) voltou após 2 dia(s) (corrigir_conector)",
-      "tipo": "evento"
+      "texto": "INC-0021: falha real em Tesouro Direto (CSV)",
+      "tipo": "alerta"
+    },
+    {
+      "hora": "08:42",
+      "area": "extracao",
+      "quem": "Téo",
+      "papel": "engenheiro de plantão",
+      "texto": "INC-0022: B3 · COTAHIST — a fonte saiu do ar",
+      "tipo": "alerta"
     },
     {
       "hora": "09:00",
@@ -902,7 +974,7 @@
       "area": "executivos",
       "quem": "Helena",
       "papel": "CEO",
-      "texto": "Bom dia. Fundo -3,27% contra o CDI em 21 dias, caixa da gestora R$ 2.056.883, credibilidade dos painéis 90%.",
+      "texto": "Bom dia. Fundo +0,94% contra o CDI em 21 dias, caixa da gestora R$ 2.058.046, credibilidade dos painéis 90%.",
       "tipo": "fala"
     },
     {
@@ -910,7 +982,7 @@
       "area": "executivos",
       "quem": "Rafael",
       "papel": "CIO",
-      "texto": "No painel de hoje: Dólar PTAX 5,88 (+0,43%); BOVA11 164,01 (+1,56%); Tesouro Prefixado 14,89 (-1,00%); Tesouro IPCA+ 7,87 (+0,13%).",
+      "texto": "No painel de hoje: Dólar PTAX 5,74 (-2,34%); BOVA11 174,49 (+6,39%); Tesouro Prefixado 14,89 (+0,00%); Tesouro IPCA+ 7,87 (+0,00%).",
       "tipo": "fala"
     },
     {
@@ -918,15 +990,55 @@
       "area": "executivos",
       "quem": "Rafael",
       "papel": "CIO",
-      "texto": "Sem pauta extraordinária: mantemos o alvo até o comitê de segunda.",
+      "texto": "Comitê de investimentos (pauta: BOVA11 (R$) +6,4% no dia).",
       "tipo": "fala"
+    },
+    {
+      "hora": "10:06",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Tesouro IPCA+ pagando 7,87% acima da inflação.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:08",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Selic em 13,75% e Focus para o fim do ano em 13,75%: Selic estável no horizonte.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:10",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Bolsa (BOVA11) +0,9% em 20 pregões.",
+      "tipo": "fala"
+    },
+    {
+      "hora": "10:12",
+      "area": "executivos",
+      "quem": "Rafael",
+      "papel": "CIO",
+      "texto": "Decidido: Ações (BOVA11) +5 p.p. (tendência de +0,9% em 20 pregões). Caixa fica em 30%.",
+      "tipo": "decisao"
+    },
+    {
+      "hora": "17:30",
+      "area": "fundo",
+      "quem": "Administrador",
+      "papel": "fechamento do fundo",
+      "texto": "Rebalanceamento: giro R$ 14,9 mi, custo R$ 7.474",
+      "tipo": "evento"
     },
     {
       "hora": "18:00",
       "area": "fundo",
       "quem": "Administrador",
       "papel": "fechamento do fundo",
-      "texto": "Fechamento: cota 1,045424 (+0,32% no dia), PL R$ 321,7 mi, fluxo de cotistas R$ -2.454 mil. Caixa da gestora R$ 2,06 mi.",
+      "texto": "Fechamento: cota 1,048712 (+0,31% no dia), PL R$ 323,7 mi, fluxo de cotistas R$ 1.042 mil. Caixa da gestora R$ 2,06 mi.",
       "tipo": "fechamento"
     }
   ],
@@ -997,7 +1109,8 @@
     "2026-11-19",
     "2026-11-23",
     "2026-11-24",
-    "2026-11-25"
+    "2026-11-25",
+    "2026-11-26"
   ],
   "historico": [
     {
@@ -2272,6 +2385,25 @@
         "dolar": 0.1499,
         "bolsa": 0.1025
       }
+    },
+    {
+      "data": "2026-11-26",
+      "cota": 1.04871163,
+      "bench": 1.0353105,
+      "pl": 323716818.04,
+      "fluxo": 1042496.74,
+      "divida_tecnica": 19.6,
+      "credibilidade": 0.904,
+      "confianca_media": 1.0,
+      "incidentes_abertos": 2.0,
+      "caixa_gestora": 2059150.98,
+      "pesos": {
+        "caixa": 0.3,
+        "prefixado": 0.15,
+        "inflacao": 0.25,
+        "dolar": 0.15,
+        "bolsa": 0.15
+      }
     }
   ],
   "nomes": {
@@ -2303,15 +2435,26 @@
   "processos": {
     "issues_abertas": [
       {
-        "numero": 38,
-        "titulo": "INC-0020 · Tesouro Direto (CSV): o conector falhou de verdade nesta extração",
-        "url": "https://github.com/GloedenJoao/profissional/issues/38",
+        "numero": 39,
+        "titulo": "INC-0021 · Tesouro Direto (CSV): o conector falhou de verdade nesta extração",
+        "url": "https://github.com/GloedenJoao/profissional/issues/39",
         "rotulos": [
-          "simulacao",
           "area:extracao",
-          "sev:alta"
+          "sev:alta",
+          "simulacao"
         ],
-        "criada_em": "2026-11-24T21:06:28Z"
+        "criada_em": "2026-11-27T19:54:03Z"
+      },
+      {
+        "numero": 40,
+        "titulo": "INC-0022 · B3 · COTAHIST: a fonte saiu do ar",
+        "url": "https://github.com/GloedenJoao/profissional/issues/40",
+        "rotulos": [
+          "area:extracao",
+          "sev:media",
+          "simulacao"
+        ],
+        "criada_em": "2026-11-27T19:54:04Z"
       }
     ],
     "controle": null,
@@ -2319,8 +2462,8 @@
   },
   "status_areas": {
     "extracao": {
-      "nivel": "ok",
-      "texto": "todas as fontes no ar · dívida técnica 19/100"
+      "nivel": "ruim",
+      "texto": "2 incidente(s) aberto(s), 1 grave(s)"
     },
     "dashboards": {
       "nivel": "ok",
@@ -2328,27 +2471,33 @@
     },
     "executivos": {
       "nivel": "ok",
-      "texto": "último ajuste do comitê em 17/11/2026"
+      "texto": "último ajuste do comitê em 26/11/2026"
     },
     "fundo": {
-      "nivel": "aviso",
-      "texto": "abaixo do CDI · 21d -2,20% vs CDI +1,07%"
+      "nivel": "ok",
+      "texto": "21d +2,02% vs CDI +1,07%"
     }
   },
   "decisao_proxima": {
-    "data": "2026-11-26",
-    "caminho": "empresa/decisoes/2026-11-26.json",
+    "data": "2026-11-27",
+    "caminho": "empresa/decisoes/2026-11-27.json",
     "existe": false,
     "modelo": {
-      "data": "2026-11-26",
+      "data": "2026-11-27",
       "autor": "conselho",
+      "extracao": {
+        "acoes": {
+          "INC-0022": "fonte_alternativa",
+          "INC-0021": "corrigir_conector"
+        }
+      },
       "executivos": {
         "alocacao": {
-          "caixa": 0.35,
+          "caixa": 0.3,
           "prefixado": 0.15,
           "inflacao": 0.25,
           "dolar": 0.15,
-          "bolsa": 0.1
+          "bolsa": 0.15
         },
         "equipe_extracao": 3,
         "orcamento_extracao_dia": 1200.0,
@@ -2356,9 +2505,47 @@
       },
       "observacoes": ""
     },
-    "link_criar": "https://github.com/GloedenJoao/profissional/new/main/empresa/decisoes?filename=2026-11-26.json&value=%7B%0A%20%20%22data%22%3A%20%222026-11-26%22%2C%0A%20%20%22autor%22%3A%20%22conselho%22%2C%0A%20%20%22executivos%22%3A%20%7B%0A%20%20%20%20%22alocacao%22%3A%20%7B%0A%20%20%20%20%20%20%22caixa%22%3A%200.35%2C%0A%20%20%20%20%20%20%22prefixado%22%3A%200.15%2C%0A%20%20%20%20%20%20%22inflacao%22%3A%200.25%2C%0A%20%20%20%20%20%20%22dolar%22%3A%200.15%2C%0A%20%20%20%20%20%20%22bolsa%22%3A%200.1%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22equipe_extracao%22%3A%203%2C%0A%20%20%20%20%22orcamento_extracao_dia%22%3A%201200.0%2C%0A%20%20%20%20%22justificativa%22%3A%20%22%22%0A%20%20%7D%2C%0A%20%20%22observacoes%22%3A%20%22%22%0A%7D%0A",
-    "link_ver": "https://github.com/GloedenJoao/profissional/blob/main/empresa/decisoes/2026-11-26.json",
+    "link_criar": "https://github.com/GloedenJoao/profissional/new/main/empresa/decisoes?filename=2026-11-27.json&value=%7B%0A%20%20%22data%22%3A%20%222026-11-27%22%2C%0A%20%20%22autor%22%3A%20%22conselho%22%2C%0A%20%20%22extracao%22%3A%20%7B%0A%20%20%20%20%22acoes%22%3A%20%7B%0A%20%20%20%20%20%20%22INC-0022%22%3A%20%22fonte_alternativa%22%2C%0A%20%20%20%20%20%20%22INC-0021%22%3A%20%22corrigir_conector%22%0A%20%20%20%20%7D%0A%20%20%7D%2C%0A%20%20%22executivos%22%3A%20%7B%0A%20%20%20%20%22alocacao%22%3A%20%7B%0A%20%20%20%20%20%20%22caixa%22%3A%200.3%2C%0A%20%20%20%20%20%20%22prefixado%22%3A%200.15%2C%0A%20%20%20%20%20%20%22inflacao%22%3A%200.25%2C%0A%20%20%20%20%20%20%22dolar%22%3A%200.15%2C%0A%20%20%20%20%20%20%22bolsa%22%3A%200.15%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22equipe_extracao%22%3A%203%2C%0A%20%20%20%20%22orcamento_extracao_dia%22%3A%201200.0%2C%0A%20%20%20%20%22justificativa%22%3A%20%22%22%0A%20%20%7D%2C%0A%20%20%22observacoes%22%3A%20%22%22%0A%7D%0A",
+    "link_ver": "https://github.com/GloedenJoao/profissional/blob/main/empresa/decisoes/2026-11-27.json",
     "link_pasta": "https://github.com/GloedenJoao/profissional/tree/main/empresa/decisoes"
   },
-  "tarefas": []
+  "tarefas": [
+    {
+      "id": "CONECTOR-tesouro",
+      "area": "extracao",
+      "nivel": "ruim",
+      "titulo": "Conector Tesouro Direto (CSV) falhou de verdade",
+      "detalhe": "FonteIndisponivel: https://www.tesourotransparente.gov.br/ckan/dataset/df56aa42-484a-4a59-8184-7676580c81e3/resource/796d2059-14e9-44e3-80c: <urlopen error [Errno 104] Connection reset by peer>",
+      "link": "https://github.com/GloedenJoao/profissional/blob/main/gestora/fontes.py",
+      "acao": "Corrigir conector"
+    },
+    {
+      "id": "INC-0021",
+      "area": "extracao",
+      "nivel": "ruim",
+      "titulo": "INC-0021 · Tesouro Direto (CSV): o conector falhou de verdade nesta extração",
+      "detalhe": "dia 0, ação `corrigir_conector`",
+      "link": "https://github.com/GloedenJoao/profissional/issues/39",
+      "acao": "Ver alerta",
+      "issue": {
+        "numero": 39,
+        "url": "https://github.com/GloedenJoao/profissional/issues/39",
+        "estado": "open"
+      }
+    },
+    {
+      "id": "INC-0022",
+      "area": "extracao",
+      "nivel": "aviso",
+      "titulo": "INC-0022 · B3 · COTAHIST: a fonte saiu do ar",
+      "detalhe": "dia 0, ação `fonte_alternativa`",
+      "link": "https://github.com/GloedenJoao/profissional/issues/40",
+      "acao": "Ver alerta",
+      "issue": {
+        "numero": 40,
+        "url": "https://github.com/GloedenJoao/profissional/issues/40",
+        "estado": "open"
+      }
+    }
+  ]
 }
